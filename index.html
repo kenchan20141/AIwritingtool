@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DeepSeek 寫作助手</title>
+  <meta charset="UTF-8">
+  <style>
+    /* CSS 樣式 */
+    body {
+      font-family: 'Microsoft JhengHei', sans-serif;
+      background: #f0f2f5;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .section {
+      margin: 25px 0;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    button {
+      background: #2d8cf0;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #0066cc;
+    }
+
+    textarea {
+      width: 100%;
+      height: 200px;
+      padding: 15px;
+      border: 2px solid #e8e8e8;
+      border-radius: 8px;
+      font-size: 16px;
+      margin: 10px 0;
+    }
+
+    .output-box {
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      margin-top: 10px;
+      min-height: 60px;
+    }
+
+    .loading {
+      display: none;
+      color: #666;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎯 AI 寫作訓練營</h1>
+    
+    <!-- 題目生成區 -->
+    <div class="section">
+      <button onclick="generateTopic()">🪄 隨機生成題目</button>
+      <div id="topic" class="output-box"></div>
+    </div>
+
+    <!-- 寫作區 -->
+    <div class="section">
+      <textarea id="userWriting" placeholder="✍️ 在此輸入你的寫作內容..."></textarea>
+    </div>
+
+    <!-- 批改區 -->
+    <div class="section">
+      <button onclick="submitForReview()">🔍 提交AI批改</button>
+      <div id="feedback" class="output-box"></div>
+      <div id="loading" class="loading">AI批改中... (約10-20秒)</div>
+    </div>
+  </div>
+
+  <script>
+    // ======================
+    // 重要設定 (使用前必填！)
+    // ======================
+    const API_KEY = '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'; // 替換成你的API金鑰
+    const API_ENDPOINT = 'https://api.deepseek.com/v1/chat/completions';
+    
+    // ======================
+    // 核心功能代碼
+    // ======================
+    async function handleAPICall(messages) {
+      try {
+        document.getElementById('loading').style.display = 'block';
+        
+        const response = await fetch(API_ENDPOINT, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${API_KEY}`
+          },
+          body: JSON.stringify({
+            model: "deepseek-chat",
+            messages: messages
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`API請求失敗 (狀態碼: ${response.status})`);
+        }
+
+        const data = await response.json();
+        return data.choices[0].message.content;
+
+      } catch (error) {
+        alert(`錯誤：${error.message}\n請檢查網絡連接或API金鑰`);
+        return null;
+      } finally {
+        document.getElementById('loading').style.display = 'none';
+      }
+    }
+
+    // 生成題目功能
+    async function generateTopic() {
+      const systemPrompt = {
+        role: "system",
+        content: "你是一位中文寫作老師，請生成一個包含具體情景描寫要求的作文題目，格式範例：'請描寫一個雨後校園的場景，要求使用至少三個比喻句'"
+      };
+
+      const result = await handleAPICall([systemPrompt]);
+      if (result) {
+        document.getElementById('topic').innerHTML = `📌 今日題目：<br>${result}`;
+      }
+    }
+
+    // 提交批改功能
+    async function submitForReview() {
+      const userText = document.getElementById('userWriting').value.trim();
+      
+      if (!userText) {
+        alert("請先輸入寫作內容！");
+        return;
+      }
+
+      const systemPrompt = {
+        role: "system",
+        content: `你是一位專業的中文寫作批改老師，請按照以下步驟處理：
+        1. 指出3個優點並標註⭐
+        2. 找出3個可改進點並標註🔧
+        3. 給出修改建議
+        4. 最後用【綜合評分】給分(滿分5分)
+        請用表格格式回應`
+      };
+
+      const userMessage = {
+        role: "user",
+        content: userText
+      };
+
+      const result = await handleAPICall([systemPrompt, userMessage]);
+      if (result) {
+        document.getElementById('feedback').innerHTML = result.replace(/\n/g, '<br>');
+      }
+    }
+  </script>
+</body>
+</html>
