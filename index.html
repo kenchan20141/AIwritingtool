@@ -1,71 +1,106 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 寫作助手</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>AI写作助手</title>
     <style>
+        /* 简单的基础样式 */
         body {
-            background-color: #f8f9fa;
-        }
-        .container {
+            font-family: Arial, sans-serif;
             max-width: 800px;
-            margin-top: 50px;
+            margin: 0 auto;
+            padding: 20px;
         }
-        .topic-area {
-            margin-bottom: 20px;
+        .box {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 10px 0;
         }
-        .loading {
-            display: none;
-            margin-top: 10px;
+        button {
+            background: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="text-center">AI 寫作助手</h1>
-        <div class="topic-area">
-            <h3>題目：</h3>
-            <p id="topic"></p>
-            <button id="generate-topic" class="btn btn-primary">生成題目</button>
-            <div id="loading-topic" class="loading">正在生成題目...</div>
-        </div>
-        <form id="writing-form" method="POST" action="/submit">
-            <div class="mb-3">
-                <textarea name="user_input" class="form-control" rows="10" placeholder="請輸入您的寫作內容"></textarea>
-            </div>
-            <input type="hidden" name="topic" id="hidden-topic">
-            <button type="submit" class="btn btn-success">提交</button>
-            <div id="loading-submit" class="loading">正在處理...</div>
-        </form>
-        {% if ai_response %}
-            <h3 class="mt-5">AI 修訂與點評：</h3>
-            <pre class="bg-light p-3">{{ ai_response }}</pre>
-        {% endif %}
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.getElementById('generate-topic').addEventListener('click', function() {
-            document.getElementById('loading-topic').style.display = 'block';
-            fetch('/generate_topic', {
-                method: 'POST'
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('topic').textContent = data.topic;
-                document.getElementById('hidden-topic').value = data.topic;
-                document.getElementById('loading-topic').style.display = 'none';
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('loading-topic').style.display = 'none';
-            });
-        });
+    <h1>AI写作助手</h1>
 
-        document.getElementById('writing-form').addEventListener('submit', function() {
-            document.getElementById('loading-submit').style.display = 'block';
-        });
+    <!-- 生成题目区域 -->
+    <div class="box">
+        <button onclick="generateTopic()">生成写作题目</button>
+        <div id="topicResult"></div>
+    </div>
+
+    <!-- 写作区域 -->
+    <div class="box">
+        <textarea id="writingContent" rows="10" style="width: 100%"></textarea>
+        <button onclick="submitWriting()">提交作文</button>
+        <div id="commentResult"></div>
+    </div>
+
+    <script>
+        // 你的API配置信息
+        const API_KEY = "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";
+        const API_URL = "https://openrouter.ai/api/v1/chat/completions";
+        const MODEL = "deepseek/deepseek-r1:free";
+
+        // 生成写作题目
+        async function generateTopic() {
+            const prompt = "请生成一个适合中学生的写作题目，要求：1.贴近生活 2.有启发性 3.20字以内";
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${API_KEY}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        model: MODEL,
+                        messages: [{ role: "user", content: prompt }]
+                    })
+                });
+
+                const data = await response.json();
+                document.getElementById("topicResult").innerHTML = 
+                    "今日题目：<strong>" + data.choices[0].message.content + "</strong>";
+            } catch (error) {
+                alert("生成题目时出错，请重试");
+            }
+        }
+
+        // 提交作文获取点评
+        async function submitWriting() {
+            const content = document.getElementById("writingContent").value;
+            if (!content) {
+                alert("请先输入写作内容");
+                return;
+            }
+
+            const prompt = `请根据以下内容进行点评（要求：1.指出优点 2.提出改进建议 3.简明扼要）：\n${content}`;
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${API_KEY}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        model: MODEL,
+                        messages: [{ role: "user", content: prompt }]
+                    })
+                });
+
+                const data = await response.json();
+                document.getElementById("commentResult").innerHTML = 
+                    "<h3>AI点评：</h3>" + data.choices[0].message.content.replace(/\n/g, "<br>");
+            } catch (error) {
+                alert("点评生成失败，请重试");
+            }
+        }
     </script>
 </body>
 </html>
