@@ -73,18 +73,11 @@
     <!-- 範疇選擇 -->
     <div class="box">
         <label for="category">選擇練習範疇：</label>
-        <select id="category" onchange="toggleOutlineStructure()">
+        <select id="category">
             <option value="示現敘事">示現敘事</option>
             <option value="大綱">大綱</option>
             <option value="片段詳略">片段詳略</option>
         </select>
-        <div id="outlineStructureArea" style="display: none;">
-            <label for="outlineStructure">選擇大綱結構：</label>
-            <select id="outlineStructure">
-                <option value="qichengzhuanhe">起承轉合</option>
-                <option value="threeLines">三線</option>
-            </select>
-        </div>
     </div>
 
     <!-- 題目選擇 -->
@@ -125,27 +118,13 @@
             },
             "大綱": {
                 topicPrompt: "請生成一道適合中學生練習寫作大綱的題目，要求：1.貼近生活 2.10字以內 3.加快生成速度 4.除了題目之外，不要生成其他任何內容",
-                commentNote: `點評時，必須就上述生成的題目點評寫作內容是否扣題，假如大綱離題，範例便不必根據離題內容改寫。此外，點評應分為三個部份：點評、建議、改寫範例，並以表格形式呈現。在寫作大綱時，學生應展示他們組織思路和結構故事的能力。評分時，請注意大綱的邏輯性、條理性以及是否符合所選結構。
-                若選擇「起承轉合」，大綱應分為起、承、轉、合四個縱向部分，每部分包含「結構段重點」和「情節大要」兩項；
-                若選擇「三線」，大綱應分為起、一線、二線、三線、合五個縱向部分，每部分包含「結構段重點」和「情節大要」兩項。
-                點評、建議和改寫範例應針對每個結構段進行分析，並以表格形式輸出，表格列為結構段，行為「結構段重點」和「情節大要」。`
+                commentNote: "點評時，必須就上述生成的題目點評寫作內容是否扣題，假如大綱離題，範例便不必根據離題內容改寫。此外，點評應分為三個部份：點評、建議、改寫範例。在寫作大綱時，學生應展示他們組織思路和結構故事的能力。評分時，請注意大綱的邏輯性、條理性以及是否包含了故事的起承轉合。要分析每個結構段與題目的關係有多大。"
             },
             "片段詳略": {
                 topicPrompt: "請生成一道適合中學生練習片段詳略的題目，要求：1.貼近生活 2.10字以內 3.加快生成速度 4.除了題目之外，不要生成其他任何內容",
                 commentNote: "點評時，必須就上述生成的題目點評寫作內容是否扣題，假如詳略嚴重失當，範例便不必根據原文離題內容改寫。此外，點評應分為三個部份：點評、建議、改寫範例。在片段詳略中，學生需要學會在敘述中控制節奏，通過詳寫與題目相關的重要場景和略寫對扣題較次要的部分來增強故事效果。評分時，請注意學生是否恰當地運用了詳略得當的技巧。"
             }
         };
-
-        // 切換大綱結構選擇區域
-        function toggleOutlineStructure() {
-            const category = document.getElementById("category").value;
-            const outlineStructureArea = document.getElementById("outlineStructureArea");
-            if (category === "大綱") {
-                outlineStructureArea.style.display = "block";
-            } else {
-                outlineStructureArea.style.display = "none";
-            }
-        }
 
         // 切換題目輸入方式
         function toggleTopicInput() {
@@ -222,7 +201,7 @@
                 return;
             }
 
-            let prompt = `請根據以下內容進行點評，要求：
+            const prompt = `請根據以下內容進行點評，要求：
 1. 簡明扼要
 2. 參考教學筆記
 3. 評論寫作內容與題目的關係
@@ -234,11 +213,6 @@
 ${content}
 
 教學筆記：${note}`;
-
-            if (category === "大綱") {
-                const structure = document.getElementById("outlineStructure").value;
-                prompt += `\n\n所選結構：${structure === "qichengzhuanhe" ? "起承轉合" : "三線"}，請根據此結構生成點評、建議和改寫範例，並以表格形式輸出，表格列為結構段，行為「結構段重點」和「情節大要」。`;
-            }
 
             document.getElementById("commentResult").innerHTML = "正在生成點評...";
 
@@ -257,36 +231,14 @@ ${content}
 
                 const data = await response.json();
                 const comment = data.choices[0].message.content.trim();
-
                 // 解析回應並生成表格
-                let commentHTML = "<h3>AI點評：</h3>";
-                if (category === "大綱") {
-                    // 假設 API 返回的內容已經是表格格式的文字，這裡簡單解析
-                    const commentParts = comment.split("###").map(part => part.trim()).filter(part => part);
-                    commentHTML += "<table>";
-                    commentParts.forEach(part => {
-                        const [title, ...content] = part.split("\n");
-                        if (title === "點評" || title === "建議" || title === "改寫範例") {
-                            commentHTML += `<tr><th colspan="2">${title}</th></tr>`;
-                            const sections = content.join("\n").split("\n\n");
-                            sections.forEach(section => {
-                                const lines = section.split("\n").filter(line => line);
-                                if (lines.length >= 2) {
-                                    commentHTML += `<tr><td>${lines[0]}</td><td>${lines.slice(1).join("<br>")}</td></tr>`;
-                                }
-                            });
-                        }
-                    });
-                    commentHTML += "</table>";
-                } else {
-                    const commentParts = comment.split("###").map(part => part.trim()).filter(part => part);
-                    commentHTML += "<table>";
-                    commentParts.forEach(part => {
-                        const [title, ...content] = part.split("\n");
-                        commentHTML += `<tr><th>${title}</th></tr><tr><td>${content.join("<br>")}</td></tr>`;
-                    });
-                    commentHTML += "</table>";
-                }
+                const commentParts = comment.split("###").map(part => part.trim()).filter(part => part);
+                let commentHTML = "<h3>AI點評：</h3><table>";
+                commentParts.forEach(part => {
+                    const [title, ...content] = part.split("\n");
+                    commentHTML += `<tr><th>${title}</th></tr><tr><td>${content.join("<br>")}</td></tr>`;
+                });
+                commentHTML += "</table>";
                 document.getElementById("commentResult").innerHTML = commentHTML;
             } catch (error) {
                 alert("點評生成失敗，請重試");
