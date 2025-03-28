@@ -35,7 +35,7 @@
         button:hover {
             background: #0056b3;
         }
-        select, textarea {
+        select, textarea, input[type="text"] {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -53,8 +53,17 @@
         #commentResult h3 {
             margin-bottom: 10px;
         }
-        #commentResult p {
-            line-height: 1.6;
+        #commentResult table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        #commentResult th, #commentResult td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        #commentResult th {
+            background: #f0f0f0;
+            text-align: left;
         }
     </style>
 </head>
@@ -71,9 +80,20 @@
         </select>
     </div>
 
-    <!-- 生成題目區域 -->
+    <!-- 題目選擇 -->
     <div class="box">
-        <button onclick="generateTopic()">生成寫作題目</button>
+        <label for="topicOption">選擇題目方式：</label>
+        <select id="topicOption" onchange="toggleTopicInput()">
+            <option value="generate">生成題目</option>
+            <option value="custom">自訂題目</option>
+        </select>
+        <div id="generateTopicArea">
+            <button onclick="generateTopic()">生成寫作題目</button>
+        </div>
+        <div id="customTopicArea" style="display: none;">
+            <input type="text" id="customTopic" placeholder="請輸入自訂題目">
+            <button onclick="setCustomTopic()">確認題目</button>
+        </div>
         <div id="topicResult"></div>
     </div>
 
@@ -106,12 +126,27 @@
             }
         };
 
+        // 切換題目輸入方式
+        function toggleTopicInput() {
+            const option = document.getElementById("topicOption").value;
+            if (option === "generate") {
+                document.getElementById("generateTopicArea").style.display = "block";
+                document.getElementById("customTopicArea").style.display = "none";
+                document.getElementById("topicResult").innerHTML = "";
+                localStorage.removeItem("currentTopic");
+            } else {
+                document.getElementById("generateTopicArea").style.display = "none";
+                document.getElementById("customTopicArea").style.display = "block";
+                document.getElementById("topicResult").innerHTML = "";
+                localStorage.removeItem("currentTopic");
+            }
+        }
+
         // 生成寫作題目
         async function generateTopic() {
             const category = document.getElementById("category").value;
             const prompt = categories[category].topicPrompt;
 
-            // 顯示加載提示
             document.getElementById("topicResult").innerHTML = "正在生成題目...";
 
             try {
@@ -131,12 +166,23 @@
                 const topic = data.choices[0].message.content.trim();
                 document.getElementById("topicResult").innerHTML = 
                     "今日題目：<strong>" + topic + "</strong>";
-                // 儲存題目以供後續使用
                 localStorage.setItem("currentTopic", topic);
             } catch (error) {
                 alert("生成題目時出錯，請重試");
                 document.getElementById("topicResult").innerHTML = "";
             }
+        }
+
+        // 設定自訂題目
+        function setCustomTopic() {
+            const customTopic = document.getElementById("customTopic").value.trim();
+            if (!customTopic) {
+                alert("請輸入自訂題目");
+                return;
+            }
+            document.getElementById("topicResult").innerHTML = 
+                "自訂題目：<strong>" + customTopic + "</strong>";
+            localStorage.setItem("currentTopic", customTopic);
         }
 
         // 提交作文獲取點評
@@ -151,13 +197,23 @@
             const note = categories[category].commentNote;
             const topic = localStorage.getItem("currentTopic");
             if (!topic) {
-                alert("請先生成題目");
+                alert("請先設定題目");
                 return;
             }
 
-            const prompt = `請根據以下內容進行點評（要求：1.簡明扼要 2.參考教學筆記 3.評論寫作內容與題目的關係）：\n\n題目：${topic}\n\n寫作內容：\n${content}\n\n教學筆記：${note}`;
+            const prompt = `請根據以下內容進行點評，要求：
+1. 簡明扼要
+2. 參考教學筆記
+3. 評論寫作內容與題目的關係
+4. 輸出分為三個部分：### 點評、### 建議、### 改寫範例
 
-            // 顯示加載提示
+題目：${topic}
+
+寫作內容：
+${content}
+
+教學筆記：${note}`;
+
             document.getElementById("commentResult").innerHTML = "正在生成點評...";
 
             try {
@@ -175,10 +231,15 @@
 
                 const data = await response.json();
                 const comment = data.choices[0].message.content.trim();
-                // 將點評文字進行排版
-                const formattedComment = comment.replace(/\n/g, "<br>").replace(/([^\n]+)(?=\n|$)/g, "<p>$1</p>");
-                document.getElementById("commentResult").innerHTML = 
-                    "<h3>AI點評：</h3>" + formattedComment;
+                // 解析回應並生成表格
+                const commentParts = comment.split("###").map(part => part.trim()).filter(part => part);
+                let commentHTML = "<h3>AI點評：</h3><table>";
+                commentParts.forEach(part => {
+                    const [title, ...content] = part.split("\n");
+                    commentHTML += `<tr><th>${title}</th></tr><tr><td>${content.join("<br>")}</td></tr>`;
+                });
+                commentHTML += "</table>";
+                document.getElementById("commentResult").innerHTML = commentHTML;
             } catch (error) {
                 alert("點評生成失敗，請重試");
                 document.getElementById("commentResult").innerHTML = "";
