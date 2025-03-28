@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -57,6 +55,7 @@
             border: 1px solid #ccc;
             padding: 10px;
             text-align: left;
+            vertical-align: top;
         }
         th {
             background: #f0f0f0;
@@ -222,8 +221,13 @@
         // 生成大綱表格
         function generateOutlineTable() {
             const structure = document.getElementById("structure").value;
+            let parts;
+            if (structure === "fourPart") {
+                parts = ["起", "承", "轉", "合"];
+            } else {
+                parts = ["一線", "二線", "三線"];
+            }
             let tableHTML = "<table><tr><th>部份</th><th>結構段重點</th><th>情節大要</th></tr>";
-            const parts = structure === "fourPart" ? ["起", "承", "轉", "合"] : ["起", "一線", "二線", "三線", "合"];
             parts.forEach((part, index) => {
                 const focusId = structure + "Focus" + (index + 1);
                 const plotId = structure + "Plot" + (index + 1);
@@ -234,45 +238,46 @@
         }
 
         // 提交作文獲取點評
-async function submitWriting() {
-    const category = document.getElementById("category").value;
-    const topic = localStorage.getItem("currentTopic");
-    if (!topic) {
-        alert("請先設定題目");
-        return;
-    }
-
-    let content = "";
-    if (category === "大綱") {
-        const structure = document.getElementById("structure").value;
-        const parts = structure === "fourPart" ? ["起", "承", "轉", "合"] : ["起", "一線", "二線", "三線", "合"];
-        content = parts.map((part, index) => {
-            const focusId = structure + "Focus" + (index + 1);
-            const plotId = structure + "Plot" + (index + 1);
-            const focus = document.getElementById(focusId).value;
-            const plot = document.getElementById(plotId).value;
-            if (!focus || !plot) {
-                alert("請填寫所有大綱表格");
-                throw new Error("Incomplete outline");
+        async function submitWriting() {
+            const category = document.getElementById("category").value;
+            const topic = localStorage.getItem("currentTopic");
+            if (!topic) {
+                alert("請先設定題目");
+                return;
             }
-            return { part, focus, plot };
-        });
-    } else {
-        content = document.getElementById("writingContent").value;
-        if (!content) {
-            alert("請先輸入寫作內容");
-            return;
-        }
-    }
 
-    const note = categories[category].commentNote;
+            let content = "";
+            let structure = "";
+            if (category === "大綱") {
+                structure = document.getElementById("structure").value;
+                const parts = structure === "fourPart" ? ["起", "承", "轉", "合"] : ["一線", "二線", "三線"];
+                content = parts.map((part, index) => {
+                    const focusId = structure + "Focus" + (index + 1);
+                    const plotId = structure + "Plot" + (index + 1);
+                    const focus = document.getElementById(focusId).value;
+                    const plot = document.getElementById(plotId).value;
+                    if (!focus || !plot) {
+                        alert("請填寫所有大綱表格");
+                        throw new Error("Incomplete outline");
+                    }
+                    return { part, focus, plot };
+                });
+            } else {
+                content = document.getElementById("writingContent").value;
+                if (!content) {
+                    alert("請先輸入寫作內容");
+                    return;
+                }
+            }
 
-    let prompt = "";
-    if (category === "大綱") {
-        prompt = `請根據以下大綱內容進行點評和建議，並提供改寫後的大綱。要求：
+            const note = categories[category].commentNote;
 
-1. 在「=== 點評及建議 ===」部分，為每個結構段（起、承、轉、合）提供點評和建議。使用「[part]」標記每個結構段的開始，例如「[起]」，然後在下一行「點評：」後跟點評內容，再下一行「建議：」後跟建議內容。
-2. 在「=== 改寫後的大綱 ===」部分，為每個結構段提供改寫後的「結構段重點」和「情節大要」。同樣使用「[part]」標記每個結構段的開始，然後在下一行「結構段重點：」後跟內容，再下一行「情節大要：」後跟內容。
+            let prompt = "";
+            if (category === "大綱") {
+                prompt = `請根據以下大綱內容進行點評和建議，並提供改寫後的大綱。要求：
+
+1. 在「=== 點評及建議 ===」部分，為每個結構段提供點評和建議。使用「[part]」標記每個結構段的開始，例如「[起]」，然後在下一行「點評：」後跟點評內容，再下一行「建議：」後跟建議內容。
+2. 在「=== 改寫後的大綱 ===」部分，為每個結構段提供改寫後的「結構段重點」和「情節大要」。使用「[part]」標記每個結構段的開始，然後在下一行「結構段重點：」後跟內容，再下一行「情節大要：」後跟內容。結構段數量必須與用戶選擇的大綱結構一致（起承轉合為4段，三線為3段）。
 3. 在「=== 改寫說明 ===」部分，提供不超過兩點的改寫說明，每點以「1. 」和「2. 」開始。
 
 請確保內容簡潔明了。
@@ -288,8 +293,8 @@ async function submitWriting() {
 ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\n")}
 
 教學筆記：${note}`;
-    } else {
-        prompt = `請根據以下內容進行點評，要求：
+            } else {
+                prompt = `請根據以下內容進行點評，要求：
 1. 簡明扼要
 2. 參考教學筆記
 3. 評論寫作內容與題目的關係
@@ -301,106 +306,108 @@ ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\
 ${content}
 
 教學筆記：${note}`;
-    }
-
-    document.getElementById("commentResult").innerHTML = "正在生成點評...";
-
-    try {
-        const response = await fetch(API_URL, {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${API_KEY}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                model: MODEL,
-                messages: [{ role: "user", content: prompt }]
-            })
-        });
-
-        const data = await response.json();
-        const comment = data.choices[0].message.content.trim();
-
-        if (category === "大綱") {
-            // 解析 AI 回應
-            const sections = comment.split(/=== (.+?) ===/);
-            const commentPart = sections[sections.indexOf("點評及建議") + 1];
-            const rewritePart = sections[sections.indexOf("改寫後的大綱") + 1];
-            const explanationPart = sections[sections.indexOf("改寫說明") + 1];
-
-            const parts = structure === "fourPart" ? ["起", "承", "轉", "合"] : ["起", "一線", "二線", "三線", "合"];
-
-            // 解析點評及建議
-            function parseCommentPart(commentPart) {
-                const comments = {};
-                const regex = /\[(.+?)\]\s*點評：\s*(.+?)\s*建議：\s*(.+?)(?=\[|$)/gs;
-                let match;
-                while ((match = regex.exec(commentPart)) !== null) {
-                    const part = match[1];
-                    const comment = match[2].trim();
-                    const suggestion = match[3].trim();
-                    comments[part] = { comment, suggestion };
-                }
-                return comments;
             }
 
-            // 解析改寫後的大綱
-            function parseRewritePart(rewritePart) {
-                const rewrites = {};
-                const regex = /\[(.+?)\]\s*結構段重點：\s*(.+?)\s*情節大要：\s*(.+?)(?=\[|$)/gs;
-                let match;
-                while ((match = regex.exec(rewritePart)) !== null) {
-                    const part = match[1];
-                    const focus = match[2].trim();
-                    const plot = match[3].trim();
-                    rewrites[part] = { focus, plot };
+            document.getElementById("commentResult").innerHTML = "正在生成點評...";
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${API_KEY}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        model: MODEL,
+                        messages: [{ role: "user", content: prompt }]
+                    })
+                });
+
+                const data = await response.json();
+                const comment = data.choices[0].message.content.trim();
+
+                if (category === "大綱") {
+                    // 解析 AI 回應
+                    const sections = comment.split(/=== (.+?) ===/);
+                    const commentPart = sections[sections.indexOf("點評及建議") + 1];
+                    const rewritePart = sections[sections.indexOf("改寫後的大綱") + 1];
+                    const explanationPart = sections[sections.indexOf("改寫說明") + 1];
+
+                    const parts = structure === "fourPart" ? ["起", "承", "轉", "合"] : ["一線", "二線", "三線"];
+
+                    // 解析點評及建議
+                    function parseCommentPart(commentPart) {
+                        const comments = {};
+                        const regex = /\[(.+?)\]\s*點評：\s*(.+?)\s*建議：\s*(.+?)(?=\[|$)/gs;
+                        let match;
+                        while ((match = regex.exec(commentPart)) !== null) {
+                            const part = match[1];
+                            const comment = match[2].trim();
+                            const suggestion = match[3].trim();
+                            comments[part] = { comment, suggestion };
+                        }
+                        return comments;
+                    }
+
+                    // 解析改寫後的大綱
+                    function parseRewritePart(rewritePart) {
+                        const rewrites = {};
+                        const regex = /\[(.+?)\]\s*結構段重點：\s*(.+?)\s*情節大要：\s*(.+?)(?=\[|$)/gs;
+                        let match;
+                        while ((match = regex.exec(rewritePart)) !== null) {
+                            const part = match[1];
+                            const focus = match[2].trim();
+                            const plot = match[3].trim();
+                            rewrites[part] = { focus, plot };
+                        }
+                        return rewrites;
+                    }
+
+                    const comments = parseCommentPart(commentPart);
+                    const rewrites = parseRewritePart(rewritePart);
+
+                    // 構建點評及建議表格
+                    let commentTableHTML = "<h3>AI點評及建議：</h3><table><tr><th>部份</th><th>結構段重點</th><th>情節大要</th><th>點評及建議</th></tr>";
+                    content.forEach(item => {
+                        const part = item.part;
+                        const focus = item.focus;
+                        const plot = item.plot;
+                        const commentSuggestion = comments[part] ? 
+                            `<strong>點評：</strong> ${comments[part].comment}<br><strong>建議：</strong> ${comments[part].suggestion}` : 
+                            "<strong>點評：</strong> 無<br><strong>建議：</strong> 無";
+                        commentTableHTML += `<tr><td>${part}</td><td>${focus}</td><td>${plot}</td><td>${commentSuggestion}</td></tr>`;
+                    });
+                    commentTableHTML += "</table>";
+
+                    // 構建改寫後的大綱表格
+                    let rewriteTableHTML = "<h3>改寫後的大綱：</h3><table><tr><th>部份</th><th>結構段重點</th><th>情節大要</th></tr>";
+                    parts.forEach(part => {
+                        const rewrite = rewrites[part] || { focus: "無", plot: "無" };
+                        rewriteTableHTML += `<tr><td>${part}</td><td>${rewrite.focus}</td><td>${rewrite.plot}</td></tr>`;
+                    });
+                    rewriteTableHTML += "</table>";
+
+                    // 顯示改寫說明
+                    const explanationHTML = `<h3>改寫說明：</h3><pre>${explanationPart ? explanationPart.trim() : "無說明"}</pre>`;
+
+                    // 組合所有內容
+                    const finalHTML = commentTableHTML + rewriteTableHTML + explanationHTML;
+                    document.getElementById("commentResult").innerHTML = finalHTML;
+                } else {
+                    const commentParts = comment.split("###").map(part => part.trim()).filter(part => part);
+                    let commentHTML = "<h3>AI點評：</h3><table>";
+                    commentParts.forEach(part => {
+                        const [title, ...content] = part.split("\n");
+                        commentHTML += `<tr><th>${title}</th></tr><tr><td>${content.join("<br>")}</td></tr>`;
+                    });
+                    commentHTML += "</table>";
+                    document.getElementById("commentResult").innerHTML = commentHTML;
                 }
-                return rewrites;
+            } catch (error) {
+                alert("點評生成失敗，請重試");
+                document.getElementById("commentResult").innerHTML = "";
             }
-
-            const comments = parseCommentPart(commentPart);
-            const rewrites = parseRewritePart(rewritePart);
-
-            // 構建點評及建議表格
-            let commentTableHTML = "<h3>AI點評及建議：</h3><table><tr><th>部份</th><th>結構段重點</th><th>情節大要</th><th>點評及建議</th></tr>";
-            content.forEach(item => {
-                const part = item.part;
-                const focus = item.focus;
-                const plot = item.plot;
-                const commentSuggestion = comments[part] ? `<strong>點評：</strong> ${comments[part].comment}<br><strong>建議：</strong> ${comments[part].suggestion}` : "無";
-                commentTableHTML += `<tr><td>${part}</td><td>${focus}</td><td>${plot}</td><td>${commentSuggestion}</td></tr>`;
-            });
-            commentTableHTML += "</table>";
-
-            // 構建改寫後的大綱表格
-            let rewriteTableHTML = "<h3>改寫後的大綱：</h3><table><tr><th>部份</th><th>結構段重點</th><th>情節大要</th></tr>";
-            parts.forEach(part => {
-                const rewrite = rewrites[part] || { focus: "無", plot: "無" };
-                rewriteTableHTML += `<tr><td>${part}</td><td>${rewrite.focus}</td><td>${rewrite.plot}</td></tr>`;
-            });
-            rewriteTableHTML += "</table>";
-
-            // 顯示改寫說明
-            const explanationHTML = `<h3>改寫說明：</h3><pre>${explanationPart.trim()}</pre>`;
-
-            // 組合所有內容
-            const finalHTML = commentTableHTML + rewriteTableHTML + explanationHTML;
-            document.getElementById("commentResult").innerHTML = finalHTML;
-        } else {
-            const commentParts = comment.split("###").map(part => part.trim()).filter(part => part);
-            let commentHTML = "<h3>AI點評：</h3><table>";
-            commentParts.forEach(part => {
-                const [title, ...content] = part.split("\n");
-                commentHTML += `<tr><th>${title}</th></tr><tr><td>${content.join("<br>")}</td></tr>`;
-            });
-            commentHTML += "</table>";
-            document.getElementById("commentResult").innerHTML = commentHTML;
         }
-    } catch (error) {
-        alert("點評生成失敗，請重試");
-        document.getElementById("commentResult").innerHTML = "";
-    }
-}
     </script>
 </body>
 </html>
