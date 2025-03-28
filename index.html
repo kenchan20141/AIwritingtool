@@ -1,55 +1,113 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI寫作助手</title>
     <style>
-        /* 简单的基础样式 */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
         }
         .box {
-            border: 1px solid #ccc;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             padding: 20px;
-            margin: 10px 0;
+            margin: 15px 0;
         }
         button {
             background: #007bff;
             color: white;
-            padding: 10px;
+            padding: 10px 20px;
             border: none;
+            border-radius: 4px;
             cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            resize: vertical;
+        }
+        #topicResult, #commentResult {
+            margin-top: 15px;
+            color: #333;
         }
     </style>
 </head>
 <body>
     <h1>AI寫作助手</h1>
 
-    <!-- 生成题目区域 -->
+    <!-- 範疇選擇 -->
     <div class="box">
-        <button onclick="generateTopic()">生成寫作题目</button>
+        <label for="category">選擇練習範疇：</label>
+        <select id="category">
+            <option value="示現敘事">示現敘事</option>
+            <option value="大綱">大綱</option>
+            <option value="片段詳略">片段詳略</option>
+        </select>
+    </div>
+
+    <!-- 生成題目區域 -->
+    <div class="box">
+        <button onclick="generateTopic()">生成寫作題目</button>
         <div id="topicResult"></div>
     </div>
 
-    <!-- 写作区域 -->
+    <!-- 寫作區域 -->
     <div class="box">
-        <textarea id="writingContent" rows="10" style="width: 100%"></textarea>
+        <textarea id="writingContent" rows="10" placeholder="請在此輸入您的寫作內容..."></textarea>
         <button onclick="submitWriting()">提交作文</button>
         <div id="commentResult"></div>
     </div>
 
     <script>
-        // 你的API配置信息
+        // API 配置信息
         const API_KEY = "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";
         const API_URL = "https://openrouter.ai/api/v1/chat/completions";
         const MODEL = "deepseek/deepseek-r1:free";
 
-        // 生成写作题目
+        // 範疇定義（包括出題提示和教學筆記）
+        const categories = {
+            "示現敘事": {
+                topicPrompt: "請生成一道適合中學生練習示現敘事的題目，要求：1.貼近生活 2.10字以內 3.加快生成速度 4.除了題目之外，不要生成其他任何內容",
+                commentNote: "在示現敘事中，學生應著重於通過具體的細節和生動的描述來展現故事，而不是僅僅敘述事件。評分時，請注意學生是否成功地運用了感官細節、動作描寫和對話來使場景栩栩如生。"
+            },
+            "大綱": {
+                topicPrompt: "請生成一道適合中學生練習寫作大綱的題目，要求：1.貼近生活 2.10字以內 3.加快生成速度 4.除了題目之外，不要生成其他任何內容",
+                commentNote: "在寫作大綱時，學生應展示他們組織思路和結構故事的能力。評分時，請注意大綱的邏輯性、條理性以及是否包含了故事的起承轉合。"
+            },
+            "片段詳略": {
+                topicPrompt: "請生成一道適合中學生練習片段詳略的題目，要求：1.貼近生活 2.10字以內 3.加快生成速度 4.除了題目之外，不要生成其他任何內容",
+                commentNote: "在片段詳略中，學生需要學會在敘述中控制節奏，通過詳寫重要場景和略寫次要部分來增強故事效果。評分時，請注意學生是否恰當地運用了詳略得當的技巧。"
+            }
+        };
+
+        // 生成寫作題目
         async function generateTopic() {
-            const prompt = "請生成一道適合中學生作片段的題目，要求：1.贴近生活 2.10字以内 3.加快生成速度 4.除了題目之外，不要生成其他任何內容";
-            
+            const category = document.getElementById("category").value;
+            const prompt = categories[category].topicPrompt;
+
+            // 顯示加載提示
+            document.getElementById("topicResult").innerHTML = "正在生成題目...";
+
             try {
                 const response = await fetch(API_URL, {
                     method: "POST",
@@ -65,22 +123,28 @@
 
                 const data = await response.json();
                 document.getElementById("topicResult").innerHTML = 
-                    "今日题目：<strong>" + data.choices[0].message.content + "</strong>";
+                    "今日題目：<strong>" + data.choices[0].message.content + "</strong>";
             } catch (error) {
-                alert("生成题目时出错，请重试");
+                alert("生成題目時出錯，請重試");
+                document.getElementById("topicResult").innerHTML = "";
             }
         }
 
-        // 提交作文获取点评
+        // 提交作文獲取點評
         async function submitWriting() {
             const content = document.getElementById("writingContent").value;
             if (!content) {
-                alert("请先输入写作内容");
+                alert("請先輸入寫作內容");
                 return;
             }
 
-            const prompt = `请根据以下内容进行点评（要求：1.简明扼要）：\n${content}`;
-            
+            const category = document.getElementById("category").value;
+            const note = categories[category].commentNote;
+            const prompt = `請根據以下內容進行點評（要求：1.簡明扼要 2.參考教學筆記）：\n${content}\n\n教學筆記：${note}`;
+
+            // 顯示加載提示
+            document.getElementById("commentResult").innerHTML = "正在生成點評...";
+
             try {
                 const response = await fetch(API_URL, {
                     method: "POST",
@@ -96,9 +160,10 @@
 
                 const data = await response.json();
                 document.getElementById("commentResult").innerHTML = 
-                    "<h3>AI点评：</h3>" + data.choices[0].message.content.replace(/\n/g, "<br>");
+                    "<h3>AI點評：</h3>" + data.choices[0].message.content.replace(/\n/g, "<br>");
             } catch (error) {
-                alert("点评生成失败，请重试");
+                alert("點評生成失敗，請重試");
+                document.getElementById("commentResult").innerHTML = "";
             }
         }
     </script>
