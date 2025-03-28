@@ -1,278 +1,46 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI寫作助手</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        .box {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            padding: 20px;
-            margin: 15px 0;
-        }
-        button {
-            background: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        button:hover {
-            background: #0056b3;
-        }
-        select, textarea, input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        textarea {
-            resize: vertical;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 10px 0;
-        }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background: #f0f0f0;
-        }
-        #topicResult, #commentResult {
-            margin-top: 15px;
-            color: #333;
-        }
-        #commentResult h3 {
-            margin-bottom: 10px;
-        }
-        #commentResult pre {
-            background: #f9f9f9;
-            padding: 10px;
-            border: 1px solid #ddd;
-            white-space: pre-wrap;
-        }
-        #outlineStructureArea {
-            margin-top: 10px;
-        }
-    </style>
-</head>
-<body>
-    <h1>AI寫作助手</h1>
+// 提交作文獲取點評
+async function submitWriting() {
+    const category = document.getElementById("category").value;
+    const topic = localStorage.getItem("currentTopic");
+    if (!topic) {
+        alert("請先設定題目");
+        return;
+    }
 
-    <!-- 範疇選擇 -->
-    <div class="box">
-        <label for="category">選擇練習範疇：</label>
-        <select id="category" onchange="toggleOutlineStructure()">
-            <option value="示現敘事">示現敘事</option>
-            <option value="大綱">大綱</option>
-            <option value="片段詳略">片段詳略</option>
-        </select>
-        <div id="outlineStructureArea" style="display: none;">
-            <label for="structure">選擇大綱結構：</label>
-            <select id="structure" onchange="generateOutlineTable()">
-                <option value="fourPart">起承轉合</option>
-                <option value="threeLine">三線</option>
-            </select>
-        </div>
-    </div>
-
-    <!-- 題目選擇 -->
-    <div class="box">
-        <label for="topicOption">選擇題目方式：</label>
-        <select id="topicOption" onchange="toggleTopicInput()">
-            <option value="generate">生成題目</option>
-            <option value="custom">自訂題目</option>
-        </select>
-        <div id="generateTopicArea">
-            <button onclick="generateTopic()">生成寫作題目</button>
-        </div>
-        <div id="customTopicArea" style="display: none;">
-            <input type="text" id="customTopic" placeholder="請輸入自訂題目">
-            <button onclick="setCustomTopic()">確認題目</button>
-        </div>
-        <div id="topicResult"></div>
-    </div>
-
-    <!-- 寫作區域 -->
-    <div class="box">
-        <div id="outlineTableArea"></div>
-        <textarea id="writingContent" rows="10" placeholder="請在此輸入您的寫作內容（非大綱範疇使用）..." style="display: none;"></textarea>
-        <button onclick="submitWriting()">提交作文</button>
-        <div id="commentResult"></div>
-    </div>
-
-    <script>
-        // API 配置信息
-        const API_KEY = "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";
-        const API_URL = "https://openrouter.ai/api/v1/chat/completions";
-        const MODEL = "deepseek/deepseek-r1:free";
-
-        // 範疇定義（包括出題提示和教學筆記）
-        const categories = {
-            "示現敘事": {
-                topicPrompt: "請生成一道適合中學生練習示現敘事的題目，要求：1.貼近生活 2.10字以內 3.加快生成速度 4.除了題目之外，不要生成其他任何內容",
-                commentNote: "點評時，必須就上述生成的題目點評寫作內容是否扣題，假如離題，範例便不必根據原文離題內容改寫。此外，點評應分為三個部份：點評、建議、改寫範例。此外，只需要找出最值得點評及建議的一點去評論即可，無論點評或建議，內容都要精簡，不要提及數點，不要用括號，不要輸出與點評及建議無關的內容，否則會令學生讀之生厭。所謂「示現敘事」，是指行文時運用小物件、動作、對話和內心獨白這四種敘事方式，敘事時，亦須注意文句密度，即「詞匯深度」、「物象豐富度」、「實詞和虛詞比例」（好的文句，應該實詞為主，絕對不能大量運用虛詞）"
-            },
-            "大綱": {
-                topicPrompt: "請生成一道適合中學生練習寫作大綱的題目，要求：1.貼近生活 2.10字以內 3.加快生成速度 4.除了題目之外，不要生成其他任何內容",
-                commentNote: "點評時，必須就上述生成的題目點評大綱內容是否扣題，假如大綱離題，範例便不必根據離題內容改寫。此外，點評應分為三個部份：點評、建議、改寫範例。在寫作大綱時，學生應展示他們組織思路和結構故事的能力。評分時，請注意大綱的邏輯性、條理性以及是否包含了故事的起承轉合或三線結構。要逐部分分析每個結構段與題目的關係有多大，並在點評中明確指出。"
-            },
-            "片段詳略": {
-                topicPrompt: "請生成一道適合中學生練習片段詳略的題目，要求：1.貼近生活 2.10字以內 3.加快生成速度 4.除了題目之外，不要生成其他任何內容",
-                commentNote: "點評時，必須就上述生成的題目點評寫作內容是否扣題，假如詳略嚴重失當，範例便不必根據原文離題內容改寫。此外，點評應分為三個部份：點評、建議、改寫範例。在片段詳略中，學生需要學會在敘述中控制節奏，通過詳寫與題目相關的重要場景和略寫對扣題較次要的部分來增強故事效果。評分時，請注意學生是否恰當地運用了詳略得當的技巧。"
+    let content = "";
+    if (category === "大綱") {
+        const structure = document.getElementById("structure").value;
+        const parts = structure === "fourPart" ? ["起", "承", "轉", "合"] : ["起", "一線", "二線", "三線", "合"];
+        content = parts.map((part, index) => {
+            const focusId = structure + "Focus" + (index + 1);
+            const plotId = structure + "Plot" + (index + 1);
+            const focus = document.getElementById(focusId).value;
+            const plot = document.getElementById(plotId).value;
+            if (!focus || !plot) {
+                alert("請填寫所有大綱表格");
+                throw new Error("Incomplete outline");
             }
-        };
-
-        // 切換題目輸入方式
-        function toggleTopicInput() {
-            const option = document.getElementById("topicOption").value;
-            if (option === "generate") {
-                document.getElementById("generateTopicArea").style.display = "block";
-                document.getElementById("customTopicArea").style.display = "none";
-                document.getElementById("topicResult").innerHTML = "";
-                localStorage.removeItem("currentTopic");
-            } else {
-                document.getElementById("generateTopicArea").style.display = "none";
-                document.getElementById("customTopicArea").style.display = "block";
-                document.getElementById("topicResult").innerHTML = "";
-                localStorage.removeItem("currentTopic");
-            }
+            return { part, focus, plot };
+        });
+    } else {
+        content = document.getElementById("writingContent").value;
+        if (!content) {
+            alert("請先輸入寫作內容");
+            return;
         }
+    }
 
-        // 生成寫作題目
-        async function generateTopic() {
-            const category = document.getElementById("category").value;
-            const prompt = categories[category].topicPrompt;
+    const note = categories[category].commentNote;
 
-            document.getElementById("topicResult").innerHTML = "正在生成題目...";
+    let prompt = "";
+    if (category === "大綱") {
+        prompt = `請根據以下大綱內容進行點評和建議，並提供改寫後的大綱。要求：
 
-            try {
-                const response = await fetch(API_URL, {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${API_KEY}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        model: MODEL,
-                        messages: [{ role: "user", content: prompt }]
-                    })
-                });
+1. 在「=== 點評及建議 ===」部分，為每個結構段（起、承、轉、合）提供點評和建議。使用「[part]」標記每個結構段的開始，例如「[起]」，然後在下一行「點評：」後跟點評內容，再下一行「建議：」後跟建議內容。
+2. 在「=== 改寫後的大綱 ===」部分，為每個結構段提供改寫後的「結構段重點」和「情節大要」。同樣使用「[part]」標記每個結構段的開始，然後在下一行「結構段重點：」後跟內容，再下一行「情節大要：」後跟內容。
+3. 在「=== 改寫說明 ===」部分，提供不超過兩點的改寫說明，每點以「1. 」和「2. 」開始。
 
-                const data = await response.json();
-                const topic = data.choices[0].message.content.trim();
-                document.getElementById("topicResult").innerHTML = 
-                    "今日題目：<strong>" + topic + "</strong>";
-                localStorage.setItem("currentTopic", topic);
-            } catch (error) {
-                alert("生成題目時出錯，請重試");
-                document.getElementById("topicResult").innerHTML = "";
-            }
-        }
-
-        // 設定自訂題目
-        function setCustomTopic() {
-            const customTopic = document.getElementById("customTopic").value.trim();
-            if (!customTopic) {
-                alert("請輸入自訂題目");
-                return;
-            }
-            document.getElementById("topicResult").innerHTML = 
-                "自訂題目：<strong>" + customTopic + "</strong>";
-            localStorage.setItem("currentTopic", customTopic);
-        }
-
-        // 切換大綱結構選擇
-        function toggleOutlineStructure() {
-            const category = document.getElementById("category").value;
-            if (category === "大綱") {
-                document.getElementById("outlineStructureArea").style.display = "block";
-                generateOutlineTable();
-                document.getElementById("writingContent").style.display = "none";
-            } else {
-                document.getElementById("outlineStructureArea").style.display = "none";
-                document.getElementById("outlineTableArea").innerHTML = "";
-                document.getElementById("writingContent").style.display = "block";
-            }
-        }
-
-        // 生成大綱表格
-        function generateOutlineTable() {
-            const structure = document.getElementById("structure").value;
-            let tableHTML = "<table><tr><th>部份</th><th>結構段重點</th><th>情節大要</th></tr>";
-            const parts = structure === "fourPart" ? ["起", "承", "轉", "合"] : ["起", "一線", "二線", "三線", "合"];
-            parts.forEach((part, index) => {
-                const focusId = structure + "Focus" + (index + 1);
-                const plotId = structure + "Plot" + (index + 1);
-                tableHTML += `<tr><td>${part}</td><td><textarea id="${focusId}" rows="3"></textarea></td><td><textarea id="${plotId}" rows="3"></textarea></td></tr>`;
-            });
-            tableHTML += "</table>";
-            document.getElementById("outlineTableArea").innerHTML = tableHTML;
-        }
-
-        // 提交作文獲取點評
-        async function submitWriting() {
-            const category = document.getElementById("category").value;
-            const topic = localStorage.getItem("currentTopic");
-            if (!topic) {
-                alert("請先設定題目");
-                return;
-            }
-
-            let content = "";
-            if (category === "大綱") {
-                const structure = document.getElementById("structure").value;
-                const parts = structure === "fourPart" ? ["起", "承", "轉", "合"] : ["起", "一線", "二線", "三線", "合"];
-                content = parts.map((part, index) => {
-                    const focusId = structure + "Focus" + (index + 1);
-                    const plotId = structure + "Plot" + (index + 1);
-                    const focus = document.getElementById(focusId).value;
-                    const plot = document.getElementById(plotId).value;
-                    if (!focus || !plot) {
-                        alert("請填寫所有大綱表格");
-                        throw new Error("Incomplete outline");
-                    }
-                    return { part, focus, plot };
-                });
-            } else {
-                content = document.getElementById("writingContent").value;
-                if (!content) {
-                    alert("請先輸入寫作內容");
-                    return;
-                }
-            }
-
-            const note = categories[category].commentNote;
-
-            let prompt = "";
-            if (category === "大綱") {
-                prompt = `請根據以下大綱內容進行點評和建議，並提供改寫後的大綱。要求：
-
-1. 首先，複製用戶輸入的表格，並在表格中增加一個列「點評及建議」，對每個結構段進行簡短的點評和建議。
-2. 然後，提供一個改寫後的大綱表格，格式與用戶輸入的表格相同，但內容是改寫過的。
-3. 在回應中，使用「=== 點評及建議 ===」和「=== 改寫後的大綱 ===」來分隔兩個部分。
-4. 確保表格格式清晰，使用Markdown表格語法。
+請確保內容簡潔明了。
 
 題目：${topic}
 
@@ -285,8 +53,8 @@
 ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\n")}
 
 教學筆記：${note}`;
-            } else {
-                prompt = `請根據以下內容進行點評，要求：
+    } else {
+        prompt = `請根據以下內容進行點評，要求：
 1. 簡明扼要
 2. 參考教學筆記
 3. 評論寫作內容與題目的關係
@@ -298,44 +66,103 @@ ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\
 ${content}
 
 教學筆記：${note}`;
-            }
+    }
 
-            document.getElementById("commentResult").innerHTML = "正在生成點評...";
+    document.getElementById("commentResult").innerHTML = "正在生成點評...";
 
-            try {
-                const response = await fetch(API_URL, {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${API_KEY}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        model: MODEL,
-                        messages: [{ role: "user", content: prompt }]
-                    })
-                });
+    try {
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${API_KEY}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                model: MODEL,
+                messages: [{ role: "user", content: prompt }]
+            })
+        });
 
-                const data = await response.json();
-                const comment = data.choices[0].message.content.trim();
-                if (category === "大綱") {
-                    const [commentPart, rewritePart] = comment.split("=== 改寫後的大綱 ===");
-                    const commentHTML = `<h3>AI點評及建議：</h3><pre>${commentPart.trim()}</pre><h3>改寫後的大綱：</h3><pre>${rewritePart.trim()}</pre>`;
-                    document.getElementById("commentResult").innerHTML = commentHTML;
-                } else {
-                    const commentParts = comment.split("###").map(part => part.trim()).filter(part => part);
-                    let commentHTML = "<h3>AI點評：</h3><table>";
-                    commentParts.forEach(part => {
-                        const [title, ...content] = part.split("\n");
-                        commentHTML += `<tr><th>${title}</th></tr><tr><td>${content.join("<br>")}</td></tr>`;
-                    });
-                    commentHTML += "</table>";
-                    document.getElementById("commentResult").innerHTML = commentHTML;
+        const data = await response.json();
+        const comment = data.choices[0].message.content.trim();
+
+        if (category === "大綱") {
+            // 解析 AI 回應
+            const sections = comment.split(/=== (.+?) ===/);
+            const commentPart = sections[sections.indexOf("點評及建議") + 1];
+            const rewritePart = sections[sections.indexOf("改寫後的大綱") + 1];
+            const explanationPart = sections[sections.indexOf("改寫說明") + 1];
+
+            const parts = structure === "fourPart" ? ["起", "承", "轉", "合"] : ["起", "一線", "二線", "三線", "合"];
+
+            // 解析點評及建議
+            function parseCommentPart(commentPart) {
+                const comments = {};
+                const regex = /\[(.+?)\]\s*點評：\s*(.+?)\s*建議：\s*(.+?)(?=\[|$)/gs;
+                let match;
+                while ((match = regex.exec(commentPart)) !== null) {
+                    const part = match[1];
+                    const comment = match[2].trim();
+                    const suggestion = match[3].trim();
+                    comments[part] = { comment, suggestion };
                 }
-            } catch (error) {
-                alert("點評生成失敗，請重試");
-                document.getElementById("commentResult").innerHTML = "";
+                return comments;
             }
+
+            // 解析改寫後的大綱
+            function parseRewritePart(rewritePart) {
+                const rewrites = {};
+                const regex = /\[(.+?)\]\s*結構段重點：\s*(.+?)\s*情節大要：\s*(.+?)(?=\[|$)/gs;
+                let match;
+                while ((match = regex.exec(rewritePart)) !== null) {
+                    const part = match[1];
+                    const focus = match[2].trim();
+                    const plot = match[3].trim();
+                    rewrites[part] = { focus, plot };
+                }
+                return rewrites;
+            }
+
+            const comments = parseCommentPart(commentPart);
+            const rewrites = parseRewritePart(rewritePart);
+
+            // 構建點評及建議表格
+            let commentTableHTML = "<h3>AI點評及建議：</h3><table><tr><th>部份</th><th>結構段重點</th><th>情節大要</th><th>點評及建議</th></tr>";
+            content.forEach(item => {
+                const part = item.part;
+                const focus = item.focus;
+                const plot = item.plot;
+                const commentSuggestion = comments[part] ? `<strong>點評：</strong> ${comments[part].comment}<br><strong>建議：</strong> ${comments[part].suggestion}` : "無";
+                commentTableHTML += `<tr><td>${part}</td><td>${focus}</td><td>${plot}</td><td>${commentSuggestion}</td></tr>`;
+            });
+            commentTableHTML += "</table>";
+
+            // 構建改寫後的大綱表格
+            let rewriteTableHTML = "<h3>改寫後的大綱：</h3><table><tr><th>部份</th><th>結構段重點</th><th>情節大要</th></tr>";
+            parts.forEach(part => {
+                const rewrite = rewrites[part] || { focus: "無", plot: "無" };
+                rewriteTableHTML += `<tr><td>${part}</td><td>${rewrite.focus}</td><td>${rewrite.plot}</td></tr>`;
+            });
+            rewriteTableHTML += "</table>";
+
+            // 顯示改寫說明
+            const explanationHTML = `<h3>改寫說明：</h3><pre>${explanationPart.trim()}</pre>`;
+
+            // 組合所有內容
+            const finalHTML = commentTableHTML + rewriteTableHTML + explanationHTML;
+            document.getElementById("commentResult").innerHTML = finalHTML;
+        } else {
+            const commentParts = comment.split("###").map(part => part.trim()).filter(part => part);
+            let commentHTML = "<h3>AI點評：</h3><table>";
+            commentParts.forEach(part => {
+                const [title, ...content] = part.split("\n");
+                commentHTML += `<tr><th>${title}</th></tr><tr><td>${content.join("<br>")}</td></tr>`;
+            });
+            commentHTML += "</table>";
+            document.getElementById("commentResult").innerHTML = commentHTML;
         }
-    </script>
-</body>
-</html>
+    } catch (error) {
+        alert("點評生成失敗，請重試");
+        document.getElementById("commentResult").innerHTML = "";
+    }
+}
