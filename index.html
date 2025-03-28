@@ -1,96 +1,84 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI 寫作工具</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-    h1 {
-      color: #333;
-    }
-    #prompt, #feedback {
-      white-space: pre-wrap;
-      margin-top: 10px;
-      margin-bottom: 10px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    textarea {
-      display: block;
-      margin-top: 10px;
-      margin-bottom: 10px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      width: 100%;
-      height: 150px;
-    }
-    button {
-      padding: 10px 20px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-  </style>
+    <title>AI写作助手</title>
+    <style>
+        body { max-width: 800px; margin: 0 auto; padding: 20px; font-family: Arial; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        button { padding: 8px 15px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        textarea { width: 100%; height: 150px; margin: 10px 0; padding: 10px; }
+    </style>
 </head>
 <body>
-  <h1>AI 寫作工具</h1>
-  <button onclick="generatePrompt()">生成新題目</button>
-  <div id="prompt"></div>
-  <textarea id="writing" placeholder="請在這裡寫下您的回答..."></textarea>
-  <button onclick="getFeedback()">提交並獲取反饋</button>
-  <div id="feedback"></div>
-  <script>
-    const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
-    const API_KEY = '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';
+    <div class="section">
+        <h2>题目生成</h2>
+        <button onclick="generateTopic()">生成写作题目</button>
+        <div id="topicResult"></div>
+    </div>
 
-    async function callAPI(messages) {
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${API_KEY}`
-        },
-        body: JSON.stringify({
-          model: 'deepseek/deepseek-chat',
-          messages: messages,
-          stream: false
-        })
-      });
-      const data = await response.json();
-      return data.choices[0].message.content;
-    }
+    <div class="section">
+        <h2>写作区</h2>
+        <textarea id="userWriting" placeholder="在此输入您的写作内容..."></textarea>
+        <button onclick="submitWriting()">提交修改</button>
+        <div id="feedbackResult"></div>
+    </div>
 
-    async function generatePrompt() {
-      const messages = [
-        {"role": "system", "content": "你是一個專為學生生成創意寫作題目的 AI。"},
-        {"role": "user", "content": "請生成一個寫作題目。"}
-      ];
-      const prompt = await callAPI(messages);
-      document.getElementById('prompt').innerText = prompt;
-    }
+    <script>
+        const API_KEY = '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';
+        const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
-    async function getFeedback() {
-      const studentWriting = document.getElementById('writing').value;
-      const messages = [
-        {"role": "system", "content": "你是一個 AI 寫作助手，負責修訂學生的寫作並提供建設性反饋。請修訂以下寫作內容，然後提供改進建議。"},
-        {"role": "user", "content": `學生的寫作：${studentWriting}`}
-      ];
-      const feedback = await callAPI(messages);
-      document.getElementById('feedback').innerText = feedback;
-    }
+        async function callAI(prompt) {
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: "deepseek/deepseek-r1:free",
+                        messages: [{ role: "user", content: prompt }]
+                    })
+                });
 
-    window.onload = generatePrompt;
-  </script>
+                const data = await response.json();
+                return data.choices[0].message.content;
+            } catch (error) {
+                console.error('API调用失败:', error);
+                return '发生错误，请稍后再试';
+            }
+        }
+
+        async function generateTopic() {
+            const prompt = `请生成一个中文写作题目，要求：
+            1. 适合中学生水平
+            2. 包含具体场景（如：雨夜的车站、校园运动会）
+            3. 输出格式：仅返回题目内容，不要多余说明`;
+            
+            const topic = await callAI(prompt);
+            document.getElementById('topicResult').innerHTML = `
+                <h3>今日写作题目：</h3>
+                <p>${topic}</p>
+            `;
+        }
+
+        async function submitWriting() {
+            const userText = document.getElementById('userWriting').value;
+            const prompt = `请根据以下要求批改学生的写作片段：
+            学生作文："""${userText}"""
+            要求：
+            1. 先进行语法修正
+            2. 提出三个改进建议
+            3. 给出优化后的范例
+            4. 用鼓励性语言总结
+            输出格式：使用中文，分点说明，保持友好语气`;
+            
+            const feedback = await callAI(prompt);
+            document.getElementById('feedbackResult').innerHTML = `
+                <h3>AI批改结果：</h3>
+                <pre>${feedback}</pre>
+            `;
+        }
+    </script>
 </body>
 </html>
