@@ -1,71 +1,79 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 寫作助手</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .container {
-            max-width: 800px;
-            margin-top: 50px;
-        }
-        .topic-area {
-            margin-bottom: 20px;
-        }
-        .loading {
-            display: none;
-            margin-top: 10px;
-        }
-    </style>
+    <title>AI 寫作工具</title>
+    <link rel="stylesheet" href="css/style.css"> <!-- 可選 -->
 </head>
 <body>
-    <div class="container">
-        <h1 class="text-center">AI 寫作助手</h1>
-        <div class="topic-area">
-            <h3>題目：</h3>
-            <p id="topic"></p>
-            <button id="generate-topic" class="btn btn-primary">生成題目</button>
-            <div id="loading-topic" class="loading">正在生成題目...</div>
-        </div>
-        <form id="writing-form" method="POST" action="/submit">
-            <div class="mb-3">
-                <textarea name="user_input" class="form-control" rows="10" placeholder="請輸入您的寫作內容"></textarea>
-            </div>
-            <input type="hidden" name="topic" id="hidden-topic">
-            <button type="submit" class="btn btn-success">提交</button>
-            <div id="loading-submit" class="loading">正在處理...</div>
-        </form>
-        {% if ai_response %}
-            <h3 class="mt-5">AI 修訂與點評：</h3>
-            <pre class="bg-light p-3">{{ ai_response }}</pre>
-        {% endif %}
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.getElementById('generate-topic').addEventListener('click', function() {
-            document.getElementById('loading-topic').style.display = 'block';
-            fetch('/generate_topic', {
-                method: 'POST'
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('topic').textContent = data.topic;
-                document.getElementById('hidden-topic').value = data.topic;
-                document.getElementById('loading-topic').style.display = 'none';
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('loading-topic').style.display = 'none';
-            });
-        });
+    <h1>AI 寫作工具</h1>
+    <button id="generate-btn">生成寫作題目</button>
+    <p><strong>題目：</strong><span id="topic"></span></p>
+    <textarea id="user-input" rows="5" cols="50" placeholder="請輸入你的寫作內容"></textarea>
+    <br>
+    <button id="submit-btn">提交並獲取點評</button>
+    <div id="ai-response"></div>
 
-        document.getElementById('writing-form').addEventListener('submit', function() {
-            document.getElementById('loading-submit').style.display = 'block';
-        });
-    </script>
+    <script src="js/script.js"></script>
 </body>
 </html>
+
+const API_KEY = "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";
+const API_URL = "https://openrouter.ai/api/v1/chat/completions";
+const MODEL = "deepseek/deepseek-r1:free";
+const NOTE = `
+出題要求：
+- 題目要適合中學生。
+- 鼓勵使用生動的描寫。
+- 題目要能引導學生思考。
+
+點評標準：
+- 語法正確。
+- 句子流暢。
+- 鼓勵使用豐富的詞彙。
+- 點評要具體，指出優點和改進之處。
+`;
+
+const headers = {
+    "Authorization": `Bearer ${API_KEY}`,
+    "Content-Type": "application/json"
+};
+
+// 生成題目
+document.getElementById("generate-btn").addEventListener("click", async () => {
+    const prompt = "請給我一個簡單的寫作題目，適合學生練習片段或句子描寫。除了題目之外，不需要顯示其他資訊。格式如下：《XXXXX》。請用繁體字。";
+    const response = await fetchAIResponse(prompt);
+    document.getElementById("topic").textContent = response;
+});
+
+// 提交並獲取點評
+document.getElementById("submit-btn").addEventListener("click", async () => {
+    const userInput = document.getElementById("user-input").value;
+    const topic = document.getElementById("topic").textContent;
+    const prompt = `學生的寫作內容如下：\n\n${userInput}\n\n請修訂這段文字，使其更流暢、更符合語法，並提供具體的點評，指出優點和需要改進的地方。`;
+    const response = await fetchAIResponse(prompt);
+    document.getElementById("ai-response").innerHTML = response.replace(/\n/g, "<br>");
+});
+
+// 調用 DeepSeek API
+async function fetchAIResponse(prompt) {
+    const data = {
+        model: MODEL,
+        messages: [
+            { role: "system", content: `你是一個AI寫作助手，負責出寫作題目、修訂學生作品並提供點評。請參考以下筆記：\n${NOTE}` },
+            { role: "user", content: prompt }
+        ]
+    };
+
+    try {
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        return result.choices[0].message.content;
+    } catch (error) {
+        return `錯誤：${error.message}`;
+    }
+}
