@@ -66,17 +66,11 @@
         #commentResult h3 {
             margin-bottom: 10px;
         }
-        #commentResult table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        #commentResult th, #commentResult td {
+        #commentResult pre {
+            background: #f9f9f9;
             padding: 10px;
-            border: 1px solid #ccc;
-        }
-        #commentResult th {
-            background: #f0f0f0;
-            text-align: left;
+            border: 1px solid #ddd;
+            white-space: pre-wrap;
         }
         #outlineStructureArea {
             margin-top: 10px;
@@ -123,7 +117,7 @@
     <!-- 寫作區域 -->
     <div class="box">
         <div id="outlineTableArea"></div>
-        <textarea id="writingContent" rows="10" placeholder="請在此輸入您的寫作內容（非大綱範疇使用）..."></textarea>
+        <textarea id="writingContent" rows="10" placeholder="請在此輸入您的寫作內容（非大綱範疇使用）..." style="display: none;"></textarea>
         <button onclick="submitWriting()">提交作文</button>
         <div id="commentResult"></div>
     </div>
@@ -215,6 +209,7 @@
             if (category === "大綱") {
                 document.getElementById("outlineStructureArea").style.display = "block";
                 generateOutlineTable();
+                document.getElementById("writingContent").style.display = "none";
             } else {
                 document.getElementById("outlineStructureArea").style.display = "none";
                 document.getElementById("outlineTableArea").innerHTML = "";
@@ -225,65 +220,15 @@
         // 生成大綱表格
         function generateOutlineTable() {
             const structure = document.getElementById("structure").value;
-            let tableHTML = "";
-            if (structure === "fourPart") {
-                tableHTML = `
-                    <table>
-                        <tr>
-                            <th>部份</th>
-                            <th>起</th>
-                            <th>承</th>
-                            <th>轉</th>
-                            <th>合</th>
-                        </tr>
-                        <tr>
-                            <td>結構段重點</td>
-                            <td><textarea id="fourPartFocus1" rows="3"></textarea></td>
-                            <td><textarea id="fourPartFocus2" rows="3"></textarea></td>
-                            <td><textarea id="fourPartFocus3" rows="3"></textarea></td>
-                            <td><textarea id="fourPartFocus4" rows="3"></textarea></td>
-                        </tr>
-                        <tr>
-                            <td>情節大要</td>
-                            <td><textarea id="fourPartPlot1" rows="3"></textarea></td>
-                            <td><textarea id="fourPartPlot2" rows="3"></textarea></td>
-                            <td><textarea id="fourPartPlot3" rows="3"></textarea></td>
-                            <td><textarea id="fourPartPlot4" rows="3"></textarea></td>
-                        </tr>
-                    </table>
-                `;
-            } else if (structure === "threeLine") {
-                tableHTML = `
-                    <table>
-                        <tr>
-                            <th>部份</th>
-                            <th>起</th>
-                            <th>一線</th>
-                            <th>二線</th>
-                            <th>三線</th>
-                            <th>合</th>
-                        </tr>
-                        <tr>
-                            <td>結構段重點</td>
-                            <td><textarea id="threeLineFocus1" rows="3"></textarea></td>
-                            <td><textarea id="threeLineFocus2" rows="3"></textarea></td>
-                            <td><textarea id="threeLineFocus3" rows="3"></textarea></td>
-                            <td><textarea id="threeLineFocus4" rows="3"></textarea></td>
-                            <td><textarea id="threeLineFocus5" rows="3"></textarea></td>
-                        </tr>
-                        <tr>
-                            <td>情節大要</td>
-                            <td><textarea id="threeLinePlot1" rows="3"></textarea></td>
-                            <td><textarea id="threeLinePlot2" rows="3"></textarea></td>
-                            <td><textarea id="threeLinePlot3" rows="3"></textarea></td>
-                            <td><textarea id="threeLinePlot4" rows="3"></textarea></td>
-                            <td><textarea id="threeLinePlot5" rows="3"></textarea></td>
-                        </tr>
-                    </table>
-                `;
-            }
+            let tableHTML = "<table><tr><th>部份</th><th>結構段重點</th><th>情節大要</th></tr>";
+            const parts = structure === "fourPart" ? ["起", "承", "轉", "合"] : ["起", "一線", "二線", "三線", "合"];
+            parts.forEach((part, index) => {
+                const focusId = structure + "Focus" + (index + 1);
+                const plotId = structure + "Plot" + (index + 1);
+                tableHTML += `<tr><td>${part}</td><td><textarea id="${focusId}" rows="3"></textarea></td><td><textarea id="${plotId}" rows="3"></textarea></td></tr>`;
+            });
+            tableHTML += "</table>";
             document.getElementById("outlineTableArea").innerHTML = tableHTML;
-            document.getElementById("writingContent").style.display = "none";
         }
 
         // 提交作文獲取點評
@@ -298,32 +243,18 @@
             let content = "";
             if (category === "大綱") {
                 const structure = document.getElementById("structure").value;
-                if (structure === "fourPart") {
-                    content = {
-                        structure: "fourPart",
-                        parts: [
-                            { focus: document.getElementById("fourPartFocus1").value, plot: document.getElementById("fourPartPlot1").value },
-                            { focus: document.getElementById("fourPartFocus2").value, plot: document.getElementById("fourPartPlot2").value },
-                            { focus: document.getElementById("fourPartFocus3").value, plot: document.getElementById("fourPartPlot3").value },
-                            { focus: document.getElementById("fourPartFocus4").value, plot: document.getElementById("fourPartPlot4").value }
-                        ]
-                    };
-                } else if (structure === "threeLine") {
-                    content = {
-                        structure: "threeLine",
-                        parts: [
-                            { focus: document.getElementById("threeLineFocus1").value, plot: document.getElementById("threeLinePlot1").value },
-                            { focus: document.getElementById("threeLineFocus2").value, plot: document.getElementById("threeLinePlot2").value },
-                            { focus: document.getElementById("threeLineFocus3").value, plot: document.getElementById("threeLinePlot3").value },
-                            { focus: document.getElementById("threeLineFocus4").value, plot: document.getElementById("threeLinePlot4").value },
-                            { focus: document.getElementById("threeLineFocus5").value, plot: document.getElementById("threeLinePlot5").value }
-                        ]
-                    };
-                }
-                if (content.parts.some(part => !part.focus || !part.plot)) {
-                    alert("請填寫所有大綱表格");
-                    return;
-                }
+                const parts = structure === "fourPart" ? ["起", "承", "轉", "合"] : ["起", "一線", "二線", "三線", "合"];
+                content = parts.map((part, index) => {
+                    const focusId = structure + "Focus" + (index + 1);
+                    const plotId = structure + "Plot" + (index + 1);
+                    const focus = document.getElementById(focusId).value;
+                    const plot = document.getElementById(plotId).value;
+                    if (!focus || !plot) {
+                        alert("請填寫所有大綱表格");
+                        throw new Error("Incomplete outline");
+                    }
+                    return { part, focus, plot };
+                });
             } else {
                 content = document.getElementById("writingContent").value;
                 if (!content) {
@@ -334,32 +265,40 @@
 
             const note = categories[category].commentNote;
 
-            let prompt = `請根據以下內容進行點評，要求：
+            let prompt = "";
+            if (category === "大綱") {
+                prompt = `請根據以下大綱內容進行點評和建議，並提供改寫後的大綱。要求：
+
+1. 首先，複製用戶輸入的表格，並在表格中增加一個列「點評及建議」，對每個結構段進行簡短的點評和建議。
+2. 然後，提供一個改寫後的大綱表格，格式與用戶輸入的表格相同，但內容是改寫過的。
+3. 在回應中，使用「=== 點評及建議 ===」和「=== 改寫後的大綱 ===」來分隔兩個部分。
+4. 確保表格格式清晰，使用Markdown表格語法。
+
+題目：${topic}
+
+大綱結構：${structure === "fourPart" ? "起承轉合" : "三線"}
+
+用戶輸入的大綱：
+
+| 部份 | 結構段重點 | 情節大要 |
+|------|------------|----------|
+${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\n")}
+
+教學筆記：${note}`;
+            } else {
+                prompt = `請根據以下內容進行點評，要求：
 1. 簡明扼要
 2. 參考教學筆記
 3. 評論寫作內容與題目的關係
 4. 輸出分為三個部分：### 點評、### 建議、### 改寫範例
-5. 若為大綱範疇，需逐部分（每個結構段）進行點評、建議和改寫
 
 題目：${topic}
 
-`;
-
-            if (category === "大綱") {
-                prompt += `大綱結構：${content.structure === "fourPart" ? "起承轉合" : "三線"}
-
-大綱內容：
-${content.parts.map((part, index) => `部份${index + 1} - 結構段重點：${part.focus}\n部份${index + 1} - 情節大要：${part.plot}`).join("\n\n")}
-
-`;
-            } else {
-                prompt += `寫作內容：
+寫作內容：
 ${content}
 
-`;
+教學筆記：${note}`;
             }
-
-            prompt += `教學筆記：${note}`;
 
             document.getElementById("commentResult").innerHTML = "正在生成點評...";
 
@@ -378,15 +317,20 @@ ${content}
 
                 const data = await response.json();
                 const comment = data.choices[0].message.content.trim();
-                // 解析回應並生成表格
-                const commentParts = comment.split("###").map(part => part.trim()).filter(part => part);
-                let commentHTML = "<h3>AI點評：</h3><table>";
-                commentParts.forEach(part => {
-                    const [title, ...content] = part.split("\n");
-                    commentHTML += `<tr><th>${title}</th></tr><tr><td>${content.join("<br>")}</td></tr>`;
-                });
-                commentHTML += "</table>";
-                document.getElementById("commentResult").innerHTML = commentHTML;
+                if (category === "大綱") {
+                    const [commentPart, rewritePart] = comment.split("=== 改寫後的大綱 ===");
+                    const commentHTML = `<h3>AI點評及建議：</h3><pre>${commentPart.trim()}</pre><h3>改寫後的大綱：</h3><pre>${rewritePart.trim()}</pre>`;
+                    document.getElementById("commentResult").innerHTML = commentHTML;
+                } else {
+                    const commentParts = comment.split("###").map(part => part.trim()).filter(part => part);
+                    let commentHTML = "<h3>AI點評：</h3><table>";
+                    commentParts.forEach(part => {
+                        const [title, ...content] = part.split("\n");
+                        commentHTML += `<tr><th>${title}</th></tr><tr><td>${content.join("<br>")}</td></tr>`;
+                    });
+                    commentHTML += "</table>";
+                    document.getElementById("commentResult").innerHTML = commentHTML;
+                }
             } catch (error) {
                 alert("點評生成失敗，請重試");
                 document.getElementById("commentResult").innerHTML = "";
