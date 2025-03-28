@@ -46,6 +46,19 @@
         textarea {
             resize: vertical;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background: #f0f0f0;
+        }
         #topicResult, #commentResult {
             margin-top: 15px;
             color: #333;
@@ -65,6 +78,9 @@
             background: #f0f0f0;
             text-align: left;
         }
+        #outlineStructureArea {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -73,11 +89,18 @@
     <!-- 範疇選擇 -->
     <div class="box">
         <label for="category">選擇練習範疇：</label>
-        <select id="category">
+        <select id="category" onchange="toggleOutlineStructure()">
             <option value="示現敘事">示現敘事</option>
             <option value="大綱">大綱</option>
             <option value="片段詳略">片段詳略</option>
         </select>
+        <div id="outlineStructureArea" style="display: none;">
+            <label for="structure">選擇大綱結構：</label>
+            <select id="structure" onchange="generateOutlineTable()">
+                <option value="fourPart">起承轉合</option>
+                <option value="threeLine">三線</option>
+            </select>
+        </div>
     </div>
 
     <!-- 題目選擇 -->
@@ -99,7 +122,8 @@
 
     <!-- 寫作區域 -->
     <div class="box">
-        <textarea id="writingContent" rows="10" placeholder="請在此輸入您的寫作內容..."></textarea>
+        <div id="outlineTableArea"></div>
+        <textarea id="writingContent" rows="10" placeholder="請在此輸入您的寫作內容（非大綱範疇使用）..."></textarea>
         <button onclick="submitWriting()">提交作文</button>
         <div id="commentResult"></div>
     </div>
@@ -118,7 +142,7 @@
             },
             "大綱": {
                 topicPrompt: "請生成一道適合中學生練習寫作大綱的題目，要求：1.貼近生活 2.10字以內 3.加快生成速度 4.除了題目之外，不要生成其他任何內容",
-                commentNote: "點評時，必須就上述生成的題目點評寫作內容是否扣題，假如大綱離題，範例便不必根據離題內容改寫。此外，點評應分為三個部份：點評、建議、改寫範例。在寫作大綱時，學生應展示他們組織思路和結構故事的能力。評分時，請注意大綱的邏輯性、條理性以及是否包含了故事的起承轉合。要分析每個結構段與題目的關係有多大。"
+                commentNote: "點評時，必須就上述生成的題目點評大綱內容是否扣題，假如大綱離題，範例便不必根據離題內容改寫。此外，點評應分為三個部份：點評、建議、改寫範例。在寫作大綱時，學生應展示他們組織思路和結構故事的能力。評分時，請注意大綱的邏輯性、條理性以及是否包含了故事的起承轉合或三線結構。要逐部分分析每個結構段與題目的關係有多大，並在點評中明確指出。"
             },
             "片段詳略": {
                 topicPrompt: "請生成一道適合中學生練習片段詳略的題目，要求：1.貼近生活 2.10字以內 3.加快生成速度 4.除了題目之外，不要生成其他任何內容",
@@ -185,34 +209,157 @@
             localStorage.setItem("currentTopic", customTopic);
         }
 
+        // 切換大綱結構選擇
+        function toggleOutlineStructure() {
+            const category = document.getElementById("category").value;
+            if (category === "大綱") {
+                document.getElementById("outlineStructureArea").style.display = "block";
+                generateOutlineTable();
+            } else {
+                document.getElementById("outlineStructureArea").style.display = "none";
+                document.getElementById("outlineTableArea").innerHTML = "";
+                document.getElementById("writingContent").style.display = "block";
+            }
+        }
+
+        // 生成大綱表格
+        function generateOutlineTable() {
+            const structure = document.getElementById("structure").value;
+            let tableHTML = "";
+            if (structure === "fourPart") {
+                tableHTML = `
+                    <table>
+                        <tr>
+                            <th>部份</th>
+                            <th>起</th>
+                            <th>承</th>
+                            <th>轉</th>
+                            <th>合</th>
+                        </tr>
+                        <tr>
+                            <td>結構段重點</td>
+                            <td><textarea id="fourPartFocus1" rows="3"></textarea></td>
+                            <td><textarea id="fourPartFocus2" rows="3"></textarea></td>
+                            <td><textarea id="fourPartFocus3" rows="3"></textarea></td>
+                            <td><textarea id="fourPartFocus4" rows="3"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td>情節大要</td>
+                            <td><textarea id="fourPartPlot1" rows="3"></textarea></td>
+                            <td><textarea id="fourPartPlot2" rows="3"></textarea></td>
+                            <td><textarea id="fourPartPlot3" rows="3"></textarea></td>
+                            <td><textarea id="fourPartPlot4" rows="3"></textarea></td>
+                        </tr>
+                    </table>
+                `;
+            } else if (structure === "threeLine") {
+                tableHTML = `
+                    <table>
+                        <tr>
+                            <th>部份</th>
+                            <th>起</th>
+                            <th>一線</th>
+                            <th>二線</th>
+                            <th>三線</th>
+                            <th>合</th>
+                        </tr>
+                        <tr>
+                            <td>結構段重點</td>
+                            <td><textarea id="threeLineFocus1" rows="3"></textarea></td>
+                            <td><textarea id="threeLineFocus2" rows="3"></textarea></td>
+                            <td><textarea id="threeLineFocus3" rows="3"></textarea></td>
+                            <td><textarea id="threeLineFocus4" rows="3"></textarea></td>
+                            <td><textarea id="threeLineFocus5" rows="3"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td>情節大要</td>
+                            <td><textarea id="threeLinePlot1" rows="3"></textarea></td>
+                            <td><textarea id="threeLinePlot2" rows="3"></textarea></td>
+                            <td><textarea id="threeLinePlot3" rows="3"></textarea></td>
+                            <td><textarea id="threeLinePlot4" rows="3"></textarea></td>
+                            <td><textarea id="threeLinePlot5" rows="3"></textarea></td>
+                        </tr>
+                    </table>
+                `;
+            }
+            document.getElementById("outlineTableArea").innerHTML = tableHTML;
+            document.getElementById("writingContent").style.display = "none";
+        }
+
         // 提交作文獲取點評
         async function submitWriting() {
-            const content = document.getElementById("writingContent").value;
-            if (!content) {
-                alert("請先輸入寫作內容");
-                return;
-            }
-
             const category = document.getElementById("category").value;
-            const note = categories[category].commentNote;
             const topic = localStorage.getItem("currentTopic");
             if (!topic) {
                 alert("請先設定題目");
                 return;
             }
 
-            const prompt = `請根據以下內容進行點評，要求：
+            let content = "";
+            if (category === "大綱") {
+                const structure = document.getElementById("structure").value;
+                if (structure === "fourPart") {
+                    content = {
+                        structure: "fourPart",
+                        parts: [
+                            { focus: document.getElementById("fourPartFocus1").value, plot: document.getElementById("fourPartPlot1").value },
+                            { focus: document.getElementById("fourPartFocus2").value, plot: document.getElementById("fourPartPlot2").value },
+                            { focus: document.getElementById("fourPartFocus3").value, plot: document.getElementById("fourPartPlot3").value },
+                            { focus: document.getElementById("fourPartFocus4").value, plot: document.getElementById("fourPartPlot4").value }
+                        ]
+                    };
+                } else if (structure === "threeLine") {
+                    content = {
+                        structure: "threeLine",
+                        parts: [
+                            { focus: document.getElementById("threeLineFocus1").value, plot: document.getElementById("threeLinePlot1").value },
+                            { focus: document.getElementById("threeLineFocus2").value, plot: document.getElementById("threeLinePlot2").value },
+                            { focus: document.getElementById("threeLineFocus3").value, plot: document.getElementById("threeLinePlot3").value },
+                            { focus: document.getElementById("threeLineFocus4").value, plot: document.getElementById("threeLinePlot4").value },
+                            { focus: document.getElementById("threeLineFocus5").value, plot: document.getElementById("threeLinePlot5").value }
+                        ]
+                    };
+                }
+                if (content.parts.some(part => !part.focus || !part.plot)) {
+                    alert("請填寫所有大綱表格");
+                    return;
+                }
+            } else {
+                content = document.getElementById("writingContent").value;
+                if (!content) {
+                    alert("請先輸入寫作內容");
+                    return;
+                }
+            }
+
+            const note = categories[category].commentNote;
+
+            let prompt = `請根據以下內容進行點評，要求：
 1. 簡明扼要
 2. 參考教學筆記
 3. 評論寫作內容與題目的關係
 4. 輸出分為三個部分：### 點評、### 建議、### 改寫範例
+5. 若為大綱範疇，需逐部分（每個結構段）進行點評、建議和改寫
 
 題目：${topic}
 
-寫作內容：
+`;
+
+            if (category === "大綱") {
+                prompt += `大綱結構：${content.structure === "fourPart" ? "起承轉合" : "三線"}
+
+大綱內容：
+${content.parts.map((part, index) => `部份${index + 1} - 結構段重點：${part.focus}\n部份${index + 1} - 情節大要：${part.plot}`).join("\n\n")}
+
+`;
+            } else {
+                prompt += `寫作內容：
 ${content}
 
-教學筆記：${note}`;
+`;
+            }
+
+            prompt += `教學筆記：${note}`;
 
             document.getElementById("commentResult").innerHTML = "正在生成點評...";
 
