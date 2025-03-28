@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AI写作助手</title>
+    <title>AI寫作助手</title>
     <style>
         /* 简单的基础样式 */
         body {
@@ -25,11 +25,11 @@
     </style>
 </head>
 <body>
-    <h1>AI写作助手</h1>
+    <h1>AI寫作助手</h1>
 
     <!-- 生成题目区域 -->
     <div class="box">
-        <button onclick="generateTopic()">生成写作题目</button>
+        <button onclick="generateTopic()">生成寫作题目</button>
         <div id="topicResult"></div>
     </div>
 
@@ -48,7 +48,7 @@
 
         // 生成写作题目
         async function generateTopic() {
-            const prompt = "请生成一个适合中学生的写作题目，要求：1.贴近生活 2.有启发性 3.20字以内";
+            const prompt = "請生成一個適合中學生作片段的題目，要求：1.贴近生活 3.10字以内";
             
             try {
                 const response = await fetch(API_URL, {
