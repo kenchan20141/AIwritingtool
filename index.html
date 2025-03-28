@@ -1,3 +1,5 @@
+備份
+
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -85,10 +87,8 @@
     <div class="box">
         <label for="category">選擇練習範疇：</label>
         <select id="category" onchange="toggleOutlineStructure()">
-            <option value="示現敘事">示現敘事</option>
+            <option value="片段描寫">片段描寫</option>
             <option value="大綱">大綱</option>
-            <option value="片段詳略">片段詳略</option>
-            <option value="敘事物象">敘事物象</option>
         </select>
         <div id="outlineStructureArea" style="display: none;">
             <label for="structure">選擇大綱結構：</label>
@@ -119,7 +119,7 @@
     <!-- 寫作區域 -->
     <div class="box">
         <div id="outlineTableArea"></div>
-        <textarea id="writingContent" rows="10" placeholder="請在此輸入您的寫作內容（非大綱範疇使用）..." style="display: none;"></textarea>
+        <textarea id="writingContent" rows="10" placeholder="請在此輸入您的寫作內容（「片段描寫」使用）..." style="display: none;"></textarea>
         <button onclick="submitWriting()">提交作文</button>
         <div id="commentResult"></div>
     </div>
@@ -132,21 +132,13 @@
 
         // 範疇定義（包括出題提示和教學筆記）
         const categories = {
-            "示現敘事": {
-                topicPrompt: "請生成一道適合中學生練習示現敘事的題目，要求：1.貼近生活 2.10字以內 3.加快生成速度 4.除了題目之外，不要生成其他任何內容",
-                commentNote: "點評時，必須就上述生成的題目點評寫作內容是否扣題，假如離題，範例便不必根據原文離題內容改寫。此外，點評應分為三個部份：點評、建議、改寫範例。此外，只需要找出最值得點評及建議的一點去評論即可，無論點評或建議，內容都要精簡，不要提及數點，不要用括號，不要輸出與點評及建議無關的內容，否則會令學生讀之生厭。所謂「示現敘事」，是指行文時運用小物件、動作、對話和內心獨白這四種敘事方式，敘事時，亦須注意文句密度，即「詞匯深度」、「物象豐富度」、「實詞和虛詞比例」（好的文句，應該實詞為主，絕對不能大量運用虛詞）"
+            "片段描寫": {
+                topicPrompt: "請生成一道適合中學生練習片段描寫的題目，要求：1.必須包含兩個部份,一是片段要交代甚麼情節、敘事重點是甚麼,二是要強調的人物感情。 2.只生成一道題目，20字以內 3.加快生成速度 4.除了題目之外，不要生成其他任何內容 5.題目要多變化",
+                commentNote: "點評時，必須就上述生成的題目點評寫作內容是否扣題，假如離題，範例便不必根據原文離題內容改寫。此外，點評應分為三個部份：點評、建議、改寫範例。此外，只需要找出最值得點評及建議的一點去評論即可，無論點評或建議，內容都要精簡，不要提及數點，不要用括號，不要輸出與點評及建議無關的內容，否則會令學生讀之生厭。所謂「片段描寫」，是指行文時運用小物件、動作、對話和內心獨白這四種敘事方式，敘事時，亦須注意文句密度，即「詞匯深度」、「物象豐富度」、「實詞和虛詞比例」（好的文句，應該實詞為主，絕對不能大量運用虛詞）。在片段詳略中，學生需要學會在敘述中控制節奏，通過詳寫與題目相關的重要場景和略寫對扣題較次要的部分來增強故事效果。此外，「片段描寫」有以下三個要求：1. 交替運用示現敘事（即運用小物件、動作、對話和內心獨白這四種敘事方式）；2. 適當地提高文句密度（即增加程度較高的詞匯、物象要豐富、增加實詞而減少虛詞）；3. 片段詳略必須得當，與題目很有關係的內容才詳寫，反之則略寫甚或不寫。"
             },
             "大綱": {
-                topicPrompt: "請生成一道適合中學生練習寫作大綱的題目，要求：1.貼近生活 2.10字以內 3.加快生成速度 4.除了題目之外，不要生成其他任何內容",
+                topicPrompt: "請生成一道適合中學生練習寫作大綱的題目，要求：1..10字以內 2.加快生成速度 3.除了題目之外，不要生成其他任何內容",
                 commentNote: "點評時，必須就上述生成的題目點評大綱內容是否扣題，假如大綱離題，範例便不必根據離題內容改寫。此外，點評應分為三個部份：點評、建議、改寫範例。在寫作大綱時，學生應展示他們組織思路和結構故事的能力。評分時，請注意大綱的邏輯性、條理性以及是否包含了故事的起承轉合或三線結構。要逐部分分析每個結構段與題目的關係有多大，並在點評中明確指出。此外，在「改寫後的大綱」,其「結構段重點」必須交代該部份與題目之間的邏輯關係，即怎樣做到扣題。此外，由於是應試文章，因此改寫後的大綱避免過份具理論哲學性及文學性，以至於脫離了現實和日常生活，亦圍繞人在經歷的情感和體悟設定，必須減少概念模糊的術語，例如「情感載體」及「時空的共創」，請用日常化用語描述。此外，「改寫後的大綱」不宜只圍繞一件事敘寫，這樣會容易寫得太抽象，應適時加插人物與人物之間的回憶或其他經歷，令文章看起來更具體實在。"
-            },
-            "片段詳略": {
-                topicPrompt: "請生成一道適合中學生練習片段詳略的題目，要求：1.貼近生活 2.10字以內 3.加快生成速度 4.除了題目之外，不要生成其他任何內容",
-                commentNote: "點評時，必須就上述生成的題目點評寫作內容是否扣題，假如詳略嚴重失當，範例便不必根據原文離題內容改寫。此外，點評應分為三個部份：點評、建議、改寫範例。在片段詳略中，學生需要學會在敘述中控制節奏，通過詳寫與題目相關的重要場景和略寫對扣題較次要的部分來增強故事效果。評分時，請注意學生是否恰當地運用了詳略得當的技巧。"
-            },
-            "敘事物象": {
-                topicPrompt: "請生成一道適合中學生練習敘事物象的題目，要求：1.貼近生活 2.10字以內 3.加快生成速度 4.除了題目之外，不要生成其他任何內容",
-                commentNote: "點評時，必須就上述生成的題目點評物象與題目的關係。點評分為兩大部分：第一部分分析用戶輸入的物象與題目的關係，使用每行「物象: 分析」的形式；第二部分AI補充更多的物象並進行分析，形式與第一部分相同。"
             }
         };
 
@@ -212,20 +204,14 @@
         // 切換大綱結構選擇
         function toggleOutlineStructure() {
             const category = document.getElementById("category").value;
-            const writingContent = document.getElementById("writingContent");
             if (category === "大綱") {
                 document.getElementById("outlineStructureArea").style.display = "block";
                 generateOutlineTable();
-                writingContent.style.display = "none";
+                document.getElementById("writingContent").style.display = "none";
             } else {
                 document.getElementById("outlineStructureArea").style.display = "none";
                 document.getElementById("outlineTableArea").innerHTML = "";
-                writingContent.style.display = "block";
-                if (category === "敘事物象") {
-                    writingContent.placeholder = "請在此輸入與題目相關的物象，每行一個，最多50個...";
-                } else {
-                    writingContent.placeholder = "請在此輸入您的寫作內容...";
-                }
+                document.getElementById("writingContent").style.display = "block";
             }
         }
 
@@ -273,14 +259,6 @@
                     }
                     return { part, focus, plot };
                 });
-            } else if (category === "敘事物象") {
-                const writingContent = document.getElementById("writingContent").value;
-                const objects = writingContent.split("\n").filter(line => line.trim() !== "").slice(0, 50);
-                if (objects.length === 0) {
-                    alert("請輸入至少一個物象");
-                    return;
-                }
-                content = objects.join("\n");
             } else {
                 content = document.getElementById("writingContent").value;
                 if (!content) {
@@ -310,18 +288,6 @@
 | 部份 | 結構段重點 | 情節大要 |
 |------|------------|----------|
 ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\n")}
-
-教學筆記：${note}`;
-            } else if (category === "敘事物象") {
-                prompt = `請根據以下用戶輸入的物象進行分析，並補充更多的物象。要求：
-
-1. 在「=== 用戶物象分析 ===」部分，分析每個用戶輸入的物象與題目的關係。每行格式為「物象: 分析」。
-2. 在「=== AI補充物象 ===」部分，補充更多的物象並進行分析，格式同上。
-
-題目：${topic}
-
-用戶輸入的物象：
-${content}
 
 教學筆記：${note}`;
             } else {
@@ -358,6 +324,7 @@ ${content}
                 const comment = data.choices[0].message.content.trim();
 
                 if (category === "大綱") {
+                    // 解析 AI 回應
                     const sections = comment.split(/=== (.+?) ===/);
                     const commentPart = sections[sections.indexOf("點評及建議") + 1];
                     const rewritePart = sections[sections.indexOf("改寫後的大綱") + 1];
@@ -365,6 +332,7 @@ ${content}
 
                     const parts = structure === "fourPart" ? ["起", "承", "轉", "合"] : ["起", "一線", "二線", "三線", "合"];
 
+                    // 解析點評及建議
                     function parseCommentPart(commentPart) {
                         const comments = {};
                         const regex = /\[(.+?)\]\s*點評：\s*(.+?)\s*建議：\s*(.+?)(?=\[|$)/gs;
@@ -378,6 +346,7 @@ ${content}
                         return comments;
                     }
 
+                    // 解析改寫後的大綱
                     function parseRewritePart(rewritePart) {
                         const rewrites = {};
                         const regex = /\[(.+?)\]\s*結構段重點：\s*(.+?)\s*情節大要：\s*(.+?)(?=\[|$)/gs;
@@ -394,6 +363,7 @@ ${content}
                     const comments = parseCommentPart(commentPart);
                     const rewrites = parseRewritePart(rewritePart);
 
+                    // 構建點評及建議表格
                     let commentTableHTML = "<h3>AI點評及建議：</h3><table><tr><th>部份</th><th>結構段重點</th><th>情節大要</th><th>點評</th><th>建議</th></tr>";
                     content.forEach(item => {
                         const part = item.part;
@@ -405,6 +375,7 @@ ${content}
                     });
                     commentTableHTML += "</table>";
 
+                    // 構建改寫後的大綱表格
                     let rewriteTableHTML = "<h3>改寫後的大綱：</h3><table><tr><th>部份</th><th>結構段重點</th><th>情節大要</th></tr>";
                     parts.forEach(part => {
                         const rewrite = rewrites[part] || { focus: "無", plot: "無" };
@@ -412,32 +383,12 @@ ${content}
                     });
                     rewriteTableHTML += "</table>";
 
+                    // 顯示改寫說明
                     const explanationHTML = `<h3>改寫說明：</h3><pre>${explanationPart ? explanationPart.trim() : "無說明"}</pre>`;
 
+                    // 組合所有內容
                     const finalHTML = commentTableHTML + rewriteTableHTML + explanationHTML;
                     document.getElementById("commentResult").innerHTML = finalHTML;
-                } else if (category === "敘事物象") {
-                    const sections = comment.split(/=== (.+?) ===/);
-                    const userAnalysis = sections[sections.indexOf("用戶物象分析") + 1].trim();
-                    const aiAnalysis = sections[sections.indexOf("AI補充物象") + 1].trim();
-
-                    function parseAnalysis(text) {
-                        const lines = text.split("\n");
-                        let tableHTML = "<table><tr><th>物象</th><th>分析</th></tr>";
-                        lines.forEach(line => {
-                            const [object, analysis] = line.split(": ").map(part => part.trim());
-                            if (object && analysis) {
-                                tableHTML += `<tr><td>${object}</td><td>${analysis}</td></tr>`;
-                            }
-                        });
-                        tableHTML += "</table>";
-                        return tableHTML;
-                    }
-
-                    const userTable = parseAnalysis(userAnalysis);
-                    const aiTable = parseAnalysis(aiAnalysis);
-
-                    document.getElementById("commentResult").innerHTML = `<h3>用戶物象分析：</h3>${userTable}<h3>AI補充物象：</h3>${aiTable}`;
                 } else {
                     const commentParts = comment.split("###").map(part => part.trim()).filter(part => part);
                     let commentHTML = "<h3>AI點評：</h3><table>";
@@ -453,10 +404,6 @@ ${content}
                 document.getElementById("commentResult").innerHTML = "";
             }
         }
-    </script>
-
-    <script>
-        toggleOutlineStructure();
     </script>
 </body>
 </html>
