@@ -48,7 +48,7 @@
 
         // 生成写作题目
         async function generateTopic() {
-            const prompt = "請生成一道適合中學生作片段的題目，要求：1.贴近生活 2.10字以内 3.加快生成速度";
+            const prompt = "請生成一道適合中學生作片段的題目，要求：1.贴近生活 2.10字以内 3.加快生成速度 4.除了題目之外，不要生成其他任何內容";
             
             try {
                 const response = await fetch(API_URL, {
