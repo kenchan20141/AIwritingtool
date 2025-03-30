@@ -56,9 +56,38 @@
             padding: 10px;
             text-align: left;
             vertical-align: top;
-            word-break: break-word; /* 長文字自動換行 */
+            word-break: break-word;
         }
         th {
+            background: #f0f0f0;
+        }
+        .table-container {
+            overflow-x: auto;
+            width: 100%;
+        }
+        .table-container table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table-container th, .table-container td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+            vertical-align: top;
+            word-break: break-word;
+        }
+        .table-container th:first-child, .table-container td:first-child {
+            min-width: 50px; /* 部件列 */
+        }
+        .table-container th:nth-child(2), .table-container td:nth-child(2),
+        .table-container th:nth-child(3), .table-container td:nth-child(3) {
+            min-width: 100px; /* 結構段重點、情節大要 */
+        }
+        .table-container th:nth-child(4), .table-container td:nth-child(4),
+        .table-container th:nth-child(5), .table-container td:nth-child(5) {
+            min-width: 150px; /* 點評、建議 */
+        }
+        .table-container th {
             background: #f0f0f0;
         }
         #topicResult, #commentResult {
@@ -84,39 +113,6 @@
         }
         #outlineStructureArea, #readingFunctionArea, #readingInputArea, #narrativeElementsArea {
             display: none;
-        }
-        /* 模態窗口樣式 */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-        }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 800px;
-            overflow: auto;
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
         }
     </style>
 </head>
@@ -204,14 +200,6 @@
         <div id="commentResult"></div>
     </div>
 
-    <!-- 模態窗口 -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <div id="modalContent"></div>
-        </div>
-    </div>
-
     <script>
         // API 配置信息
         const API_KEYS = [
@@ -269,8 +257,8 @@
                 narrativeElementsArea.style.display = "none";
                 readingInputArea.style.display = "block";
                 writingArea.style.display = "block";
-                outlineTableArea.innerHTML = ""; // 隱藏大綱表格
-                writingContent.style.display = "none"; // 隱藏片段描寫輸入框
+                outlineTableArea.innerHTML = "";
+                writingContent.style.display = "none";
                 toggleReadingFunction();
             }
             commentResult.innerHTML = "";
@@ -598,20 +586,20 @@ ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\
                         const comments = parseCommentPart(commentPart);
                         const rewrites = parseRewritePart(rewritePart);
 
-                        let commentTableHTML = `<h3>AI點評及建議：<button onclick="showModal('commentTable')">放大</button></h3><table id="commentTable"><tr><th>部份</th><th>結構段重點</th><th>情節大要</th><th>點評</th><th>建議</th></tr>`;
+                        let commentTableHTML = `<h3>AI點評及建議：</h3><div class="table-container"><table id="commentTable"><tr><th>部份</th><th>結構段重點</th><th>情節大要</th><th>點評</th><th>建議</th></tr>`;
                         content.forEach(item => {
                             const comment = comments[item.part] ? comments[item.part].comment : "無";
                             const suggestion = comments[item.part] ? comments[item.part].suggestion : "無";
                             commentTableHTML += `<tr><td>${item.part}</td><td>${item.focus}</td><td>${item.plot}</td><td>${comment}</td><td>${suggestion}</td></tr>`;
                         });
-                        commentTableHTML += "</table>";
+                        commentTableHTML += "</table></div>";
 
-                        let rewriteTableHTML = `<h3>改寫後的大綱：</h3><table id="rewriteTable"><tr><th>部份</th><th>結構段重點</th><th>情節大要</th></tr>`;
+                        let rewriteTableHTML = `<h3>改寫後的大綱：</h3><div class="table-container"><table id="rewriteTable"><tr><th>部份</th><th>結構段重點</th><th>情節大要</th></tr>`;
                         parts.forEach(part => {
                             const rewrite = rewrites[part] || { focus: "無", plot: "無" };
                             rewriteTableHTML += `<tr><td>${part}</td><td>${rewrite.focus}</td><td>${rewrite.plot}</td></tr>`;
                         });
-                        rewriteTableHTML += "</table>";
+                        rewriteTableHTML += "</table></div>";
 
                         const explanationHTML = `<h3>改寫說明：</h3><pre>${explanationPart ? explanationPart.trim() : "無說明"}</pre>`;
                         document.getElementById("commentResult").innerHTML = commentTableHTML + rewriteTableHTML + explanationHTML;
@@ -728,21 +716,6 @@ ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\
                     document.getElementById("commentResult").innerHTML = "";
                 }
             }
-        }
-
-        // 顯示模態窗口
-        function showModal(tableId) {
-            const table = document.getElementById(tableId).cloneNode(true);
-            table.style.width = "100%";
-            table.style.fontSize = "1.2em"; // 放大字體
-            document.getElementById("modalContent").innerHTML = "";
-            document.getElementById("modalContent").appendChild(table);
-            document.getElementById("modal").style.display = "block";
-        }
-
-        // 關閉模態窗口
-        function closeModal() {
-            document.getElementById("modal").style.display = "none";
         }
 
         // 頁面加載時初始化
