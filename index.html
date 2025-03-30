@@ -56,6 +56,7 @@
             padding: 10px;
             text-align: left;
             vertical-align: top;
+            word-break: break-word; /* 長文字自動換行 */
         }
         th {
             background: #f0f0f0;
@@ -83,6 +84,39 @@
         }
         #outlineStructureArea, #readingFunctionArea, #readingInputArea, #narrativeElementsArea {
             display: none;
+        }
+        /* 模態窗口樣式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 800px;
+            overflow: auto;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -170,6 +204,14 @@
         <div id="commentResult"></div>
     </div>
 
+    <!-- 模態窗口 -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
     <script>
         // API 配置信息
         const API_KEYS = [
@@ -184,7 +226,7 @@
         const categories = {
             "片段描寫": {
                 topicPrompt: "請生成一道適合中學生練習片段描寫的題目，題目應簡潔表達一個主題或場景，20字以內。同時生成該題目的結構段重點和情節大要。要求：1. 結構段重點解釋片段與題目的邏輯關係、如何扣連，突顯描寫重點，不超過50字。2. 情節大要提供圍繞結構段重點的情節概要，不超過100字，應簡潔、準確，避免過多細節，文筆不宜過於華麗，只需概述應寫的情節，留給學生發揮空間。3. 輸出格式為：題目：...\n結構段重點：...\n情節大要：...\n4. 內容簡潔明了，避免冗長。5. 題目多樣化，避免重複。",
-                commentNote: "必須用繁體字。點評時，必須就題目、結構段重點和情節大要評論寫作內容是否扣題，若離題，範例不必根據原文離題內容改寫。點評分為三部分：### 點評、### 建議、### 改寫範例。只選取最重要的一至兩點評論，聚焦詳略剪裁和文句（包括示現敘事和密度）。若結構段重點或情節大要與題目關係薄弱，需在點評中指出並重點說明。內容要精簡、一語中的。片段描寫需交替運用小物件、動作、對話和內心獨白，提高文句密度（詞匯深度高、物象豐富、實詞比例高），並控制詳略節奏，詳寫與題目相關的部分，略寫次要內容。文句密度也是好文筆的標準，需納入考量。點評和建議不應使用列點形式，應以段落呈現。"
+                commentNote: "必須用繁體字。點評時，必須就題目、結構段重點和情節大要評論寫作內容是否扣題，若離題，範例不必根據原文離題內容改寫。點評分為三部分：### 點評、### 建議、### 改寫範例。只選取最重要的一至兩點評論，聚焦詳略剪裁和文句（包括示現敘事和密度）。若結構段重點或情節大要與題目關係薄弱，需在點評中指出並重點說明。內容要精簡、一語中的。片段描寫需交替運用小物件、動作、對話和內心獨白，提高文句密度（詞匯深度高、物象豐富、實詞比例高），但必須注意：過猶不及，不要連用小物件做主語的句子，適時需要以人物作主語，交替去用，有時加入內心獨白會令文句顯得更自然，密度不宜過高，適時要加入虛詞放緩節奏，張弛有度。此外，要控制詳略節奏，詳寫與題目相關的部分，略寫次要內容。文句密度也是好文筆的標準，需納入考量。點評和建議不應使用列點形式，應以段落呈現。"
             },
             "大綱": {
                 topicPrompt: "請生成一道適合中學生練習寫作大綱的題目，要求：1.10字以內 2.加快生成速度 3.除了題目之外，不要生成其他任何內容",
@@ -309,38 +351,42 @@
 
         // 通用 API 調用函數，包含自動切換 API 密鑰邏輯
         async function callAPI(prompt) {
-            try {
-                const response = await fetch(API_URL, {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${API_KEYS[currentApiKeyIndex]}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        model: MODEL,
-                        messages: [{ role: "user", content: prompt }]
-                    })
-                });
+            let attempts = 0;
+            const maxAttempts = API_KEYS.length;
+            while (attempts < maxAttempts) {
+                try {
+                    const response = await fetch(API_URL, {
+                        method: "POST",
+                        headers: {
+                            "Authorization": `Bearer ${API_KEYS[currentApiKeyIndex]}`,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            model: MODEL,
+                            messages: [{ role: "user", content: prompt }]
+                        })
+                    });
 
-                if (response.status === 429) {
-                    // 達到速率限制，切換到下一個 API 密鑰
-                    currentApiKeyIndex = (currentApiKeyIndex + 1) % API_KEYS.length;
-                    if (currentApiKeyIndex === 0) {
-                        throw new Error("所有 API 密鑰均已達到上限");
+                    if (response.status === 429) {
+                        currentApiKeyIndex = (currentApiKeyIndex + 1) % API_KEYS.length;
+                        attempts++;
+                        continue;
                     }
-                    // 再次嘗試調用 API
-                    return callAPI(prompt);
-                }
 
-                if (!response.ok) {
-                    throw new Error(`API 調用失敗: ${response.statusText}`);
-                }
+                    if (!response.ok) {
+                        throw new Error(`API 調用失敗: ${response.statusText}`);
+                    }
 
-                const data = await response.json();
-                return data.choices[0].message.content.trim();
-            } catch (error) {
-                console.error(error);
-                throw error;
+                    const data = await response.json();
+                    return data.choices[0].message.content.trim();
+                } catch (error) {
+                    console.error(error);
+                    currentApiKeyIndex = (currentApiKeyIndex + 1) % API_KEYS.length;
+                    attempts++;
+                    if (attempts >= maxAttempts) {
+                        throw new Error("所有 API 密鑰均無法使用");
+                    }
+                }
             }
         }
 
@@ -355,9 +401,15 @@
                 const topic = await callAPI(prompt);
                 if (writingType === "片段描寫") {
                     const lines = topic.split("\n");
+                    if (lines.length < 3) {
+                        throw new Error("API 回應格式不正確");
+                    }
                     const title = lines[0].replace("題目：", "").trim();
                     const focus = lines[1].replace("結構段重點：", "").trim();
                     const plot = lines[2].replace("情節大要：", "").trim();
+                    if (!title || !focus || !plot) {
+                        throw new Error("生成內容不完整");
+                    }
                     document.getElementById("topicResult").innerHTML = `
                         今日題目：<strong>${title}</strong>
                         <table>
@@ -373,8 +425,8 @@
                     localStorage.setItem("currentTopic", topic);
                 }
             } catch (error) {
-                if (error.message === "所有 API 密鑰均已達到上限") {
-                    alert("今日 API 調用次數已用完，請明天再試");
+                if (error.message === "所有 API 密鑰均無法使用") {
+                    alert("今日 API 調用次數已用完或API無法連接，請明天再試");
                 } else {
                     alert("生成題目時出錯，請重試");
                 }
@@ -546,7 +598,7 @@ ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\
                         const comments = parseCommentPart(commentPart);
                         const rewrites = parseRewritePart(rewritePart);
 
-                        let commentTableHTML = "<h3>AI點評及建議：</h3><table><tr><th>部份</th><th>結構段重點</th><th>情節大要</th><th>點評</th><th>建議</th></tr>";
+                        let commentTableHTML = `<h3>AI點評及建議：<button onclick="showModal('commentTable')">放大</button></h3><table id="commentTable"><tr><th>部份</th><th>結構段重點</th><th>情節大要</th><th>點評</th><th>建議</th></tr>`;
                         content.forEach(item => {
                             const comment = comments[item.part] ? comments[item.part].comment : "無";
                             const suggestion = comments[item.part] ? comments[item.part].suggestion : "無";
@@ -554,7 +606,7 @@ ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\
                         });
                         commentTableHTML += "</table>";
 
-                        let rewriteTableHTML = "<h3>改寫後的大綱：</h3><table><tr><th>部份</th><th>結構段重點</th><th>情節大要</th></tr>";
+                        let rewriteTableHTML = `<h3>改寫後的大綱：</h3><table id="rewriteTable"><tr><th>部份</th><th>結構段重點</th><th>情節大要</th></tr>`;
                         parts.forEach(part => {
                             const rewrite = rewrites[part] || { focus: "無", plot: "無" };
                             rewriteTableHTML += `<tr><td>${part}</td><td>${rewrite.focus}</td><td>${rewrite.plot}</td></tr>`;
@@ -574,14 +626,14 @@ ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\
                         let commentHTML = "<h3>AI點評：</h3><table>";
                         commentParts.forEach(part => {
                             const [title, ...content] = part.split("\n").filter(line => line.trim());
-                            commentHTML += `<tr><th>${title}</th></tr><tr><td>${content.join("<br>")}</td></tr>`;
+                            commentHTML += `<tr><th><strong>${title}</strong></th></tr><tr><td>${content.join("<br>")}</td></tr>`;
                         });
                         commentHTML += "</table>";
                         document.getElementById("commentResult").innerHTML = commentHTML;
                     }
                 } catch (error) {
-                    if (error.message === "所有 API 密鑰均已達到上限") {
-                        alert("今日 API 調用次數已用完，請明天再試");
+                    if (error.message === "所有 API 密鑰均無法使用") {
+                        alert("今日 API 調用次數已用完或API無法連接，請明天再試");
                     } else {
                         alert("點評生成失敗，請重試");
                     }
@@ -646,7 +698,7 @@ ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\
                         let resultHTML = "<h3>AI點評：</h3><table>";
                         parts.forEach(part => {
                             const [title, ...content] = part.split("\n").filter(line => line.trim());
-                            resultHTML += `<tr><th>${title}</th></tr><tr><td>${content.join("<br>")}</td></tr>`;
+                            resultHTML += `<tr><th><strong>${title}</strong></th></tr><tr><td>${content.join("<br>")}</td></tr>`;
                         });
                         resultHTML += "</table>";
                         document.getElementById("commentResult").innerHTML = resultHTML;
@@ -656,11 +708,11 @@ ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\
                         sections.forEach(section => {
                             const [title, ...content] = section.split("\n").filter(line => line.trim());
                             if (title === "答題指引") {
-                                guideHTML += `<h4>${title}</h4><ul>`;
+                                guideHTML += `<h4><strong>${title}</strong></h4><ul>`;
                                 content.slice(0, 3).forEach(question => guideHTML += `<li>${question}</li>`);
                                 guideHTML += "</ul>";
                             } else if (title === "答題詞匯") {
-                                guideHTML += `<h4>${title}</h4><table><tr><th>詞匯</th></tr>`;
+                                guideHTML += `<h4><strong>${title}</strong></h4><table><tr><th>詞匯</th></tr>`;
                                 content.slice(0, 15).forEach(word => guideHTML += `<tr><td>${word}</td></tr>`);
                                 guideHTML += "</table>";
                             }
@@ -668,14 +720,29 @@ ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\
                         document.getElementById("commentResult").innerHTML = guideHTML;
                     }
                 } catch (error) {
-                    if (error.message === "所有 API 密鑰均已達到上限") {
-                        alert("今日 API 調用次數已用完，請明天再試");
+                    if (error.message === "所有 API 密鑰均無法使用") {
+                        alert("今日 API 調用次數已用完或API無法連接，請明天再試");
                     } else {
                         alert("生成失敗，請重試");
                     }
                     document.getElementById("commentResult").innerHTML = "";
                 }
             }
+        }
+
+        // 顯示模態窗口
+        function showModal(tableId) {
+            const table = document.getElementById(tableId).cloneNode(true);
+            table.style.width = "100%";
+            table.style.fontSize = "1.2em"; // 放大字體
+            document.getElementById("modalContent").innerHTML = "";
+            document.getElementById("modalContent").appendChild(table);
+            document.getElementById("modal").style.display = "block";
+        }
+
+        // 關閉模態窗口
+        function closeModal() {
+            document.getElementById("modal").style.display = "none";
         }
 
         // 頁面加載時初始化
