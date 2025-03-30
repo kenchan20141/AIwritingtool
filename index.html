@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -174,7 +172,11 @@
 
     <script>
         // API 配置信息
-        const API_KEY = "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";
+        const API_KEYS = [
+            "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",
+            "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"
+        ];
+        let currentApiKeyIndex = 0;
         const API_URL = "https://openrouter.ai/api/v1/chat/completions";
         const MODEL = "deepseek/deepseek-r1:free";
 
@@ -305,18 +307,13 @@
             }
         }
 
-        // 生成寫作題目
-        async function generateTopic() {
-            const writingType = document.getElementById("writingType").value;
-            const prompt = categories[writingType].topicPrompt;
-
-            document.getElementById("topicResult").innerHTML = "正在生成題目...";
-
+        // 通用 API 調用函數，包含自動切換 API 密鑰邏輯
+        async function callAPI(prompt) {
             try {
                 const response = await fetch(API_URL, {
                     method: "POST",
                     headers: {
-                        "Authorization": `Bearer ${API_KEY}`,
+                        "Authorization": `Bearer ${API_KEYS[currentApiKeyIndex]}`,
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
@@ -325,8 +322,37 @@
                     })
                 });
 
+                if (response.status === 429) {
+                    // 達到速率限制，切換到下一個 API 密鑰
+                    currentApiKeyIndex = (currentApiKeyIndex + 1) % API_KEYS.length;
+                    if (currentApiKeyIndex === 0) {
+                        throw new Error("所有 API 密鑰均已達到上限");
+                    }
+                    // 再次嘗試調用 API
+                    return callAPI(prompt);
+                }
+
+                if (!response.ok) {
+                    throw new Error(`API 調用失敗: ${response.statusText}`);
+                }
+
                 const data = await response.json();
-                const topic = data.choices[0].message.content.trim();
+                return data.choices[0].message.content.trim();
+            } catch (error) {
+                console.error(error);
+                throw error;
+            }
+        }
+
+        // 生成寫作題目
+        async function generateTopic() {
+            const writingType = document.getElementById("writingType").value;
+            const prompt = categories[writingType].topicPrompt;
+
+            document.getElementById("topicResult").innerHTML = "正在生成題目...";
+
+            try {
+                const topic = await callAPI(prompt);
                 if (writingType === "片段描寫") {
                     const lines = topic.split("\n");
                     const title = lines[0].replace("題目：", "").trim();
@@ -347,7 +373,11 @@
                     localStorage.setItem("currentTopic", topic);
                 }
             } catch (error) {
-                alert("生成題目時出錯，請重試");
+                if (error.message === "所有 API 密鑰均已達到上限") {
+                    alert("今日 API 調用次數已用完，請明天再試");
+                } else {
+                    alert("生成題目時出錯，請重試");
+                }
                 document.getElementById("topicResult").innerHTML = "";
             }
         }
@@ -484,21 +514,7 @@ ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\
                 document.getElementById("commentResult").innerHTML = "正在生成點評...";
 
                 try {
-                    const response = await fetch(API_URL, {
-                        method: "POST",
-                        headers: {
-                            "Authorization": `Bearer ${API_KEY}`,
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            model: MODEL,
-                            messages: [{ role: "user", content: prompt }]
-                        })
-                    });
-
-                    const data = await response.json();
-                    const comment = data.choices[0].message.content.trim();
-
+                    const comment = await callAPI(prompt);
                     if (writingType === "大綱") {
                         const sections = comment.split(/=== (.+?) ===/);
                         const commentPart = sections[sections.indexOf("點評及建議") + 1];
@@ -564,7 +580,11 @@ ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\
                         document.getElementById("commentResult").innerHTML = commentHTML;
                     }
                 } catch (error) {
-                    alert("點評生成失敗，請重試");
+                    if (error.message === "所有 API 密鑰均已達到上限") {
+                        alert("今日 API 調用次數已用完，請明天再試");
+                    } else {
+                        alert("點評生成失敗，請重試");
+                    }
                     document.getElementById("commentResult").innerHTML = "";
                 }
             } else { // 閱讀
@@ -620,21 +640,7 @@ ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\
                 document.getElementById("commentResult").innerHTML = "正在生成" + (readingFunction === "comment" ? "點評" : "指引") + "...";
 
                 try {
-                    const response = await fetch(API_URL, {
-                        method: "POST",
-                        headers: {
-                            "Authorization": `Bearer ${API_KEY}`,
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            model: MODEL,
-                            messages: [{ role: "user", content: prompt }]
-                        })
-                    });
-
-                    const data = await response.json();
-                    const result = data.choices[0].message.content.trim();
-
+                    const result = await callAPI(prompt);
                     if (readingFunction === "comment") {
                         const parts = result.split("###").map(part => part.trim()).filter(part => part);
                         let resultHTML = "<h3>AI點評：</h3><table>";
@@ -662,7 +668,11 @@ ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\
                         document.getElementById("commentResult").innerHTML = guideHTML;
                     }
                 } catch (error) {
-                    alert("生成失敗，請重試");
+                    if (error.message === "所有 API 密鑰均已達到上限") {
+                        alert("今日 API 調用次數已用完，請明天再試");
+                    } else {
+                        alert("生成失敗，請重試");
+                    }
                     document.getElementById("commentResult").innerHTML = "";
                 }
             }
