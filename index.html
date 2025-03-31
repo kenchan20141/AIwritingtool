@@ -143,7 +143,7 @@
         <h2>工具功能概覽</h2>
         <p>本工具旨在協助同學練習寫作卷和閱讀卷，並提供課外書籍討論。以下是主要功能：</p>
         <ul>
-            <li><strong>寫作：</strong>提供片段描寫、大綱的練習及敘事物象指引，可選擇生成或自訂題目，並獲取AI點評和建議。</li>
+            <li><strong>寫作：</strong>提供片段描寫/全文寫作、大綱的練習及敘事物象指引，可選擇生成或自訂題目，並獲取AI點評和建議。</li>
             <li><strong>閱讀：</strong>提供點評和指引功能，可貼上閱讀篇章和題目，獲取AI的點評或答題指引。</li>
             <li><strong>課外書籍：</strong>提供AI聊天室，與AI討論課外書籍，引導深入思考。</li>
         </ul>
@@ -161,7 +161,7 @@
     <div id="writingContainer" class="box">
         <label for="writingType">選擇寫作類型：</label>
         <select id="writingType" onchange="toggleWritingType()">
-            <option value="片段描寫">片段描寫</option>
+            <option value="片段描寫">片段描寫/全文寫作</option>
             <option value="大綱">大綱</option>
             <option value="敘事物象">敘事物象</option>
         </select>
@@ -342,7 +342,7 @@
                         <table>
                             <tr><th colspan="2">自訂題目</th></tr>
                             <tr><td colspan="2"><input type="text" id="customTitle" placeholder="請輸入自訂題目"></td></tr>
-                            <tr><td>結構段重點</td><td>情節大要</td></tr>
+                            <tr><td>結構段重點/全文重點</td><td>情節大要</td></tr>
                             <tr><td><textarea id="customFocus" rows="3" placeholder="請輸入結構段重點"></textarea></td>
                                 <td><textarea id="customPlot" rows="3" placeholder="請輸入情節大要"></textarea></td></tr>
                         </table>
