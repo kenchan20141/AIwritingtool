@@ -607,7 +607,11 @@
                     }
 
                     const data = await response.json();
-                    return data.choices[0].message.content.trim();
+                    const content = data.choices[0].message.content.trim();
+                    if (!content || content.includes("<tool_response>")) {
+                        throw new Error("API 回應無效或包含異常標籤");
+                    }
+                    return content;
                 } catch (error) {
                     console.error(error);
                     currentApiKeyIndex = (currentApiKeyIndex + 1) % API_KEYS.length;
@@ -733,8 +737,8 @@
                 content = parts.map((part, index) => {
                     const focusId = structure + "Focus" + (index + 1);
                     const plotId = structure + "Plot" + (index + 1);
-                    const focus = document.getElementById(focusId).value;
-                    const plot = document.getElementById(plotId).value;
+                    const focus = document.getElementById(focusId)?.value.trim() || "";
+                    const plot = document.getElementById(plotId)?.value.trim() || "";
                     if (!focus || !plot) {
                         alert("請填寫所有大綱表格");
                         throw new Error("Incomplete outline");
@@ -744,7 +748,7 @@
             } else if (writingType === "敘事物象") {
                 content = document.getElementById("narrativeElements").value.trim();
             } else {
-                content = document.getElementById("writingContent").value;
+                content = document.getElementById("writingContent").value.trim();
                 if (!content) {
                     alert("請先輸入寫作內容");
                     return;
@@ -799,29 +803,51 @@
             try {
                 const comment = await callAPI(prompt);
                 if (writingType === "大綱") {
-                    const sections = comment.split(/=== (.+?) ===/);
-                    const commentPart = sections[sections.indexOf("點評及建議") + 1];
-                    const rewritePart = sections[sections.indexOf("改寫後的大綱") + 1];
-                    const explanationPart = sections[sections.indexOf("改寫說明") + 1];
+                    const sections = comment.split(/=== (.+?) ===/).filter(s => s.trim());
+                    const commentIndex = sections.indexOf("點評及建議");
+                    const rewriteIndex = sections.indexOf("改寫後的大綱");
+                    const explanationIndex = sections.indexOf("改寫說明");
+
+                    const commentPart = commentIndex !== -1 ? sections[commentIndex + 1] : "";
+                    const rewritePart = rewriteIndex !== -1 ? sections[rewriteIndex + 1] : "";
+                    const explanationPart = explanationIndex !== -1 ? sections[explanationIndex + 1] : "";
 
                     const parts = structure === "fourPart" ? ["起", "承", "轉", "合"] : ["起", "一線", "二線", "三線", "合"];
 
                     function parseCommentPart(commentPart) {
                         const comments = {};
-                        const regex = /\[(.+?)\]\s*點評：\s*(.+?)\s*建議：\s*(.+?)(?=\[|$)/gs;
+                        const regex = /\[(.+?)\]\s*點評：\s*(.+?)(?=\s*建議：|\s*\[|$)/gs;
+                        const suggestionRegex = /\[(.+?)\]\s*點評：.+?\s*建議：\s*(.+?)(?=\s*\[|$)/gs;
                         let match;
+
                         while ((match = regex.exec(commentPart)) !== null) {
-                            comments[match[1]] = { comment: match[2].trim(), suggestion: match[3].trim() };
+                            const part = match[1];
+                            comments[part] = comments[part] || {};
+                            comments[part].comment = match[2].trim();
+                        }
+                        while ((match = suggestionRegex.exec(commentPart)) !== null) {
+                            const part = match[1];
+                            comments[part] = comments[part] || {};
+                            comments[part].suggestion = match[2].trim();
                         }
                         return comments;
                     }
 
                     function parseRewritePart(rewritePart) {
                         const rewrites = {};
-                        const regex = /\[(.+?)\]\s*結構段重點：\s*(.+?)\s*情節大要：\s*(.+?)(?=\[|$)/gs;
+                        const regex = /\[(.+?)\]\s*結構段重點：\s*(.+?)(?=\s*情節大要：|\s*\[|$)/gs;
+                        const plotRegex = /\[(.+?)\]\s*結構段重點：.+?\s*情節大要：\s*(.+?)(?=\s*\[|$)/gs;
                         let match;
+
                         while ((match = regex.exec(rewritePart)) !== null) {
-                            rewrites[match[1]] = { focus: match[2].trim(), plot: match[3].trim() };
+                            const part = match[1];
+                            rewrites[part] = rewrites[part] || {};
+                            rewrites[part].focus = match[2].trim();
+                        }
+                        while ((match = plotRegex.exec(rewritePart)) !== null) {
+                            const part = match[1];
+                            rewrites[part] = rewrites[part] || {};
+                            rewrites[part].plot = match[2].trim();
                         }
                         return rewrites;
                     }
@@ -831,8 +857,8 @@
 
                     let commentTableHTML = `<h3>陳SIR點評及建議：</h3><div class="table-container"><table id="commentTable"><tr><th>部份</th><th>結構段重點</th><th>情節大要</th><th>點評</th><th>建議</th></tr>`;
                     content.forEach(item => {
-                        const comment = comments[item.part] ? comments[item.part].comment : "無";
-                        const suggestion = comments[item.part] ? comments[item.part].suggestion : "無";
+                        const comment = comments[item.part]?.comment || "無";
+                        const suggestion = comments[item.part]?.suggestion || "無";
                         commentTableHTML += `<tr><td>${item.part}</td><td>${item.focus}</td><td>${item.plot}</td><td>${comment}</td><td>${suggestion}</td></tr>`;
                     });
                     commentTableHTML += "</table></div>";
@@ -840,11 +866,11 @@
                     let rewriteTableHTML = `<h3>改寫後的大綱：</h3><div class="table-container"><table id="rewriteTable"><tr><th>部份</th><th>結構段重點</th><th>情節大要</th></tr>`;
                     parts.forEach(part => {
                         const rewrite = rewrites[part] || { focus: "無", plot: "無" };
-                        rewriteTableHTML += `<tr><td>${part}</td><td>${rewrite.focus}</td><td>${rewrite.plot}</td></tr>`;
+                        rewriteTableHTML += `<tr><td>${part}</td><td>${rewrite.focus || "無"}</td><td>${rewrite.plot || "無"}</td></tr>`;
                     });
                     rewriteTableHTML += "</table></div>";
 
-                    const explanationHTML = `<h3>改寫說明：</h3><pre>${explanationPart ? explanationPart.trim() : "無說明"}</pre>`;
+                    const explanationHTML = `<h3>改寫說明：</h3><pre>${explanationPart.trim() || "無說明"}</pre>`;
                     document.getElementById("commentResult").innerHTML = commentTableHTML + rewriteTableHTML + explanationHTML;
                 } else if (writingType === "敘事物象") {
                     const elements = comment.split("\n").map(item => item.trim()).filter(item => item);
@@ -863,6 +889,7 @@
                     document.getElementById("commentResult").innerHTML = commentHTML;
                 }
             } catch (error) {
+                console.error("提交寫作時出錯:", error);
                 if (error.message === "所有 API 密鑰均無法使用") {
                     alert("今日 API 調用次數已用完或API無法連接，請明天再試");
                 } else {
@@ -952,6 +979,7 @@
                     document.getElementById("readingResult").innerHTML = guideHTML;
                 }
             } catch (error) {
+                console.error("提交閱讀時出錯:", error);
                 if (error.message === "所有 API 密鑰均無法使用") {
                     alert("今日 API 調用次數已用完或API無法連接，請明天再試");
                 } else {
@@ -989,7 +1017,12 @@
                 const aiResponse = await callAPI(prompt);
                 updateLastAIMessage(aiResponse);
             } catch (error) {
-                updateLastAIMessage("抱歉，我無法回應您的信息。😓");
+                console.error("開始討論時出錯:", error);
+                if (error.message === "所有 API 密鑰均無法使用") {
+                    updateLastAIMessage("今日 API 調用次數已用完，請明天再試。😓");
+                } else {
+                    updateLastAIMessage("抱歉，陳SIR無法回應您的問題，請稍後再試。😅");
+                }
             }
         }
 
@@ -1006,7 +1039,12 @@
                 const aiResponse = await callAPI(prompt);
                 updateLastAIMessage(aiResponse);
             } catch (error) {
-                updateLastAIMessage("抱歉，我無法回應您的信息。😓");
+                console.error("繼續討論時出錯:", error);
+                if (error.message === "所有 API 密鑰均無法使用") {
+                    updateLastAIMessage("今日 API 調用次數已用完，請明天再試。😓");
+                } else {
+                    updateLastAIMessage("抱歉，陳SIR無法回應您的問題，請稍後再試。😅");
+                }
             }
             document.getElementById("userInput").value = "";
         }
@@ -1041,10 +1079,12 @@
             document.getElementById("expandTopicResult").innerHTML = "陳SIR正在出題...";
             try {
                 const topic = await callAPI(prompt);
-                const lines = topic.split("\n");
-                if (lines.length < 2) throw new Error("API 回應格式不正確");
-                const theme = lines[0].replace("主題句：", "").trim();
-                const data = lines[1].replace("抄錄資料：", "").trim();
+                const lines = topic.split("\n").map(line => line.trim()).filter(line => line);
+                const themeMatch = lines.find(line => line.startsWith("主題句："));
+                const dataMatch = lines.find(line => line.startsWith("抄錄資料："));
+                if (!themeMatch || !dataMatch) throw new Error("API 回應格式不正確");
+                const theme = themeMatch.replace("主題句：", "").trim();
+                const data = dataMatch.replace("抄錄資料：", "").trim();
                 if (!theme || !data) throw new Error("生成內容不完整");
                 document.getElementById("expandTopicResult").innerHTML = `
                     主題句：<strong>${theme}</strong><br>
@@ -1053,6 +1093,7 @@
                 localStorage.setItem("expandCurrentTheme", theme);
                 localStorage.setItem("expandCurrentData", data);
             } catch (error) {
+                console.error("生成整合拓展題目時出錯:", error);
                 if (error.message === "所有 API 密鑰均無法使用") {
                     alert("今日 API 調用次數已用完或API無法連接，請明天再試");
                 } else {
@@ -1142,6 +1183,7 @@
                 commentHTML += "</table>";
                 document.getElementById("expandCommentResult").innerHTML = commentHTML;
             } catch (error) {
+                console.error("提交整合拓展點評時出錯:", error);
                 if (error.message === "所有 API 密鑰均無法使用") {
                     alert("今日 API 調用次數已用完或API無法連接，請明天再試");
                 } else {
@@ -1188,6 +1230,7 @@
                 guideHTML += "</ul>";
                 document.getElementById("expandGuideResult").innerHTML = guideHTML;
             } catch (error) {
+                console.error("提交整合拓展指引時出錯:", error);
                 if (error.message === "所有 API 密鑰均無法使用") {
                     alert("今日 API 調用次數已用完或API無法連接，請明天再試");
                 } else {
