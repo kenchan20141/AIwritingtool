@@ -426,7 +426,6 @@
                 commentNote: "必須用繁體字。點評時，必須就上述生成的題目點評大綱內容是否扣題，假如大綱離題，範例便不必根據離題內容改寫。此外，點評應分為三個部份：點評、建議、改寫範例。在寫作大綱時，學生應展示他們組織思路和結構故事的能力。評分時，請注意大綱的邏輯性、條理性以及是否包含了故事的起承轉合或三線結構。要逐部分分析每個結構段與題目的關係有多大，並在點評中明確指出。此外，在「改寫後的大綱」,其「結構段重點」必須交代該部份與題目之間的邏輯關係，即怎樣做到扣題。此外，由於是應試文章，因此改寫後的大綱避免過份具理論哲學性及文學性，以至於脫離了現實和日常生活，亦圍繞人在經歷的情感和體悟設定，必須減少概念模糊的術語，例如「情感載體」及「時空的共創」，請用日常化用語描述。此外，「改寫後的大綱」不宜只圍繞一件事敘寫，這樣會容易寫得太抽象，應適時加插人物與人物之間的回憶或其他經歷，令文章看起來更具體實在。此外，大綱不是全篇文章，最重要的是在點評時分析其結構段及情節大要的思路是否扣緊題目，方向是否合理、正確。假如整體表現真的不錯，沒有大問題，在點評時稱讚即可，不必吹毛求疵地批評。"
             },
             "敘事物象": {
-                topicPrompt: "請生成一道適合中學生練習敘事物象的題目，性質要傾向敘事性（如「微笑以對」），或單詞（如「矛盾」），題目要多變一點，不能重複。要求：1.必須包含兩個部份,一是片段要交代甚麼情節、敘事重點是甚麼,二是要強調的人物感情。2.只生成一道題目，20字以內 3.加快生成速度 4.除了題目之外，不要生成其他任何內容 5.題目要多變化",
                 commentNote: "必須用繁體字。在「敘事物象」中，學生需要運用豐富的物象來增強故事的生動性和真實感。物象應與題目、取材和故事背景緊密相關，並且能夠有效地表達人物的情感和故事的主題。請確保生成的物象不重複，並且排版清晰易讀。此外，每個物象都必須由兩個字構成。"
             },
             "閱讀": {
@@ -621,72 +620,55 @@
         }
 
         // 生成寫作題目
-async function generateTopic() {
-    const writingType = document.getElementById("writingType").value;
-    let selectedTopic;
-    do {
-        selectedTopic = topics[Math.floor(Math.random() * topics.length)];
-    } while (selectedTopic === lastTopic && topics.length > 1);
-    lastTopic = selectedTopic;
-    localStorage.setItem("lastTopic", lastTopic);
+        async function generateTopic() {
+            const writingType = document.getElementById("writingType").value;
+            let selectedTopic;
+            do {
+                selectedTopic = topics[Math.floor(Math.random() * topics.length)];
+            } while (selectedTopic === lastTopic && topics.length > 1);
+            lastTopic = selectedTopic;
+            localStorage.setItem("lastTopic", lastTopic);
 
-    if (writingType === "片段描寫") {
-        document.getElementById("topicResult").innerHTML = "陳SIR正在出題...";
-        try {
-            const prompt = `請根據以下題目生成結構段重點和情節大要。要求：
-1. 結構段重點解釋片段與題目的邏輯關係、如何扣連，突顯描寫重點，不超過50字。
-2. 情節大要提供圍繞結構段重點的情節概要，不超過100字，應簡潔、準確，避免過多細節，文筆不宜過於華麗，只需概述應寫的情節，留給學生發揮空間。
-3. 輸出格式為：結構段重點：...\n情節大要：...\n
-4. 內容簡潔明了，避免冗長。
-
-題目：${selectedTopic}`;
-            const response = await callAPI(prompt);
-            // 使用正則表達式解析 API 回應
-            const focusMatch = response.match(/結構段重點：\s*(.+?)(?=\n情節大要：|$)/s);
-            const plotMatch = response.match(/情節大要：\s*(.+)/s);
-            if (!focusMatch || !plotMatch) throw new Error("API 回應格式不正確");
-            const focus = focusMatch[1].trim();
-            const plot = plotMatch[1].trim();
-            if (!focus || !plot) throw new Error("生成內容不完整");
-            document.getElementById("topicResult").innerHTML = `
-                今日題目：<strong>${selectedTopic}</strong>
-                <table>
-                    <tr><th>結構段重點</th><th>情節大要</th></tr>
-                    <tr><td>${focus}</td><td>${plot}</td></tr>
-                </table>
-            `;
-            localStorage.setItem("currentTopic", selectedTopic);
-            localStorage.setItem("currentFocus", focus);
-            localStorage.setItem("currentPlot", plot);
-        } catch (error) {
-            console.error("生成題目時出錯:", error);
-            if (error.message === "所有 API 密鑰均無法使用") {
-                alert("今日 API 調用次數已用完或API無法連接，請明天再試");
+            if (writingType === "片段描寫") {
+                document.getElementById("topicResult").innerHTML = "陳SIR正在出題...";
+                try {
+                    const prompt = `請根據以下題目生成結構段重點和情節大要。要求：
+                    1. 結構段重點解釋片段與題目的邏輯關係、如何扣連，突顯描寫重點，不超過50字。
+                    2. 情節大要提供圍繞結構段重點的情節概要，不超過100字，應簡潔、準確，避免過多細節，文筆不宜過於華麗，只需概述應寫的情節，留給學生發揮空間。
+                    3. 輸出格式為：結構段重點：...\n情節大要：...\n
+                    4. 內容簡潔明了，避免冗長。
+                    題目：${selectedTopic}`;
+                    const response = await callAPI(prompt);
+                    const focusMatch = response.match(/結構段重點：\s*(.+?)(?=\n情節大要：|$)/s);
+                    const plotMatch = response.match(/情節大要：\s*(.+)/s);
+                    if (!focusMatch || !plotMatch) throw new Error("API 回應格式不正確");
+                    const focus = focusMatch[1].trim();
+                    const plot = plotMatch[1].trim();
+                    if (!focus || !plot) throw new Error("生成內容不完整");
+                    document.getElementById("topicResult").innerHTML = `
+                        今日題目：<strong>${selectedTopic}</strong>
+                        <table>
+                            <tr><th>結構段重點</th><th>情節大要</th></tr>
+                            <tr><td>${focus}</td><td>${plot}</td></tr>
+                        </table>
+                    `;
+                    localStorage.setItem("currentTopic", selectedTopic);
+                    localStorage.setItem("currentFocus", focus);
+                    localStorage.setItem("currentPlot", plot);
+                } catch (error) {
+                    console.error("生成題目時出錯:", error);
+                    if (error.message === "所有 API 密鑰均無法使用") {
+                        alert("今日 API 調用次數已用完或API無法連接，請明天再試");
+                    } else {
+                        alert("生成題目時出錯，請重試");
+                    }
+                    document.getElementById("topicResult").innerHTML = "";
+                }
             } else {
-                alert("生成題目時出錯，請重試");
+                document.getElementById("topicResult").innerHTML = "今日題目：<strong>" + selectedTopic + "</strong>";
+                localStorage.setItem("currentTopic", selectedTopic);
             }
-            document.getElementById("topicResult").innerHTML = "";
         }
-    } else if (writingType === "大綱") {
-        document.getElementById("topicResult").innerHTML = "今日題目：<strong>" + selectedTopic + "</strong>";
-        localStorage.setItem("currentTopic", selectedTopic);
-    } else {
-        const prompt = categories[writingType].topicPrompt;
-        document.getElementById("topicResult").innerHTML = "陳SIR正在出題...";
-        try {
-            const topic = await callAPI(prompt);
-            document.getElementById("topicResult").innerHTML = "今日題目：<strong>" + topic + "</strong>";
-            localStorage.setItem("currentTopic", topic);
-        } catch (error) {
-            if (error.message === "所有 API 密鑰均無法使用") {
-                alert("今日 API 調用次數已用完或API無法連接，請明天再試");
-            } else {
-                alert("生成題目時出錯，請重試");
-            }
-            document.getElementById("topicResult").innerHTML = "";
-        }
-    }
-}
 
         // 設定自訂題目（寫作）
         function setCustomTopic() {
@@ -707,7 +689,7 @@ async function generateTopic() {
                     </table>
                 `;
                 localStorage.setItem("currentTopic", title);
-                localStorage.setItem("currentFocusFrameworks", focus);
+                localStorage.setItem("currentFocus", focus);
                 localStorage.setItem("currentPlot", plot);
             } else {
                 const customTopic = document.getElementById("customTopic").value.trim();
@@ -774,45 +756,42 @@ async function generateTopic() {
             let prompt = "";
             if (writingType === "大綱") {
                 prompt = `請根據以下大綱內容進行點評和建議，並提供改寫後的大綱。要求：
-1. 在「=== 點評及建議 ===」部分，為每個結構段提供點評和建議。使用「[part]」標記每個結構段的開始，例如「[起]」，然後在下一行「點評：」後跟點評內容，再下一行「建議：」後跟建議內容。
-2. 在「=== 改寫後的大綱 ===」部分，為每個結構段提供改寫後的「結構段重點」和「情節大要」。使用「[part]」標記每個結構段的開始，然後在下一行「結構段重點：」後跟內容，再下一行「情節大要：」後跟內容。結構段數量必須與用戶選擇的大綱結構一致（起承轉合為4段，三線為5段：起、一線、二線、三線、合）。
-3. 在「=== 改寫說明 ===」部分，提供不超過兩點的改寫說明，每點以「1. 」和「2. 」開始。
-請確保內容簡潔明了。
-
-題目：${topic}
-大綱結構：${structure === "fourPart" ? "起承轉合" : "三線（起、一線、二線、三線、合）"}
-用戶輸入的大綱：
-| 部份 | 結構段重點 | 情節大要 |
-|------|------------|----------|
-${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\n")}
-教學筆記：${note}`;
+                1. 在「=== 點評及建議 ===」部分，為每個結構段提供點評和建議。使用「[part]」標記每個結構段的開始，例如「[起]」，然後在下一行「點評：」後跟點評內容，再下一行「建議：」後跟建議內容。
+                2. 在「=== 改寫後的大綱 ===」部分，為每個結構段提供改寫後的「結構段重點」和「情節大要」。使用「[part]」標記每個結構段的開始，然後在下一行「結構段重點：」後跟內容，再下一行「情節大要：」後跟內容。結構段數量必須與用戶選擇的大綱結構一致（起承轉合為4段，三線為5段：起、一線、二線、三線、合）。
+                3. 在「=== 改寫說明 ===」部分，提供不超過兩點的改寫說明，每點以「1. 」和「2. 」開始。
+                請確保內容簡潔明了。
+                題目：${topic}
+                大綱結構：${structure === "fourPart" ? "起承轉合" : "三線（起、一線、二線、三線、合）"}
+                用戶輸入的大綱：
+                | 部份 | 結構段重點 | 情節大要 |
+                |------|------------|----------|
+                ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\n")}
+                教學筆記：${note}`;
             } else if (writingType === "敘事物象") {
                 prompt = `請根據以下題目和取材/故事背景生成五十個不重複且相關的物象。要求：
-1. 物象必須與題目和取材/故事背景緊密相關。
-2. 物象應多樣化且生動，能夠增強故事的真實感和情感表達。
-3. 請以列表形式呈現，每個物象占一行。
-4. 請確保物象不重複且排版整齊。
-
-題目：${topic}
-取材/故事背景：${content || "無具體背景，根據題目生成"}
-教學筆記：${note}`;
+                1. 物象必須與題目和取材/故事背景緊密相關。
+                2. 物象應多樣化且生動，能夠增強故事的真實感和情感表達。
+                3. 請以列表形式呈現，每個物象占一行。
+                4. 請確保物象不重複且排版整齊。
+                題目：${topic}
+                取材/故事背景：${content || "無具體背景，根據題目生成"}
+                教學筆記：${note}`;
             } else {
                 const focus = localStorage.getItem("currentFocus");
                 const plot = localStorage.getItem("currentPlot");
                 prompt = `請根據以下內容進行點評，要求：
-1. 簡明扼要
-2. 參考教學筆記
-3. 評論寫作內容與題目、結構段重點和情節大要的關係
-4. 輸出分為三個部分：### 點評、### 建議、### 改寫範例
-5. 點評時，聚焦詳略剪裁和文句（包括示現敘事和密度），選取最重要的一至兩點
-6. 若結構段重點或情節大要與題目關係薄弱，需在點評中指出並重點說明
-7. 點評和建議不應使用列點形式，應以段落呈現
-
-題目：${topic}
-結構段重點：${focus}
-情節大要：${plot}
-寫作內容：${content}
-教學筆記：${note}`;
+                1. 簡明扼要
+                2. 參考教學筆記
+                3. 評論寫作內容與題目、結構段重點和情節大要的關係
+                4. 輸出分為三個部分：### 點評、### 建議、### 改寫範例
+                5. 點評時，聚焦詳略剪裁和文句（包括示現敘事和密度），選取最重要的一至兩點
+                6. 若結構段重點或情節大要與題目關係薄弱，需在點評中指出並重點說明
+                7. 點評和建議不應使用列點形式，應以段落呈現
+                題目：${topic}
+                結構段重點：${focus}
+                情節大要：${plot}
+                寫作內容：${content}
+                教學筆記：${note}`;
             }
 
             document.getElementById("commentResult").innerHTML = "陳SIR正在點評...";
@@ -917,31 +896,29 @@ ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\
             let prompt = "";
             if (readingFunction === "comment") {
                 prompt = `請根據以下閱讀篇章、題目和學生的答案進行點評。要求：
-1. 評估答題方向是否合理
-2. 評估文本依據是否充實具體，且是否適當概括歸納而非直接引用（除非題目要求摘錄）
-3. 評估闡釋推論是否嚴謹、具體圓足
-4. 評估主題句是否清晰
-5. 在「### 答題步驟及思路」前，加入點評，以段落形式呈現，不使用列點
-6. 在「### 答題步驟及思路」中，描述各部分方向，步驟因題制宜，可能包括【鋪墊】、【回應】、【文本依據】、【闡釋】，靈活運用。每個步驟以【步驟名】標題加分行內容呈現，內容只包含文字和標點
-7. 在「### 改寫範例」中，提供改寫後的答案，使答案更圓足（若答題方向錯誤，則不跟從錯誤方向）
-8. 輸出分為三個部分：### 點評、### 答題步驟及思路、### 改寫範例
-9. 表格中只包含文字和標點，不含『---』等符號
-
-閱讀篇章：${passage}
-題目：${question}
-學生的答案：${studentAnswer}
-教學筆記：${note}`;
+                1. 評估答題方向是否合理
+                2. 評估文本依據是否充實具體，且是否適當概括歸納而非直接引用（除非題目要求摘錄）
+                3. 評估闡釋推論是否嚴謹、具體圓足
+                4. 評估主題句是否清晰
+                5. 在「### 答題步驟及思路」前，加入點評，以段落形式呈現，不使用列點
+                6. 在「### 答題步驟及思路」中，描述各部分方向，步驟因題制宜，可能包括【鋪墊】、【回應】、【文本依據】、【闡釋】，靈活運用。每個步驟以【步驟名】標題加分行內容呈現，內容只包含文字和標點
+                7. 在「### 改寫範例」中，提供改寫後的答案，使答案更圓足（若答題方向錯誤，則不跟從錯誤方向）
+                8. 輸出分為三個部分：### 點評、### 答題步驟及思路、### 改寫範例
+                9. 表格中只包含文字和標點，不含『---』等符號
+                閱讀篇章：${passage}
+                題目：${question}
+                學生的答案：${studentAnswer}
+                教學筆記：${note}`;
             } else {
                 prompt = `請根據以下閱讀篇章和題目生成答題指引。要求：
-1. 在「### 答題指引」中，生成三道問題以引導用家回答閱讀篇章的問題，問題針對題目，引導思考文本內容、結構和主題，每個問題占一行
-2. 在「### 答題詞匯」中，生成15個由兩個字構成的答題詞匯，詞匯需與篇章和題目相關且不重複
-3. 輸出分為兩個部分：### 答題指引、### 答題詞匯
-4. 答題指引以問題形式呈現，每個問題占一行
-5. 答題詞匯以表格形式呈現，每個詞占一行，表格中只包含文字和標點
-
-閱讀篇章：${passage}
-題目：${question}
-教學筆記：${note}`;
+                1. 在「### 答題指引」中，生成三道問題以引導用家回答閱讀篇章的問題，問題針對題目，引導思考文本內容、結構和主題，每個問題占一行
+                2. 在「### 答題詞匯」中，生成15個由兩個字構成的答題詞匯，詞匯需與篇章和題目相關且不重複
+                3. 輸出分為兩個部分：### 答題指引、### 答題詞匯
+                4. 答題指引以問題形式呈現，每個問題占一行
+                5. 答題詞匯以表格形式呈現，每個詞占一行，表格中只包含文字和標點
+                閱讀篇章：${passage}
+                題目：${question}
+                教學筆記：${note}`;
             }
 
             document.getElementById("readingResult").innerHTML = "陳SIR正在思考" + (readingFunction === "comment" ? "點評" : "指引") + "...";
@@ -998,7 +975,7 @@ ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\
                 alert("請填寫書名、作者和討論問題");
                 return;
             }
-            chatHistory = []; // 重置對話歷史
+            chatHistory = [];
             addMessageToHistory("user", `書名：${bookTitle}\n作者：${author}\n討論問題：${discussionQuestion}`);
             document.getElementById("userInput").style.display = "block";
             document.getElementById("continueBtn").style.display = "block";
@@ -1138,20 +1115,19 @@ ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\
             const note = categories["整合拓展"].commentNote;
 
             const prompt = `請根據以下內容進行點評，要求：
-1. 評估「整合拓展」是否能闡釋「抄錄資料」與「主題句」的邏輯關係
-2. 判斷「拓展」方向是否正確（即是否能論證主題句）
-3. 判斷推論是否嚴謹
-4. 判斷是否具體不空泛
-5. 若方向不正確，需指出並建議如何修訂，不能順著錯誤思路改善，需指導扣緊主題句
-6. 改寫部份不超過180字，且不得虛構資料，只可根據抄錄資料補充合理細節
-7. 輸出分為三個部分：### 點評、### 建議、### 改寫
-8. 點評和建議以段落形式呈現，不使用列點
-
-題目：${title || "無"}
-主題句：${theme}
-抄錄資料：${data}
-整合拓展：${content}
-教學筆記：${note}`;
+            1. 評估「整合拓展」是否能闡釋「抄錄資料」與「主題句」的邏輯關係
+            2. 判斷「拓展」方向是否正確（即是否能論證主題句）
+            3. 判斷推論是否嚴謹
+            4. 判斷是否具體不空泛
+            5. 若方向不正確，需指出並建議如何修訂，不能順著錯誤思路改善，需指導扣緊主題句
+            6. 改寫部份不超過180字，且不得虛構資料，只可根據抄錄資料補充合理細節
+            7. 輸出分為三個部分：### 點評、### 建議、### 改寫
+            8. 點評和建議以段落形式呈現，不使用列點
+            題目：${title || "無"}
+            主題句：${theme}
+            抄錄資料：${data}
+            整合拓展：${content}
+            教學筆記：${note}`;
 
             document.getElementById("expandCommentResult").innerHTML = "陳SIR正在點評...";
 
@@ -1189,16 +1165,15 @@ ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\
             const note = categories["整合拓展"].guideNote;
 
             const prompt = `請根據以下內容生成指引問題。要求：
-1. 生成三道問題以引導用家思考如何根據表格資料做好整合拓展
-2. 問題應圍繞主題句和抄錄資料的邏輯關係，引導用家思考如何闡釋和拓展
-3. 輸出分為一個部分：### 指引問題
-4. 指引問題以問題形式呈現，每個問題占一行
-
-題目：${title}
-主題句：${theme}
-抄錄資料：${data}
-整合拓展：${expand}
-教學筆記：${note}`;
+            1. 生成三道問題以引導用家思考如何根據表格資料做好整合拓展
+            2. 問題應圍繞主題句和抄錄資料的邏輯關係，引導用家思考如何闡釋和拓展
+            3. 輸出分為一個部分：### 指引問題
+            4. 指引問題以問題形式呈現，每個問題占一行
+            題目：${title}
+            主題句：${theme}
+            抄錄資料：${data}
+            整合拓展：${expand}
+            教學筆記：${note}`;
 
             document.getElementById("expandGuideResult").innerHTML = "陳SIR正在思考指引...";
 
