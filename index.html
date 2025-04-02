@@ -188,13 +188,6 @@
             <option value="大綱">大綱</option>
             <option value="敘事物象">敘事物象</option>
         </select>
-        <div id="writingToneArea" style="display: none;">
-            <label for="writingTone">選擇點評口吻語氣：</label>
-            <select id="writingTone">
-                <option value="嚴肅正經">嚴肅正經</option>
-                <option value="輕鬆隨意">輕鬆隨意</option>
-            </select>
-        </div>
         <div id="outlineStructureArea">
             <label for="structure">選擇大綱結構：</label>
             <select id="structure" onchange="generateOutlineTable()">
@@ -233,13 +226,6 @@
             <option value="comment">點評</option>
             <option value="guide">指引</option>
         </select>
-        <div id="readingToneArea" style="display: none;">
-            <label for="readingTone">選擇點評口吻語氣：</label>
-            <select id="readingTone">
-                <option value="嚴肅正經">嚴肅正經</option>
-                <option value="輕鬆隨意">輕鬆隨意</option>
-            </select>
-        </div>
         <div id="readingInputArea">
             <label for="readingPassage">貼上閱讀篇章：</label>
             <textarea id="readingPassage" rows="10" placeholder="請在此貼上閱讀篇章..."></textarea>
@@ -275,13 +261,6 @@
             <option value="comment">點評</option>
             <option value="guide">指引</option>
         </select>
-        <div id="expandToneArea" style="display: none;">
-            <label for="expandTone">選擇點評口吻語氣：</label>
-            <select id="expandTone">
-                <option value="嚴肅正經">嚴肅正經</option>
-                <option value="輕鬆隨意">輕鬆隨意</option>
-            </select>
-        </div>
         <div id="expandTopicSelectionArea">
             <label for="expandTopicOption">選擇題目方式：</label>
             <select id="expandTopicOption" onchange="toggleExpandTopicInput()">
@@ -333,32 +312,107 @@
 
         // 預設題目列表
         const topics = [
-            "旁觀", "舞台", "這件物件很是輕巧，卻讓我明白『但求無愧於心』的道理。", "山頂", "種子", "根", "疤痕",
-            "今天，我不能參賽，只能坐在觀眾席上，但當時的所見所聞卻給予我嶄新的體會。", "從今以後，我不會再輕言放棄。",
-            "等候", "我曾經努力嘗試，但最終仍是事與願違", "回憶", "徹夜難眠", "彩虹",
-            "星空下，眼前的景象讓我想起那段往事，令我不禁歎了一口氣……", "路牌", "今學年最後悔的一件事",
-            "最令我感動的一句話", "再試一次", "今天再次在台上演奏，我已經脫胎換骨，不再是從前那個驕傲自滿的我了。",
-            "每次經過這條街，看着街上的景物，我便感觸不已……", "意外", "鑰匙", "錯過了的機會",
-            "那句話，我實在不該說……", "色彩", "煙火", "藥", "放下", "追逐", "原來，這只是一場誤會",
-            "缺憾", "無悔的抉擇", "勇氣", "傘", "自此之後，我明白到原來父母的愛總是體現在小事上。",
-            "一件令我後悔不已的事", "一次尷尬的經歷", "沿途有你", "這一次，我實在感到無地自容。",
+            "旁觀",
+            "舞台",
+            "這件物件很是輕巧，卻讓我明白『但求無愧於心』的道理。",
+            "山頂",
+            "種子",
+            "根",
+            "疤痕",
+            "今天，我不能參賽，只能坐在觀眾席上，但當時的所見所聞卻給予我嶄新的體會。",
+            "從今以後，我不會再輕言放棄。",
+            "等候",
+            "我曾經努力嘗試，但最終仍是事與願違",
+            "回憶",
+            "徹夜難眠",
+            "彩虹",
+            "星空下，眼前的景象讓我想起那段往事，令我不禁歎了一口氣……",
+            "路牌",
+            "今學年最後悔的一件事",
+            "最令我感動的一句話",
+            "再試一次",
+            "今天再次在台上演奏，我已經脫胎換骨，不再是從前那個驕傲自滿的我了。",
+            "每次經過這條街，看着街上的景物，我便感觸不已……",
+            "意外",
+            "鑰匙",
+            "錯過了的機會",
+            "那句話，我實在不該說……",
+            "色彩",
+            "煙火",
+            "藥",
+            "放下",
+            "追逐",
+            "原來，這只是一場誤會",
+            "缺憾",
+            "無悔的抉擇",
+            "勇氣",
+            "傘",
+            "自此之後，我明白到原來父母的愛總是體現在小事上。",
+            "一件令我後悔不已的事",
+            "一次尷尬的經歷",
+            "沿途有你",
+            "這一次，我實在感到無地自容。",
             "這一次，我明白到，原來幫助他人的同時，也幫助了自己。",
             "我的鄰居張先生是一位很苛刻的人，經常會為些『小事』而投訴他人。但今天我發現，他這樣做是有原因的……",
-            "獨處的一天", "這一刻，我終於舒了一口氣。", "記一次被誤解的經歷", "一次與別人言歸於好的經歷",
-            "自此之後，我感到自己真的長大了。", "自此之後，我明白到幸福原來可以很簡單。", "記一次苦盡甘來的經歷。",
-            "這件事讓我體會到喜出望外的滋味。", "路標", "足印", "遺憾", "鎖", "面具", "心結", "門", "影子",
-            "禁區", "等待", "根", "最後，我選擇了放棄", "自那一刻，我解開了心結",
-            "自此之後，我明白猶豫會使人一事無成。", "原來我沒有忘記那一頓飯。", "我在大自然之中找到快樂。",
-            "熱鬧過後，我卻感到失落。", "看著逐漸遠去的背影，我感到很內疚。", "今天我流淚了，但我並非感到難過。",
-            "自此之後，我找到了動力", "經歷了這次風波，我長大了。", "經過這件事，我才明白到一心是我的知己，是真正了解我的人。",
-            "自此之後，我學會放下無謂的面子。", "這一次，我再沒有遺憾", "重遊舊地所見有感", "失而復得",
-            "這條街雖然老舊，但卻充滿人情味。", "這句話，我會記上一輩子。", "門", "來日方長", "得不償失",
-            "隱藏", "微笑以對", "熱鬧過後，我卻感到失落。", "夢想看似不切實際，但其實很有意義",
-            "夢想看似很有意義，其實不切實際", "今天我沒有帶手提電話外出，因而有不一樣的經歷和體會。",
-            "今天發生了一件事情，當時我曾經想力陳己見，最後選擇了沉默。我認為沉默是必要的。", "矛盾",
-            "未兌現的諾言", "未寄出的信", "距離", "一場沒有失敗者的比賽", "一件發人深省的事",
-            "我最想保留的一本相簿", "我最想尋回的一件玩具", "無愧的抉擇", "不能掉下的眼淚", "無畏的探索",
-            "一次令我百感交集的聚餐", "如願以償"
+            "獨處的一天",
+            "這一刻，我終於舒了一口氣。",
+            "記一次被誤解的經歷",
+            "一次與別人言歸於好的經歷",
+            "自此之後，我感到自己真的長大了。",
+            "自此之後，我明白到幸福原來可以很簡單。",
+            "記一次苦盡甘來的經歷。",
+            "這件事讓我體會到喜出望外的滋味。",
+            "路標",
+            "足印",
+            "遺憾",
+            "鎖",
+            "面具",
+            "心結",
+            "門",
+            "影子",
+            "禁區",
+            "等待",
+            "根",
+            "最後，我選擇了放棄",
+            "自那一刻，我解開了心結",
+            "自此之後，我明白猶豫會使人一事無成。",
+            "原來我沒有忘記那一頓飯。",
+            "我在大自然之中找到快樂。",
+            "熱鬧過後，我卻感到失落。",
+            "看著逐漸遠去的背影，我感到很內疚。",
+            "今天我流淚了，但我並非感到難過。",
+            "自此之後，我找到了動力",
+            "經歷了這次風波，我長大了。",
+            "經過這件事，我才明白到一心是我的知己，是真正了解我的人。",
+            "自此之後，我學會放下無謂的面子。",
+            "這一次，我再沒有遺憾",
+            "重遊舊地所見有感",
+            "失而復得",
+            "這條街雖然老舊，但卻充滿人情味。",
+            "這句話，我會記上一輩子。",
+            "門",
+            "來日方長",
+            "得不償失",
+            "隱藏",
+            "微笑以對",
+            "熱鬧過後，我卻感到失落。",
+            "夢想看似不切實際，但其實很有意義",
+            "夢想看似很有意義，其實不切實際",
+            "今天我沒有帶手提電話外出，因而有不一樣的經歷和體會。",
+            "今天發生了一件事情，當時我曾經想力陳己見，最後選擇了沉默。我認為沉默是必要的。",
+            "矛盾",
+            "未兌現的諾言",
+            "未寄出的信",
+            "距離",
+            "一場沒有失敗者的比賽",
+            "一件發人深省的事",
+            "我最想保留的一本相簿",
+            "我最想尋回的一件玩具",
+            "無愧的抉擇",
+            "不能掉下的眼淚",
+            "無畏的探索",
+            "一次令我百感交集的聚餐",
+            "如願以償"
         ];
 
         let lastTopic = localStorage.getItem("lastTopic") || "";
@@ -416,26 +470,22 @@
         // 切換寫作類型
         function toggleWritingType() {
             const writingType = document.getElementById("writingType").value;
-            const writingToneArea = document.getElementById("writingToneArea");
             const outlineStructureArea = document.getElementById("outlineStructureArea");
             const narrativeElementsArea = document.getElementById("narrativeElementsArea");
             const writingContent = document.getElementById("writingContent");
             const outlineTableArea = document.getElementById("outlineTableArea");
 
             if (writingType === "大綱") {
-                writingToneArea.style.display = "block";
                 outlineStructureArea.style.display = "block";
                 narrativeElementsArea.style.display = "none";
                 writingContent.style.display = "none";
                 generateOutlineTable();
             } else if (writingType === "敘事物象") {
-                writingToneArea.style.display = "none";
                 outlineStructureArea.style.display = "none";
                 narrativeElementsArea.style.display = "block";
                 writingContent.style.display = "none";
                 outlineTableArea.innerHTML = "";
             } else {
-                writingToneArea.style.display = "block";
                 outlineStructureArea.style.display = "none";
                 narrativeElementsArea.style.display = "none";
                 writingContent.style.display = "block";
@@ -448,9 +498,7 @@
         function toggleReadingFunction() {
             const readingFunction = document.getElementById("readingFunction").value;
             const studentAnswerArea = document.getElementById("studentAnswerArea");
-            const readingToneArea = document.getElementById("readingToneArea");
             studentAnswerArea.style.display = readingFunction === "comment" ? "block" : "none";
-            readingToneArea.style.display = readingFunction === "comment" ? "block" : "none";
         }
 
         // 切換整合拓展功能
@@ -459,17 +507,14 @@
             const expandWritingArea = document.getElementById("expandWritingArea");
             const expandGuideArea = document.getElementById("expandGuideArea");
             const expandTopicSelectionArea = document.getElementById("expandTopicSelectionArea");
-            const expandToneArea = document.getElementById("expandToneArea");
             if (expandFunction === "comment") {
                 expandWritingArea.style.display = "block";
                 expandGuideArea.style.display = "none";
                 expandTopicSelectionArea.style.display = "block";
-                expandToneArea.style.display = "block";
             } else {
                 expandWritingArea.style.display = "none";
                 expandGuideArea.style.display = "block";
                 expandTopicSelectionArea.style.display = "none";
-                expandToneArea.style.display = "none";
             }
         }
 
@@ -496,7 +541,7 @@
                     customTopicArea.innerHTML = `
                         <table>
                             <tr><th colspan="2">自訂題目</th></tr>
-                            <tr><td colspan="2"><input Royals type="text" id="customTitle" placeholder="請輸入自訂題目"></td></tr>
+                            <tr><td colspan="2"><input type="text" id="customTitle" placeholder="請輸入自訂題目"></td></tr>
                             <tr><td>結構段重點/全文重點</td><td>情節大要</td></tr>
                             <tr><td><textarea id="customFocus" rows="3" placeholder="請輸入結構段重點"></textarea></td>
                                 <td><textarea id="customPlot" rows="3" placeholder="請輸入情節大要"></textarea></td></tr>
@@ -671,15 +716,6 @@
             document.getElementById("outlineTableArea").innerHTML = tableHTML;
         }
 
-        // 獲取口吻語氣指示
-        function getToneInstruction(tone) {
-            if (tone === "輕鬆隨意") {
-                return "請用輕鬆隨意的口吻進行點評，多用EMOJI，偶爾使用網絡用語，用語要日常生活化，並在適當情況下揶揄用家，但要注意尺度，不能傷害用家的自尊心。";
-            } else {
-                return "";
-            }
-        }
-
         // 提交寫作內容
         async function submitWriting() {
             const writingType = document.getElementById("writingType").value;
@@ -716,15 +752,13 @@
             }
 
             const note = categories[writingType].commentNote;
-            const tone = document.getElementById("writingTone").value;
-            const toneInstruction = getToneInstruction(tone);
 
             let prompt = "";
             if (writingType === "大綱") {
                 prompt = `請根據以下大綱內容進行點評和建議，並提供改寫後的大綱。要求：
-                1. 在「=== 點評及建議 ===」部分，為每個結構段提供點評和建議。${toneInstruction} 使用「[part]」標記每個結構段的開始，例如「[起]」，然後在下一行「點評：」後跟點評內容，再下一行「建議：」後跟建議內容。
-                2. 在「=== 改寫後的大綱 ===」部分，為每個結構段提供改寫後的「結構段重點」和「情節大要」。請用嚴肅正經的口吻生成。使用「[part]」標記每個結構段的開始，然後在下一行「結構段重點：」後跟內容，再下一行「情節大要：」後跟內容。結構段數量必須與用戶選擇的大綱結構一致（起承轉合為4段，三線為5段：起、一線、二線、三線、合）。
-                3. 在「=== 改寫說明 ===」部分，提供不超過兩點的改寫說明，每點以「1. 」和「2. 」開始。請用嚴肅正經的口吻生成。
+                1. 在「=== 點評及建議 ===」部分，為每個結構段提供點評和建議。使用「[part]」標記每個結構段的開始，例如「[起]」，然後在下一行「點評：」後跟點評內容，再下一行「建議：」後跟建議內容。
+                2. 在「=== 改寫後的大綱 ===」部分，為每個結構段提供改寫後的「結構段重點」和「情節大要」。使用「[part]」標記每個結構段的開始，然後在下一行「結構段重點：」後跟內容，再下一行「情節大要：」後跟內容。結構段數量必須與用戶選擇的大綱結構一致（起承轉合為4段，三線為5段：起、一線、二線、三線、合）。
+                3. 在「=== 改寫說明 ===」部分，提供不超過兩點的改寫說明，每點以「1. 」和「2. 」開始。
                 請確保內容簡潔明了。
                 題目：${topic}
                 大綱結構：${structure === "fourPart" ? "起承轉合" : "三線（起、一線、二線、三線、合）"}
@@ -745,7 +779,7 @@
             } else {
                 const focus = localStorage.getItem("currentFocus");
                 const plot = localStorage.getItem("currentPlot");
-                prompt = `${toneInstruction} 請根據以下內容進行點評，要求：
+                prompt = `請根據以下內容進行點評，要求：
                 1. 簡明扼要
                 2. 參考教學筆記
                 3. 評論寫作內容與題目、結構段重點和情節大要的關係
@@ -861,9 +895,7 @@
 
             let prompt = "";
             if (readingFunction === "comment") {
-                const tone = document.getElementById("readingTone").value;
-                const toneInstruction = getToneInstruction(tone);
-                prompt = `${toneInstruction} 請根據以下閱讀篇章、題目和學生的答案進行點評。要求：
+                prompt = `請根據以下閱讀篇章、題目和學生的答案進行點評。要求：
                 1. 評估答題方向是否合理
                 2. 評估文本依據是否充實具體，且是否適當概括歸納而非直接引用（除非題目要求摘錄）
                 3. 評估闡釋推論是否嚴謹、具體圓足
@@ -954,7 +986,7 @@
             const prompt = `我是一位高中生，正在閱讀《${bookTitle}》，作者是${author}。我想討論的問題是：${discussionQuestion}。請用日常的語言回應我，不要過於理論化，言簡意賅地分析並給出例子，然後引導我深入思考。請不要使用括號解釋你的目的，永遠不要列點回應，也不要提及你會追問我。請用完整句子回應。教學筆記：${categories["課外書籍"].chatNote}`;
             addMessageToHistory("ai", "陳SIR正在回應...");
             try {
-                const ai **aiResponse = await callAPI(prompt);
+                const aiResponse = await callAPI(prompt);
                 updateLastAIMessage(aiResponse);
             } catch (error) {
                 updateLastAIMessage("抱歉，我無法回應您的信息。😓");
@@ -1081,10 +1113,8 @@
             }
 
             const note = categories["整合拓展"].commentNote;
-            const tone = document.getElementById("expandTone").value;
-            const toneInstruction = getToneInstruction(tone);
 
-            const prompt = `${toneInstruction} 請根據以下內容進行點評，要求：
+            const prompt = `請根據以下內容進行點評，要求：
             1. 評估「整合拓展」是否能闡釋「抄錄資料」與「主題句」的邏輯關係
             2. 判斷「拓展」方向是否正確（即是否能論證主題句）
             3. 判斷推論是否嚴謹
