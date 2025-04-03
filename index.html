@@ -214,7 +214,7 @@
         <div id="writingArea">
             <div id="outlineTableArea"></div>
             <textarea id="writingContent" rows="10" placeholder="請在此輸入您的寫作內容（「片段描寫」使用）..."></textarea>
-            <label for="writingTone">選擇點評語氣：</label>
+            <label for="writingTone" id="writingToneLabel">選擇點評語氣：</label>
             <select id="writingTone">
                 <option value="serious">嚴肅正經</option>
                 <option value="chen">陳SIR語氣</option>
@@ -438,7 +438,7 @@
                 commentNote: "必須用繁體字。點評時，必須就上述生成或輸入的題目、結構段重點、情節大要，點評大綱內容是否扣題。必須從以下兩個角度點評：其一，點評「結構段重點與題目是否有關、有多大邏輯關係」；其二，點評「情節大要是否能突顯出結構段重點、寫作內容的詳略剪裁是否恰當，即是否有效突顯結構段重點（前提是結構段重點扣題，如不扣題，情節大要及寫作內容就肯定不扣題），點評時要注意寫作內容、結構段重點兩者與題目有沒有在顯性的邏輯關係，寫作內容要求的不只是取材情節可以與結構段重點及題目構成邏輯關係，更要用合適的情節詳略剪裁和扣題小段去突顯與該部份的邏輯關係，使寫作內容明確呼應結構段重點及題目。」若離題，範例不必根據原文離題內容改寫，而改寫部份必須包含扣題小段（部份句子直接呼應結構段重點或題目）。點評分為三部分：### 點評、### 建議、### 改寫範例。只選取最重要的一至兩點評論，應先聚焦在評論寫作內容是否在扣連題目及結構段重點的方向以及其詳略剪裁，其次方為文句（包括示現敘事和密度）。若結構段重點或情節大要與題目關係薄弱，須在點評中指出並重點說明。點評內容要精簡、一語中的，僅將最關鍵、影響最大的一至兩項評語點出來，若扣題和詳略剪裁等都處理不得當，則不需要詳評文句。片段描寫需交替運用小物件、動作、對話和內心獨白，提高文句密度（詞匯深度高、物象豐富、實詞比例高），但必須注意：過猶不及，不要連用小物件做主語的句子，適時需要以人物作主語，交替去用，有時加入內心獨白會令文句顯得更自然，密度不宜過高，適時要加入虛詞放緩節奏，張弛有度。此外，要控制詳略節奏，詳寫與題目相關的部分，略寫次要內容。文句密度也是好文筆的標準，需納入考量。點評和建議不應使用列點形式，應以段落呈現。此外，假如整體表現真的不錯，沒有大問題，在點評時稱讚即可，不必吹毛求疵地批評，但在寫作內容的「扣題」邏輯上必須嚴謹把關。"
             },
             "大綱": {
-                commentNote: "必須用繁體字。點評時，必須就上述生成的題目點評大綱內容是否扣題，假如大綱離題，範例便不必根據離題內容改寫。此外，點評應分為三個部份：點評、建議、改寫範例。在寫作大綱時，學生應展示他們組織思路和結構故事的能力。評分時，請注意大綱的邏輯性、條理性以及是否包含了故事的起承轉合或三線結構。要逐部分分析每個結構段與題目的關係有多大，並在點評中明確指出。此外，在「改寫後的大綱」,其「結構段重點」必須交代該部份與題目之間的邏輯關係，即怎樣做到扣題。此外，由於是應試文章，因此改寫後的大綱避免過份具理論哲學性及文學性，以至於脫離了現實和日常生活，亦圍繞人在經歷的情感和體悟設定，必須減少概念模糊的術語，例如「情感載體」及「時空的共創」，請用日常化用語描述。此外，「改寫後的大綱」不宜只圍繞一件事敘寫，這樣會容易寫得太抽象，應適時加插人物與人物之間的回憶或其他經歷，令文章看起來更具體實在。此外，大綱不是全篇文章，最重要的是在點評時分析其結構段及情節大要的思路是否扣緊題目，方向是否合理、正確。假如整體表現真的不錯，沒有大問題，在點評時稱讚即可，不必吹毛求疵地批評。"
+                commentNote: "必須用繁體字。點評時，必須就上述生成的題目點評大綱內容是否扣題，假如大綱離題，範例便不必根據離題內容改寫。此外，點評應分為三個部份：點評、建議、改寫範例。在寫作大綱時，學生應展示他們組織思路和結構故事的能力。評分時，請注意大綱的邏輯性、條理性以及是否包含了故事的起承轉合或三線結構（即所謂「散敘」，有以下三點要注意：其一，三線的分類範疇相同；其二，三線或有層遞關係，或能從三個角度呈現同一個主題；其三，三線的情節發展不能過於相似；其四，所分之角度能突顯與主題相關的立意。「三線」例子如下：題目為「勇氣」，則可用「年少時的勇氣」為一線、「年青時的勇氣」為二線、「年老時的勇氣」為三線；又如以「重遊舊地所見有感」，則可用在故鄉的不同「地」所見作三線分類，例如老屋、後山等。必須確保每條線的「結構段重點」清晰點明三線的分類範疇、想突顯題目的甚麼要點、與題目如何扣連等，以及「合」能統攝總結全文立意）。要逐部分分析每個結構段與題目的關係有多大，並在點評中明確指出。此外，在「改寫後的大綱」,其「結構段重點」必須交代該部份與題目之間的邏輯關係，即怎樣做到扣題。此外，由於是應試文章，因此改寫後的大綱避免過份具理論哲學性及文學性，以至於脫離了現實和日常生活，亦圍繞人在經歷的情感和體悟設定，必須減少概念模糊的術語，例如「情感載體」及「時空的共創」，請用日常化用語描述。此外，「改寫後的大綱」不宜只圍繞一件事敘寫，這樣會容易寫得太抽象，應適時加插人物與人物之間的回憶或其他經歷，令文章看起來更具體實在。此外，大綱不是全篇文章，最重要的是在點評時分析其結構段及情節大要的思路是否扣緊題目，方向是否合理、正確。假如整體表現真的不錯，沒有大問題，在點評時稱讚即可，不必吹毛求疵地批評。"
             },
             "敘事物象": {
                 commentNote: "必須用繁體字。在「敘事物象」中，學生需要運用豐富的物象來增強故事的生動性和真實感。物象應與題目、取材和故事背景緊密相關，並且能夠有效地表達人物的情感和故事的主題。請確保生成的物象不重複，並且排版清晰易讀。此外，每個物象都必須由兩個字構成。"
@@ -489,22 +489,30 @@
             const narrativeElementsArea = document.getElementById("narrativeElementsArea");
             const writingContent = document.getElementById("writingContent");
             const outlineTableArea = document.getElementById("outlineTableArea");
+            const writingToneLabel = document.getElementById("writingToneLabel");
+            const writingTone = document.getElementById("writingTone");
 
             if (writingType === "大綱") {
                 outlineStructureArea.style.display = "block";
                 narrativeElementsArea.style.display = "none";
                 writingContent.style.display = "none";
                 generateOutlineTable();
+                writingToneLabel.style.display = "block";
+                writingTone.style.display = "block";
             } else if (writingType === "敘事物象") {
                 outlineStructureArea.style.display = "none";
                 narrativeElementsArea.style.display = "block";
                 writingContent.style.display = "none";
                 outlineTableArea.innerHTML = "";
+                writingToneLabel.style.display = "none";
+                writingTone.style.display = "none";
             } else {
                 outlineStructureArea.style.display = "none";
                 narrativeElementsArea.style.display = "none";
                 writingContent.style.display = "block";
                 outlineTableArea.innerHTML = "";
+                writingToneLabel.style.display = "block";
+                writingTone.style.display = "block";
             }
             toggleTopicInput();
         }
@@ -786,12 +794,14 @@
                 }
             }
 
-            const tone = document.getElementById("writingTone").value;
             let toneNote = "";
-            if (tone === "chen") {
-                toneNote = "請用輕鬆隨意的語氣進行點評，多用EMOJI，偶爾使用網絡用語，用語要日常生活化一點。如果用戶表現不好，可以善意地揶揄一下，但要注意尺度，不能傷害用戶的自尊心。";
-            } else {
-                toneNote = "請用嚴肅正經的語氣進行點評。";
+            if (writingType !== "敘事物象") {
+                const tone = document.getElementById("writingTone").value;
+                if (tone === "chen") {
+                    toneNote = "請用輕鬆隨意的語氣進行點評和建議，多用EMOJI，偶爾使用網絡用語，用語要日常生活化一點。如果用戶表現良好，請大加讚賞；如果用戶表現不好，可以善意地揶揄一下，但要注意尺度，不能傷害用戶的自尊心。揶揄時，可運用生活化的比喻。";
+                } else {
+                    toneNote = "請用嚴肅正經的語氣進行點評和建議。";
+                }
             }
 
             const note = categories[writingType].commentNote;
@@ -802,6 +812,7 @@
                 1. 在「=== 點評及建議 ===」部分，為每個結構段提供點評和建議。使用「[part]」標記每個結構段的開始，例如「[起]」，然後在下一行「點評：」後跟點評內容，再下一行「建議：」後跟建議內容。
                 2. 在「=== 改寫後的大綱 ===」部分，為每個結構段提供改寫後的「結構段重點」和「情節大要」。使用「[part]」標記每個結構段的開始，然後在下一行「結構段重點：」後跟內容，再下一行「情節大要：」後跟內容。結構段數量必須與用戶選擇的大綱結構一致（起承轉合為4段，三線為5段：起、一線、二線、三線、合）。
                 3. 在「=== 改寫說明 ===」部分，提供不超過兩點的改寫說明，每點以「1. 」和「2. 」開始。
+                4. 在「=== 改寫後的大綱 ===」中，請使用正式的語氣，不使用EMOJI或網絡用語。
                 請確保內容簡潔明了。
                 題目：${topic}
                 大綱結構：${structure === "fourPart" ? "起承轉合" : "三線（起、一線、二線、三線、合）"}
@@ -810,7 +821,7 @@
                 |------|------------|----------|
                 ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\n")}
                 教學筆記：${note}
-                點評語氣：${toneNote}`;
+                點評及建議語氣：${toneNote}`;
             } else if (writingType === "敘事物象") {
                 prompt = `請根據以下題目和取材/故事背景生成五十個不重複且相關的物象。要求：
                 1. 物象必須與題目和取材/故事背景緊密相關。
@@ -831,12 +842,13 @@
                 5. 點評時，聚焦詳略剪裁和文句（包括示現敘事和密度），選取最重要的一至兩點
                 6. 若結構段重點或情節大要與題目關係薄弱，需在點評中指出並重點說明
                 7. 點評和建議不應使用列點形式，應以段落呈現
+                8. 在「### 改寫範例」中，請使用正式的語氣，不使用EMOJI或網絡用語。
                 題目：${topic}
                 結構段重點：${focus}
                 情節大要：${plot}
                 寫作內容：${content}
                 教學筆記：${note}
-                點評語氣：${toneNote}`;
+                點評及建議語氣：${toneNote}`;
             }
 
             document.getElementById("commentResult").innerHTML = "陳SIR正在點評...";
