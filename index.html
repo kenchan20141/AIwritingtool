@@ -214,6 +214,11 @@
         <div id="writingArea">
             <div id="outlineTableArea"></div>
             <textarea id="writingContent" rows="10" placeholder="請在此輸入您的寫作內容（「片段描寫」使用）..."></textarea>
+            <label for="writingTone">選擇點評語氣：</label>
+            <select id="writingTone">
+                <option value="serious">嚴肅正經</option>
+                <option value="chen">陳SIR語氣</option>
+            </select>
             <button onclick="submitWriting()">提交</button>
             <div id="commentResult"></div>
         </div>
@@ -235,6 +240,11 @@
                 <label for="studentAnswer">貼上答案：</label>
                 <textarea id="studentAnswer" rows="5" placeholder="請在此貼上答案..."></textarea>
             </div>
+            <label for="readingTone" id="readingToneLabel" style="display: none;">選擇點評語氣：</label>
+            <select id="readingTone" style="display: none;">
+                <option value="serious">嚴肅正經</option>
+                <option value="chen">陳SIR語氣</option>
+            </select>
             <button onclick="submitReading()">提交</button>
             <div id="readingResult"></div>
         </div>
@@ -284,6 +294,11 @@
             <label for="expandContent">整合拓展（最多180字）：</label>
             <textarea id="expandContent" rows="5" placeholder="請在此輸入整合拓展內容..." oninput="updateCharCount()"></textarea>
             <p id="charCount">剩餘字數：180</p>
+            <label for="expandTone" id="expandToneLabel">選擇點評語氣：</label>
+            <select id="expandTone">
+                <option value="serious">嚴肅正經</option>
+                <option value="chen">陳SIR語氣</option>
+            </select>
             <button onclick="submitExpand()">提交</button>
             <div id="expandCommentResult"></div>
         </div>
@@ -498,7 +513,17 @@
         function toggleReadingFunction() {
             const readingFunction = document.getElementById("readingFunction").value;
             const studentAnswerArea = document.getElementById("studentAnswerArea");
-            studentAnswerArea.style.display = readingFunction === "comment" ? "block" : "none";
+            const readingToneLabel = document.getElementById("readingToneLabel");
+            const readingTone = document.getElementById("readingTone");
+            if (readingFunction === "comment") {
+                studentAnswerArea.style.display = "block";
+                readingToneLabel.style.display = "block";
+                readingTone.style.display = "block";
+            } else {
+                studentAnswerArea.style.display = "none";
+                readingToneLabel.style.display = "none";
+                readingTone.style.display = "none";
+            }
         }
 
         // 切換整合拓展功能
@@ -507,14 +532,20 @@
             const expandWritingArea = document.getElementById("expandWritingArea");
             const expandGuideArea = document.getElementById("expandGuideArea");
             const expandTopicSelectionArea = document.getElementById("expandTopicSelectionArea");
+            const expandToneLabel = document.getElementById("expandToneLabel");
+            const expandTone = document.getElementById("expandTone");
             if (expandFunction === "comment") {
                 expandWritingArea.style.display = "block";
                 expandGuideArea.style.display = "none";
                 expandTopicSelectionArea.style.display = "block";
+                expandToneLabel.style.display = "block";
+                expandTone.style.display = "block";
             } else {
                 expandWritingArea.style.display = "none";
                 expandGuideArea.style.display = "block";
                 expandTopicSelectionArea.style.display = "none";
+                expandToneLabel.style.display = "none";
+                expandTone.style.display = "none";
             }
         }
 
@@ -755,6 +786,14 @@
                 }
             }
 
+            const tone = document.getElementById("writingTone").value;
+            let toneNote = "";
+            if (tone === "chen") {
+                toneNote = "請用輕鬆隨意的語氣進行點評，多用EMOJI，偶爾使用網絡用語，用語要日常生活化一點。如果用戶表現不好，可以善意地揶揄一下，但要注意尺度，不能傷害用戶的自尊心。";
+            } else {
+                toneNote = "請用嚴肅正經的語氣進行點評。";
+            }
+
             const note = categories[writingType].commentNote;
 
             let prompt = "";
@@ -770,7 +809,8 @@
                 | 部份 | 結構段重點 | 情節大要 |
                 |------|------------|----------|
                 ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\n")}
-                教學筆記：${note}`;
+                教學筆記：${note}
+                點評語氣：${toneNote}`;
             } else if (writingType === "敘事物象") {
                 prompt = `請根據以下題目和取材/故事背景生成五十個不重複且相關的物象。要求：
                 1. 物象必須與題目和取材/故事背景緊密相關。
@@ -795,7 +835,8 @@
                 結構段重點：${focus}
                 情節大要：${plot}
                 寫作內容：${content}
-                教學筆記：${note}`;
+                教學筆記：${note}
+                點評語氣：${toneNote}`;
             }
 
             document.getElementById("commentResult").innerHTML = "陳SIR正在點評...";
@@ -918,6 +959,16 @@
                 }
             }
 
+            let toneNote = "";
+            if (readingFunction === "comment") {
+                const tone = document.getElementById("readingTone").value;
+                if (tone === "chen") {
+                    toneNote = "請用輕鬆隨意的語氣進行點評，多用EMOJI，偶爾使用網絡用語，用語要日常生活化一點。如果用戶表現不好，可以善意地揶揄一下，但要注意尺度，不能傷害用戶的自尊心。";
+                } else {
+                    toneNote = "請用嚴肅正經的語氣進行點評。";
+                }
+            }
+
             const note = readingFunction === "comment" ? categories["閱讀"].commentNote : categories["閱讀"].guideNote;
 
             let prompt = "";
@@ -935,7 +986,8 @@
                 閱讀篇章：${passage}
                 題目：${question}
                 學生的答案：${studentAnswer}
-                教學筆記：${note}`;
+                教學筆記：${note}
+                點評語氣：${toneNote}`;
             } else {
                 prompt = `請根據以下閱讀篇章和題目生成答題指引。要求：
                 1. 在「### 答題指引」中，生成三道問題以引導用家回答閱讀篇章的問題，問題針對題目，引導思考文本內容、結構和主題，每個問題占一行
@@ -1153,6 +1205,14 @@
                 return;
             }
 
+            const tone = document.getElementById("expandTone").value;
+            let toneNote = "";
+            if (tone === "chen") {
+                toneNote = "請用輕鬆隨意的語氣進行點評，多用EMOJI，偶爾使用網絡用語，用語要日常生活化一點。如果用戶表現不好，可以善意地揶揄一下，但要注意尺度，不能傷害用戶的自尊心。";
+            } else {
+                toneNote = "請用嚴肅正經的語氣進行點評。";
+            }
+
             const note = categories["整合拓展"].commentNote;
 
             const prompt = `請根據以下內容進行點評，要求：
@@ -1168,7 +1228,8 @@
             主題句：${theme}
             抄錄資料：${data}
             整合拓展：${content}
-            教學筆記：${note}`;
+            教學筆記：${note}
+            點評語氣：${toneNote}`;
 
             document.getElementById("expandCommentResult").innerHTML = "陳SIR正在點評...";
 
