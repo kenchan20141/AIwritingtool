@@ -908,18 +908,20 @@ function addArgumentStructureSegment() {
 
         // 保存議論大綱
         function saveArgumentOutline() {
-            const table = document.getElementById("argumentOutlineTable");
-            const rows = table.rows;
-            const outlineData = [];
-            for (let i = 1; i < rows.length; i++) { // 跳過表頭
-                const part = rows[i].cells[0].innerText;
-                const point = document.getElementById(`argumentPoint${i - 1}`).value.trim();
-                const evidence = document.getElementById(`argumentEvidence${i - 1}`).value.trim();
-                outlineData.push({ part, point, evidence });
-            }
-            localStorage.setItem("argumentOutlineData", JSON.stringify(outlineData));
-            alert("大綱已儲存");
-        }
+    const table = document.getElementById("argumentOutlineTable");
+    const rows = table.rows;
+    const outlineData = [];
+    for (let i = 1; i < rows.length; i++) { // 跳過表頭
+        const part = rows[i].cells[0].innerText;
+        const pointTextarea = rows[i].cells[1].querySelector("textarea");
+        const evidenceTextarea = rows[i].cells[2].querySelector("textarea");
+        const point = pointTextarea ? pointTextarea.value.trim() : "";
+        const evidence = evidenceTextarea ? evidenceTextarea.value.trim() : "";
+        outlineData.push({ part, point, evidence });
+    }
+    localStorage.setItem("argumentOutlineData", JSON.stringify(outlineData));
+    alert("大綱已儲存");
+}
 
         // 清空議論大綱
         function clearArgumentOutline() {
