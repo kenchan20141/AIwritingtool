@@ -858,27 +858,49 @@
 
         // 生成議論大綱表格
         function generateArgumentOutlineTable() {
-            let tableHTML = "<div class='table-container'><table id='argumentOutlineTable'><tr><th>部份</th><th>論點</th><th>論據及論證</th></tr>";
-            const parts = ["起", "結構段一", "結構段二", "結構段三", "合"];
-            parts.forEach((part, index) => {
-                tableHTML += `<tr><td>${part}</td><td><textarea id="argumentPoint${index}" rows="3"></textarea></td><td><textarea id="argumentEvidence${index}" rows="3"></textarea></td></tr>`;
-            });
-            tableHTML += "</table></div>";
-            document.getElementById("argumentOutlineTableArea").innerHTML = tableHTML;
+    const savedData = localStorage.getItem("argumentOutlineData");
+    let outlineData = [];
+    if (savedData) {
+        try {
+            outlineData = JSON.parse(savedData);
+        } catch (e) {
+            console.error("Error parsing argumentOutlineData:", e);
         }
+    }
+    if (outlineData.length === 0) {
+        outlineData = [
+            { part: "起", point: "", evidence: "" },
+            { part: "結構段一", point: "", evidence: "" },
+            { part: "結構段二", point: "", evidence: "" },
+            { part: "結構段三", point: "", evidence: "" },
+            { part: "合", point: "", evidence: "" }
+        ];
+    }
+    let tableHTML = "<div class='table-container'><table id='argumentOutlineTable'><tr><th>部份</th><th>論點</th><th>論據及論證</th></tr>";
+    outlineData.forEach((item, index) => {
+        tableHTML += `<tr><td>${item.part}</td><td><textarea id="argumentPoint${index}" rows="3">${item.point}</textarea></td><td><textarea id="argumentEvidence${index}" rows="3">${item.evidence}</textarea></td></tr>`;
+    });
+    tableHTML += "</table></div>";
+    document.getElementById("argumentOutlineTableArea").innerHTML = tableHTML;
+}
 
-        // 新增結構段
 function addArgumentStructureSegment() {
     const table = document.getElementById("argumentOutlineTable");
-    const rowCount = table.rows.length;
-    const newRowIndex = rowCount - 1; // 在「合」之前插入
+    const rows = table.rows;
+    let structureSegmentCount = 0;
+    for (let i = 1; i < rows.length - 1; i++) { // 跳過表頭和「合」
+        if (rows[i].cells[0].innerText.startsWith("結構段")) {
+            structureSegmentCount++;
+        }
+    }
+    const newSegmentNumber = structureSegmentCount + 1;
+    const chineseNumbers = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十"];
+    const segmentName = `結構段${chineseNumbers[newSegmentNumber - 1] || newSegmentNumber}`;
+    const newRowIndex = rows.length - 1; // 在「合」之前插入
     const newRow = table.insertRow(newRowIndex);
     const cell1 = newRow.insertCell(0);
     const cell2 = newRow.insertCell(1);
     const cell3 = newRow.insertCell(2);
-    const segmentNumber = rowCount - 2; // 從「結構段一」開始計數
-    const chineseNumbers = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十"];
-    const segmentName = `結構段${chineseNumbers[segmentNumber] || (segmentNumber + 1)}`; // 超過「十」時用數字
     cell1.innerText = segmentName;
     cell2.innerHTML = `<textarea id="argumentPoint${newRowIndex - 1}" rows="3"></textarea>`;
     cell3.innerHTML = `<textarea id="argumentEvidence${newRowIndex - 1}" rows="3"></textarea>`;
