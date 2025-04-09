@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -101,9 +102,12 @@
         .table-container th:nth-child(5), .table-container td:nth-child(5) {
             min-width: 150px;
         }
-        #writingBtn {
+        #writingBtn{
             background-color: #007bff;
         }
+        #argumentBtn {
+    background-color: #800080; /* 將「議論」按鍵設為紫色 */
+}
         #readingBtn {
             background-color: #28a745;
         }
@@ -116,6 +120,9 @@
         #writingBtn:hover {
             background-color: #0056b3;
         }
+        #argumentBtn:hover {
+    background-color: #4B0082; /* 懸停時變為深紫色 */
+}
         #readingBtn:hover {
             background-color: #218838;
         }
@@ -149,23 +156,11 @@
             background-color: #f0fff0;
             border-radius: 5px;
         }
-        #writingContainer, #readingContainer, #booksContainer, #expandContainer {
+        #writingContainer, #readingContainer, #booksContainer, #expandContainer, #argumentContainer {
             display: none;
         }
-        #expandTopicSelectionArea {
+        #argumentTopicSelectionArea, #argumentCustomTopicArea, #argumentWritingArea, #argumentGuideArea {
             margin-top: 10px;
-        }
-        #expandCustomTopicArea {
-            display: none;
-        }
-        #expandWritingArea {
-            margin-top: 10px;
-        }
-        #expandCommentResult, #expandGuideResult {
-            margin-top: 10px;
-        }
-        #expandGuideArea {
-            display: none;
         }
     </style>
 </head>
@@ -177,28 +172,32 @@
         <h2>工具功能概覽</h2>
         <p>本工具旨在協助同學練習寫作卷和閱讀卷，並提供課外書籍討論。以下是主要功能：</p>
         <ul>
-            <li><strong>寫作：</strong>提供片段描寫/全文寫作、大綱的練習及敘事物象指引，可選擇生成或自訂題目，並獲取AI點評和建議。</li>
-            <li><strong>閱讀：</strong>提供點評和指引功能，可貼上閱讀篇章和題目，獲取AI的點評或答題指引。</li>
-            <li><strong>課外書籍：</strong>提供AI聊天室，與AI討論課外書籍，引導深入思考。</li>
-            <li><strong>整合拓展：</strong>提供點評和指引功能，可選擇生成或自訂題目，並獲取AI的點評、建議和改寫。</li>
+           <li><strong>閱讀：</strong>提供點評和指引功能，可貼上閱讀篇章和題目，獲取AI的點評或答題指引。</li>
+            <li><strong>敘事抒情：</strong>提供大綱、片段描寫/全文寫作點評和敘事物象指引功能，可選擇生成或自訂題目，並獲取AI點評和建議。</li>
+            <li><strong>議論：</strong>提供大綱、片段寫作/全文寫作點評和指引功能，幫助練習議論寫作。</li>
+             <li><strong>整合拓展：</strong>提供點評和指引功能，可選擇生成或自訂題目，並獲取AI的點評、建議和改寫。</li>
+            <li><strong>課外書籍：</strong>設有AI聊天室，供用家與AI討論課外書籍，引導深入思考。</li>
+           
         </ul>
     </div>
 
     <!-- 範疇選擇 -->
     <div class="box">
-        <h2>選擇練習範疇：</h2>
-        <button id="writingBtn">寫作</button>
+        <h2>選擇範疇：</h2>
         <button id="readingBtn">閱讀</button>
-        <button id="booksBtn">課外書籍</button>
+        <button id="writingBtn">敘事抒情</button>
+        <button id="argumentBtn">議論</button>
         <button id="expandBtn">整合拓展</button>
+        <button id="booksBtn">課外書籍</button>
+        
     </div>
 
     <!-- 寫作容器 -->
     <div id="writingContainer" class="box">
-        <label for="writingType">選擇寫作類型：</label>
+        <label for="writingType">選擇功能：</label>
         <select id="writingType" onchange="toggleWritingType()">
-            <option value="片段描寫">片段描寫/全文寫作</option>
             <option value="大綱">大綱</option>
+            <option value="片段描寫">片段描寫/全文寫作</option>
             <option value="敘事物象">敘事物象</option>
         </select>
         <div id="outlineStructureArea" style="display: none;">
@@ -243,7 +242,7 @@
 
     <!-- 閱讀容器 -->
     <div id="readingContainer" class="box" style="display: none;">
-        <label for="readingFunction">選擇閱讀功能：</label>
+        <label for="readingFunction">選擇功能：</label>
         <select id="readingFunction" onchange="toggleReadingFunction()">
             <option value="comment">點評</option>
             <option value="guide">指引</option>
@@ -340,6 +339,68 @@
         </div>
     </div>
 
+    <!-- 議論容器 -->
+    <div id="argumentContainer" class="box" style="display: none;">
+        <label for="argumentType">選擇功能：</label>
+        <select id="argumentType" onchange="toggleArgumentType()">
+            <option value="outline">大綱</option>
+            <option value="writing">片段寫作/全文寫作</option>
+            <option value="guide">指引</option>
+        </select>
+        <div id="argumentTopicSelectionArea">
+            <label for="argumentTopicOption">選擇題目方式：</label>
+            <select id="argumentTopicOption" onchange="toggleArgumentTopicInput()">
+                <option value="generate">生成題目</option>
+                <option value="custom">自訂題目</option>
+            </select>
+            <div id="argumentGenerateTopicArea">
+                <button onclick="generateArgumentTopic()">生成題目</button>
+            </div>
+            <div id="argumentCustomTopicArea" style="display: none;">
+                <input type="text" id="argumentCustomTopic" placeholder="請輸入自訂題目">
+                <button onclick="setArgumentCustomTopic()">確認題目</button>
+            </div>
+            <div id="argumentTopicResult"></div>
+        </div>
+        <div id="argumentOutlineArea" style="display: none;">
+            <div id="argumentOutlineTableArea"></div>
+            <button onclick="addArgumentStructureSegment()">新增結構段</button>
+            <div id="argumentOutlineButtons">
+                <button class="save-btn" onclick="saveArgumentOutline()">儲存</button>
+                <button class="clear-btn" onclick="clearArgumentOutline()">清空</button>
+            </div>
+            <label for="argumentOutlineTone">選擇點評語氣：</label>
+            <select id="argumentOutlineTone">
+                <option value="serious">嚴肅正經</option>
+                <option value="chen">陳SIR語氣</option>
+            </select>
+            <button onclick="submitArgumentOutline()">提交</button>
+            <div id="argumentOutlineResult"></div>
+        </div>
+        <div id="argumentWritingArea" style="display: none;">
+            <textarea id="argumentWritingContent" rows="10" placeholder="請在此輸入您的文章..."></textarea>
+            <label for="argumentWritingTone">選擇點評語氣：</label>
+            <select id="argumentWritingTone">
+                <option value="serious">嚴肅正經</option>
+                <option value="chen">陳SIR語氣</option>
+            </select>
+            <button onclick="submitArgumentWriting()">提交</button>
+            <div id="argumentWritingResult"></div>
+        </div>
+        <div id="argumentGuideArea" style="display: none;">
+            <label for="argumentGuideTopic">題目：</label>
+            <input type="text" id="argumentGuideTopic" placeholder="請輸入題目">
+            <label for="argumentGuidePoint">論點（可選）：</label>
+            <textarea id="argumentGuidePoint" rows="3" placeholder="請輸入論點"></textarea>
+            <label for="argumentGuideEvidence">論據（可選）：</label>
+            <textarea id="argumentGuideEvidence" rows="3" placeholder="請輸入論據"></textarea>
+            <label for="argumentGuideArgument">論證（可選）：</label>
+            <textarea id="argumentGuideArgument" rows="3" placeholder="請輸入論證"></textarea>
+            <button onclick="submitArgumentGuide()">提交</button>
+            <div id="argumentGuideResult"></div>
+        </div>
+    </div>
+
     <script>
         // API 配置信息
         const API_KEYS = [
@@ -351,7 +412,7 @@
         const API_URL = "https://openrouter.ai/api/v1/chat/completions";
         const MODEL = "deepseek/deepseek-r1:free";
 
-        // 預設題目列表
+        // 預設寫作題目列表
         const topics = [
             "旁觀", "舞台", "這件物件很是輕巧，卻讓我明白『但求無愧於心』的道理。", "山頂", "種子", "根", "疤痕",
             "今天，我不能參賽，只能坐在觀眾席上，但當時的所見所聞卻給予我嶄新的體會。", "從今以後，我不會再輕言放棄。",
@@ -374,7 +435,7 @@
             "經過這件事，我才明白到一心是我的知己，是真正了解我的人。", "自此之後，我學會放下無謂的面子。",
             "這一次，我再沒有遺憾", "重遊舊地所見有感", "失而復得", "這條街雖然老舊，但卻充滿人情味。",
             "這句話，我會記上一輩子。", "門", "來日方長", "得不償失", "隱藏", "微笑以對",
-            "熱鬧過後，我卻感到失落。", "夢想看似不切實際，但其實很有意義", "夢想看似很有意義，其實不切實際",
+            "熱鬧過後，我卻感到失落。", "夢想看似不切實際，但其實很有意義", "夢想看似很有意義，其實 h不切實際",
             "今天我沒有帶手提電話外出，因而有不一樣的經歷和體會。",
             "今天發生了一件事情，當時我曾經想力陳己見，最後選擇了沉默。我認為沉默是必要的。",
             "矛盾", "未兌現的諾言", "未寄出的信", "距離", "一場沒有失敗者的比賽", "一件發人深省的事",
@@ -382,12 +443,21 @@
             "一次令我百感交集的聚餐", "如願以償"
         ];
 
+        // 預設議論題目列表（請在此處輸入您的題庫）
+        const argumentTopics = [
+            "論證題目1",
+            "論證題目2",
+            "論證題目3",
+            // 在此處添加更多題目
+        ];
+
         let lastTopic = localStorage.getItem("lastTopic") || "";
+        let lastArgumentTopic = localStorage.getItem("lastArgumentTopic") || "";
 
         // 範疇定義
         const categories = {
             "片段描寫": {
-                commentNote: "必須用繁體字。點評時，必須就上述生成或輸入的題目、結構段重點、情節大要，點評大綱內容是否扣題。必須從以下兩個角度點評：其一，點評「結構段重點與題目是否有關、有多大邏輯關係」；其二，點評「情節大要是否能突顯出結構段重點、寫作內容的詳略剪裁是否恰當，即是否有效突顯結構段重點（前提是結構段重點扣題，如不扣題，情節大要及寫作內容就肯定不扣題），點評時要注意寫作內容、結構段重點兩者與題目有沒有在顯性的邏輯關係，寫作內容要求的不只是取材情節可以與結構段重點及題目構成邏輯關係，更要用合適的情節詳略剪裁和扣題小段去突顯與該部份的邏輯關係，使寫作內容明確呼應結構段重點及題目。」若離題，範例不必根據原文離題內容改寫，而改寫部份必須包含扣題小段（部份句子直接呼應結構段重點或題目）。點評分為三部分：### 點評、### 建議、### 改寫範例。只選取最重要的一至兩點評論，應先聚焦在評論寫作內容是否在扣連題目及結構段重點的方向以及其詳略剪裁，其次方為文句（包括示現敘事和密度）。若結構段重點或情節大要與題目關係薄弱，須在點評中指出並重點說明。點評內容要精簡、一語中的，僅將最關鍵、影響最大的一至兩項評語點出來，若扣題和詳略剪裁等都處理不得當，則不需要詳評文句。片段描寫需交替運用小物件、動作、對話和內心獨白，提高文句密度（詞匯深度高、物象豐富、實詞比例高），但必須注意：過猶不及，不要連用小物件做主語的句子，適時需要以人物作主語，交替去用，有時加入內心獨白會令文句顯得更自然，密度不宜過高，適時要加入虛詞放緩節奏，張弛有度。此外，要控制詳略節奏，詳寫與題目相關的部分，略寫次要內容。文句密度也是好文筆的標準，需納入考量。點評和建議不應使用列點形式，應以段落呈現。此外，假如整體表現真的不錯，沒有大問題，在點評時稱讚即可，不必吹毛求疵地批評，但在寫作內容的「扣題」邏輯上必須嚴謹把關。"
+                commentNote: "必須用繁體字。點評時，必須就上述生成或輸入的題目、結構段重點、情節大要，點評大綱內容是否扣題。必須從以下兩個角度點評：其一，點評「結構段重點與題目是否有關、有多大邏輯關係」；其二，點評「情節大要是否能突顯出結構段重點、寫作內容的詳略剪裁是否恰當，即是否有效突顯結構段重點（前提是結構段重點扣題，如不扣題，情節大要及寫作內容就肯定不扣題），點評時要注意寫作內容、結構段重點兩者與題目有沒有在顯性的邏輯關係，寫作內容要求的不只是取材情節可以與結構段重點及題目構成邏輯關係，更要用合適的情節詳略剪裁和扣題小段去突顯與該部份的邏輯關係，使寫作內容明確呼應結構段重點及題目。」若離題，範例不必根據原文離題內容改寫，而改寫部份必須包含扣題小段（部份句子直接呼應結構段重點或題目）。點評分為三部分：### 點評、### 建議、### 改寫範例。只選取最重要的一至兩點評論，應先聚焦在評論寫作內容是否在扣連題目及結構段重點的方向以及其詳略剪裁，其次方為文句（包括示現敘事和密度）。若結構段重點或情節大要與題目關係薄弱，須在點評中指出並重點說明。點評內容要精簡、一語中的，僅將最關鍵、影響最大的一至兩項評語點出來，若扣題和詳略剪裁等都處理不得當，則不需要詳評文句。片段描寫需交替運用小物件、動作、對話和內心獨白，提高文句密度（詞匯深度高、物象豐富、實詞比例高），但必須注意：過�（例如連用小物件做主語的句子）則不宜，適時需要以人物作主語，交替去用，有時加入內心獨白會令文句顯得更自然，密度不宜過高，適時要加入虛詞放緩節奏，張弛有度。此外，要控制詳略節奏，詳寫與題目相關的部分，略寫次要內容。文句密度也是好文筆的標準，需納入考量。點評和建議不應使用列點形式，應以段落呈現。此外，假如整體表現真的不錯，沒有大問題，在點評時稱讚即可，不必吹毛求疵地批評，但在寫作內容的「扣題」邏輯上必須嚴謹把關。"
             },
             "大綱": {
                 commentNote: "必須用繁體字。點評時，必須就上述生成的題目點評大綱內容是否扣題，假如大綱離題，範例便不必根據離題內容改寫。此外，點評應分為三個部份：點評、建議、改寫範例。在寫作大綱時，學生應展示他們組織思路和結構故事的能力。評分時，請注意大綱的邏輯性、條理性以及是否包含了故事的起承轉合或三線結構（即所謂「散敘」，有以下三點要注意：其一，三線的分類範疇相同；其二，三線或有層遞關係，或能從三個角度呈現同一個主題；其三，三線的情節發展不能過於相似；其四，所分之角度能突顯與主題相關的立意。「三線」例子如下：題目為「勇氣」，則可用「年少時的勇氣」為一線、「年青時的勇氣」為二線、「年老時的勇氣」為三線；又如以「重遊舊地所見有感」，則可用在故鄉的不同「地」所見作三線分類，例如老屋、後山等。必須確保每條線的「結構段重點」清晰點明三線的分類範疇、想突顯題目的甚麼要點、與題目如何扣連等，以及「合」能統攝總結全文立意）。要逐部分分析每個結構段與題目的關係有多大，並在點評中明確指出。此外，在「改寫後的大綱」,其「結構段重點」必須交代該部份與題目之間的邏輯關係，即怎樣做到扣題。此外，由於是應試文章，因此改寫後的大綱避免過份具理論哲學性及文學性，以至於脫離了現實和日常生活，亦圍繞人在經歷的情感和體悟設定，必須減少概念模糊的術語，例如「情感載體」及「時空的共創」，請用日常化用語描述。此外，「改寫後的大綱」不宜只圍繞一件事敘寫，這樣會容易寫得太抽象，應適時加插人物與人物之間的回憶或其他經歷，令文章看起來更具體實在。此外，大綱不是全篇文章，最重要的是在點評時分析其結構段及情節大要的思路是否扣緊題目，方向是否合理、正確。假如整體表現真的不錯，沒有大問題，在點評時稱讚即可，不必吹毛求疵地批評。"
@@ -407,6 +477,11 @@
                 topicPrompt: "請生成一道適合中學生練習整合拓展的題目，題目應包含主題句（主題句絕對不能是問句）和抄錄資料（抄錄資料必須不包含任何數據，不得包含引號或人物對話，而且不得超過30字），並符合以下文類和取材範圍。文類：書信、評論、建議書、演講辭、報告、專題文章。取材範圍：例如環保、社會、文化、學習等活動，但出題請多元化一點，亦不要每次都是與好處相關的，否則用家多生成幾次，便會遇到類似的題目。要求：1. 主題句簡潔，20字以內。2. 抄錄資料為一段文字，不超過100字。3. 輸出格式為：主題句：...\n抄錄資料：...\n4. 內容簡潔明了，避免冗長。5. 題目多樣化，避免重複。",
                 commentNote: "必須用繁體字。點評時，需評估「整合拓展」是否能闡釋「抄錄資料」與「主題句」的邏輯關係。需判斷：1.「拓展」方向是否正確（即是否能論證主題句）；2.推論是否嚴謹；3.是否具體不空泛。「點評」時，若方向不正確，需指出並建議如何修訂，需指導緊扣主題句，亦須分析主題句和題目任務的關係是否緊密，例如題目任務為提出建議，但主題句焦點卻是描述問題，則屬於不妥當。「改寫」時亦不能順著「整合拓展」錯誤思路改善，需扣緊主題句，假如主題句本身就未能緊扣題目的任務，則不應圍繞本身錯誤的主題句改寫，要在「改寫」部份針對一個正確的主題句作改寫。此外，改寫部份不宜分為太多角度論述，這樣會令闡釋較零散，須就最多2個角度深入分析、闡釋。改寫部份不得超過180字，且不得虛構資料，包括數據及調查，不要自擬「根據調查」之類，只可根據抄錄資料補充合理細節，「改寫」部份不要重複用家輸入的「抄錄資料」，會白白浪費空間。此外，「改寫」亦要嚴謹對應主題句及抄錄資料關係，例如主題句描述活動問題，則在「改寫」的部份不宜聚焦在改善措施，必須注意詳略、輕重，才能突顯主題句。此外，「改寫」亦要留意題目任務，不要在「改寫」時會順著用家詳略不當或錯誤的「整合拓展」思路改寫。此外，「改寫」部份不要太數據化，例如做計算及分析數據等，這部份最重要是交代事理的邏輯關係。點評分為三部分：### 點評、### 建議、### 改寫。點評和建議以段落形式呈現，不使用列點。拓展方法：以抄錄資料為起點，主題句為終點，運用橫向拓展（逐步推論，回答「為何」或「如何」）或直向拓展（補充具體例子或細節）。改寫部份必須注意要運用好橫向拓展及直向拓展的技巧。常見問題包括：推論方向錯誤、未推論到底、推論點重複、推論跳脫、有量無質，需針對性指出，改寫時亦要避免犯下這些問題。",
                 guideNote: "必須用繁體字。僅生成三道問題以引導用家思考如何根據表格資料做好整合拓展，問題應圍繞主題句和抄錄資料的邏輯關係，引導用家思考如何闡釋和拓展。請不要運用歐化句及詞匯，例如「關聯性」、「實效性」，這些字詞意義不明確，但用生活化一點、具體一點的字詞生成問題。輸出分為一個部分：### 指引問題。指引問題以問題形式呈現，每個問題占一行。"
+            },
+           "議論": {
+                outlineCommentNote: "必須用繁體字。點評時，必須就上述生成或輸入的題目點評大綱內容是否扣題。必須從以下角度點評：1. 論點是否清晰明確，一語中的，能直接呼應題目；2. 用家提供的論據與論點是否密切相關，全文論據是否涵蓋古今中外（不需要每段都有古今中外的例子）；3. 段內論據的詳略有幾種模式：兩個詳的論據，或一詳數略，或數略，因應段落論述需要而定，以製造變化；4. 論證方向是否合理，能合理解釋論據與論點的關係（但要理解這部份只是大綱，不可能論證得非常具體和詳細，只要方向正確即可接受）；5. 全文脈絡是否分明，可運用前中後構建法（前：背後概念/概念背景、現實例子、駁論；中：分類論述，例如題目為《談憤怒》，可分為「公怒」和「私怒」，或分拆論述，例如題目為「面對不同意見，有人認為應據理力爭，堅守立場；有人認為應彼此包容，求同存異。上述兩種態度，哪一種較為理想？試談談你的看法。」，可一段論述「求同」，另一段論述「存異」；後：例外情況/其他看法、方法）。即使運用「陳SIR語氣」，「建議」及「改寫後的大綱」都必須正經嚴肅，不要運用EMOJI。此外，假如全文有六段或以上，則應在第二段或末二的段落做駁論，點評、建議及改寫後的大綱都要注意這點。此外，不要列點和運用「*」等符號，必須以段落和完整句子方式生成改寫後的大綱。此外，在建議和改寫後的大綱部份，若觸及一些例子或典故，必須具體說明該例子或典故的來龍去脈，以及要清楚說明如何運用該例子或典故去證立論點。此外，無論點評、建議或改寫後的大綱，用語都必須生活化，要摒棄過於抽象和理論的表達。此外，點評應分為三個部份：點評、建議、改寫範例。只選取最重要的一至兩點評論，應先聚焦在論點、論據和論證的質量，其次方為結構。點評內容要精簡、一語中的。若大綱離題，改寫後的大綱不必根據離題內容改寫。",
+                writingCommentNote: "必須用繁體字。點評時，必須就用家提供的內容去點評，不要捏造用家沒有輸入的內容作點評。須評估文章是否符合以下標準：1. 論點清晰明確，一語中的，能直接呼應題目；2. 論據與論點密切相關，全文論據涵蓋古今中外（不需要每段都有古今中外的例子，不要捏造用家沒有輸入的例子作點評，假如缺少例子，直言其問題即可。要注意過猶不及，充塞例子則感覺生硬）；3. 論證嚴謹，能具體解釋論據與論點的關係；4. 注意文句密度（詞匯量、實詞及虛詞比例，但過猶不及，過量使用實詞則生硬，適時加入虛詞，才能使文句節奏錯落有致）及修辭運用（宜適時運用排比和比喻）。點評分為三部分：### 點評、### 建議、### 改寫範例。點評和建議以段落形式呈現，不使用列點。即使運用「陳SIR語氣」，「建議」及「改寫範例」都必須正經嚴肅地表述，不要運用EMOJI。「改寫範例」應以純段落方式表述，不要運用EMOJI，不要附有【原文段落】及【改寫段落】等標題",
+                guideNote: "必須用繁體字。根據用戶輸入的題目、論點、論據和論證，提供相應的參考建議，但應重質不重量，指引論點、論據或論證都宜只舉一項，而且論證必須緊扣用家提供或你上述生成的論據作論述。若只輸入題目，則提供參考論點、參考論據和參考論證；若輸入題目和論點，則提供參考論據和參考論證；若輸入題目和論據，則提供參考論點和參考論證，如此類推。輸出分為相應部分：### 參考論點、### 參考論據、### 參考論證（視用戶輸入情況而定）。每部分以段落形式呈現。"
             }
         };
 
@@ -424,12 +499,16 @@
         document.getElementById("expandBtn").addEventListener("click", function() {
             showContainer("expandContainer");
         });
+        document.getElementById("argumentBtn").addEventListener("click", function() {
+            showContainer("argumentContainer");
+        });
 
         function showContainer(containerId) {
             document.getElementById("writingContainer").style.display = "none";
             document.getElementById("readingContainer").style.display = "none";
             document.getElementById("booksContainer").style.display = "none";
             document.getElementById("expandContainer").style.display = "none";
+            document.getElementById("argumentContainer").style.display = "none";
             document.getElementById(containerId).style.display = "block";
             if (containerId === "writingContainer") {
                 toggleWritingType();
@@ -438,68 +517,67 @@
             if (containerId === "readingContainer") toggleReadingFunction();
             if (containerId === "expandContainer") toggleExpandFunction();
             if (containerId === "booksContainer") toggleBooksDiscussionState();
+            if (containerId === "argumentContainer") toggleArgumentType();
         }
 
         // 切換寫作類型
-function toggleWritingType() {
-    const writingType = document.getElementById("writingType").value;
-    const outlineStructureArea = document.getElementById("outlineStructureArea");
-    const narrativeElementsArea = document.getElementById("narrativeElementsArea");
-    const writingContent = document.getElementById("writingContent");
-    const outlineTableArea = document.getElementById("outlineTableArea");
-    const writingToneLabel = document.getElementById("writingToneLabel");
-    const writingTone = document.getElementById("writingTone");
-    const outlineButtons = document.getElementById("outlineButtons");
+        function toggleWritingType() {
+            const writingType = document.getElementById("writingType").value;
+            const outlineStructureArea = document.getElementById("outlineStructureArea");
+            const narrativeElementsArea = document.getElementById("narrativeElementsArea");
+            const writingContent = document.getElementById("writingContent");
+            const outlineTableArea = document.getElementById("outlineTableArea");
+            const writingToneLabel = document.getElementById("writingToneLabel");
+            const writingTone = document.getElementById("writingTone");
+            const outlineButtons = document.getElementById("outlineButtons");
 
-    if (writingType === "大綱") {
-        outlineStructureArea.style.display = "block";
-        narrativeElementsArea.style.display = "none";
-        writingContent.style.display = "none";
-        outlineTableArea.style.display = "block";
-        generateOutlineTable();
-        loadOutline(); // 添加調用以確保切換時加載儲存內容
-        writingToneLabel.style.display = "block";
-        writingTone.style.display = "block";
-        outlineButtons.style.display = "block";
-    } else if (writingType === "敘事物象") {
-        outlineStructureArea.style.display = "none";
-        narrativeElementsArea.style.display = "block";
-        writingContent.style.display = "none";
-        outlineTableArea.innerHTML = "";
-        outlineTableArea.style.display = "none";
-        writingToneLabel.style.display = "none";
-        writingTone.style.display = "none";
-        outlineButtons.style.display = "none";
-    } else { // 片段描寫
-        outlineStructureArea.style.display = "none";
-        narrativeElementsArea.style.display = "none";
-        writingContent.style.display = "block";
-        outlineTableArea.innerHTML = "";
-        outlineTableArea.style.display = "none";
-        writingToneLabel.style.display = "block";
-        writingTone.style.display = "block";
-        outlineButtons.style.display = "none";
-    }
-    toggleTopicInput();
-}
+            if (writingType === "大綱") {
+                outlineStructureArea.style.display = "block";
+                narrativeElementsArea.style.display = "none";
+                writingContent.style.display = "none";
+                outlineTableArea.style.display = "block";
+                generateOutlineTable();
+                loadOutline();
+                writingToneLabel.style.display = "block";
+                writingTone.style.display = "block";
+                outlineButtons.style.display = "block";
+            } else if (writingType === "敘事物象") {
+                outlineStructureArea.style.display = "none";
+                narrativeElementsArea.style.display = "block";
+                writingContent.style.display = "none";
+                outlineTableArea.innerHTML = "";
+                outlineTableArea.style.display = "none";
+                writingToneLabel.style.display = "none";
+                writingTone.style.display = "none";
+                outlineButtons.style.display = "none";
+            } else { // 片段描寫
+                outlineStructureArea.style.display = "none";
+                narrativeElementsArea.style.display = "none";
+                writingContent.style.display = "block";
+                outlineTableArea.innerHTML = "";
+                outlineTableArea.style.display = "none";
+                writingToneLabel.style.display = "block";
+                writingTone.style.display = "block";
+                outlineButtons.style.display = "none";
+            }
+            toggleTopicInput();
+        }
 
-       // 保存大綱
-function saveOutline() {
-    const structure = document.getElementById("structure").value;
-    const parts = structure === "fourPart" ? ["起", "承", "轉", "合"] : ["起", "一線", "二線", "三線", "合"];
-    const outlineData = parts.map((part, index) => {
-        const focusId = structure + "Focus" + (index + 1);
-        const plotId = structure + "Plot" + (index + 1);
-        const focus = document.getElementById(focusId)?.value.trim() || "";
-        const plot = document.getElementById(plotId)?.value.trim() || "";
-        return { part, focus, plot };
-    });
-    console.log("Saving outline - Structure:", structure, "Data:", outlineData); // 添加日誌
-    localStorage.setItem("outlineData", JSON.stringify(outlineData));
-    localStorage.setItem("outlineStructure", structure);
-    console.log("Outline saved to localStorage"); // 添加日誌
-    alert("大綱已儲存");
-}
+        // 保存大綱
+        function saveOutline() {
+            const structure = document.getElementById("structure").value;
+            const parts = structure === "fourPart" ? ["起", "承", "轉", "合"] : ["起", "一線", "二線", "三線", "合"];
+            const outlineData = parts.map((part, index) => {
+                const focusId = structure + "Focus" + (index + 1);
+                const plotId = structure + "Plot" + (index + 1);
+                const focus = document.getElementById(focusId)?.value.trim() || "";
+                const plot = document.getElementById(plotId)?.value.trim() || "";
+                return { part, focus, plot };
+            });
+            localStorage.setItem("outlineData", JSON.stringify(outlineData));
+            localStorage.setItem("outlineStructure", structure);
+            alert("大綱已儲存");
+        }
 
         // 清空大綱
         function clearOutline() {
@@ -518,30 +596,27 @@ function saveOutline() {
         }
 
         // 加載大綱
-function loadOutline() {
-    const savedStructure = localStorage.getItem("outlineStructure");
-    const savedData = localStorage.getItem("outlineData");
-    console.log("Loading outline - Structure:", savedStructure, "Data:", savedData); // 添加日誌
-    if (savedStructure && savedData) {
-        document.getElementById("structure").value = savedStructure;
-        generateOutlineTable();
-        try {
-            const parsedData = JSON.parse(savedData);
-            parsedData.forEach((item, index) => {
-                const focusId = savedStructure + "Focus" + (index + 1);
-                const plotId = savedStructure + "Plot" + (index + 1);
-                const focusElement = document.getElementById(focusId);
-                const plotElement = document.getElementById(plotId);
-                if (focusElement) focusElement.value = item.focus;
-                else console.error("Focus element not found:", focusId); // 添加錯誤日誌
-                if (plotElement) plotElement.value = item.plot;
-                else console.error("Plot element not found:", plotId); // 添加錯誤日誌
-            });
-        } catch (e) {
-            console.error("Error parsing outlineData:", e); // 添加錯誤處理
+        function loadOutline() {
+            const savedStructure = localStorage.getItem("outlineStructure");
+            const savedData = localStorage.getItem("outlineData");
+            if (savedStructure && savedData) {
+                document.getElementById("structure").value = savedStructure;
+                generateOutlineTable();
+                try {
+                    const parsedData = JSON.parse(savedData);
+                    parsedData.forEach((item, index) => {
+                        const focusId = savedStructure + "Focus" + (index + 1);
+                        const plotId = savedStructure + "Plot" + (index + 1);
+                        const focusElement = document.getElementById(focusId);
+                        const plotElement = document.getElementById(plotId);
+                        if (focusElement) focusElement.value = item.focus;
+                        if (plotElement) plotElement.value = item.plot;
+                    });
+                } catch (e) {
+                    console.error("Error parsing outlineData:", e);
+                }
+            }
         }
-    }
-}
 
         // 保存課外書籍對話
         function saveBooksChat() {
@@ -710,6 +785,346 @@ function loadOutline() {
                 localStorage.removeItem("expandCurrentTitle");
                 localStorage.removeItem("expandCurrentTheme");
                 localStorage.removeItem("expandCurrentData");
+            }
+        }
+
+        // 切換議論功能
+        function toggleArgumentType() {
+            const argumentType = document.getElementById("argumentType").value;
+            const outlineArea = document.getElementById("argumentOutlineArea");
+            const writingArea = document.getElementById("argumentWritingArea");
+            const guideArea = document.getElementById("argumentGuideArea");
+            const topicSelectionArea = document.getElementById("argumentTopicSelectionArea");
+
+            if (argumentType === "outline") {
+                outlineArea.style.display = "block";
+                writingArea.style.display = "none";
+                guideArea.style.display = "none";
+                topicSelectionArea.style.display = "block";
+                generateArgumentOutlineTable();
+            } else if (argumentType === "writing") {
+                outlineArea.style.display = "none";
+                writingArea.style.display = "block";
+                guideArea.style.display = "none";
+                topicSelectionArea.style.display = "block";
+            } else if (argumentType === "guide") {
+                outlineArea.style.display = "none";
+                writingArea.style.display = "none";
+                guideArea.style.display = "block";
+                topicSelectionArea.style.display = "none";
+            }
+            toggleArgumentTopicInput();
+        }
+
+        // 切換題目輸入方式（議論）
+        function toggleArgumentTopicInput() {
+            const option = document.getElementById("argumentTopicOption").value;
+            const customTopicArea = document.getElementById("argumentCustomTopicArea");
+            if (option === "generate") {
+                document.getElementById("argumentGenerateTopicArea").style.display = "block";
+                customTopicArea.style.display = "none";
+                document.getElementById("argumentTopicResult").innerHTML = "";
+                localStorage.removeItem("argumentCurrentTopic");
+            } else {
+                document.getElementById("argumentGenerateTopicArea").style.display = "none";
+                customTopicArea.style.display = "block";
+                document.getElementById("argumentTopicResult").innerHTML = "";
+                localStorage.removeItem("argumentCurrentTopic");
+            }
+        }
+
+        // 生成議論題目
+        async function generateArgumentTopic() {
+            let selectedTopic;
+            do {
+                selectedTopic = argumentTopics[Math.floor(Math.random() * argumentTopics.length)];
+            } while (selectedTopic === lastArgumentTopic && argumentTopics.length > 1);
+            lastArgumentTopic = selectedTopic;
+            localStorage.setItem("lastArgumentTopic", lastArgumentTopic);
+            document.getElementById("argumentTopicResult").innerHTML = "今日題目：<strong>" + selectedTopic + "</strong>";
+            localStorage.setItem("argumentCurrentTopic", selectedTopic);
+        }
+
+        // 設定自訂題目（議論）
+        function setArgumentCustomTopic() {
+            const customTopic = document.getElementById("argumentCustomTopic").value.trim();
+            if (!customTopic) {
+                alert("請輸入自訂題目");
+                return;
+            }
+            document.getElementById("argumentTopicResult").innerHTML = "自訂題目：<strong>" + customTopic + "</strong>";
+            localStorage.setItem("argumentCurrentTopic", customTopic);
+        }
+
+        // 生成議論大綱表格
+        function generateArgumentOutlineTable() {
+            let tableHTML = "<div class='table-container'><table id='argumentOutlineTable'><tr><th>部份</th><th>論點</th><th>論據及論證</th></tr>";
+            const parts = ["起", "結構段一", "結構段二", "結構段三", "合"];
+            parts.forEach((part, index) => {
+                tableHTML += `<tr><td>${part}</td><td><textarea id="argumentPoint${index}" rows="3"></textarea></td><td><textarea id="argumentEvidence${index}" rows="3"></textarea></td></tr>`;
+            });
+            tableHTML += "</table></div>";
+            document.getElementById("argumentOutlineTableArea").innerHTML = tableHTML;
+        }
+
+        // 新增結構段
+function addArgumentStructureSegment() {
+    const table = document.getElementById("argumentOutlineTable");
+    const rowCount = table.rows.length;
+    const newRowIndex = rowCount - 1; // 在「合」之前插入
+    const newRow = table.insertRow(newRowIndex);
+    const cell1 = newRow.insertCell(0);
+    const cell2 = newRow.insertCell(1);
+    const cell3 = newRow.insertCell(2);
+    const segmentNumber = rowCount - 2; // 從「結構段一」開始計數
+    const chineseNumbers = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十"];
+    const segmentName = `結構段${chineseNumbers[segmentNumber] || (segmentNumber + 1)}`; // 超過「十」時用數字
+    cell1.innerText = segmentName;
+    cell2.innerHTML = `<textarea id="argumentPoint${newRowIndex - 1}" rows="3"></textarea>`;
+    cell3.innerHTML = `<textarea id="argumentEvidence${newRowIndex - 1}" rows="3"></textarea>`;
+}
+
+        // 保存議論大綱
+        function saveArgumentOutline() {
+            const table = document.getElementById("argumentOutlineTable");
+            const rows = table.rows;
+            const outlineData = [];
+            for (let i = 1; i < rows.length; i++) { // 跳過表頭
+                const part = rows[i].cells[0].innerText;
+                const point = document.getElementById(`argumentPoint${i - 1}`).value.trim();
+                const evidence = document.getElementById(`argumentEvidence${i - 1}`).value.trim();
+                outlineData.push({ part, point, evidence });
+            }
+            localStorage.setItem("argumentOutlineData", JSON.stringify(outlineData));
+            alert("大綱已儲存");
+        }
+
+        // 清空議論大綱
+        function clearArgumentOutline() {
+            if (confirm("確定要清空大綱嗎？")) {
+                const table = document.getElementById("argumentOutlineTable");
+                const rows = table.rows;
+                for (let i = 1; i < rows.length; i++) {
+                    document.getElementById(`argumentPoint${i - 1}`).value = "";
+                    document.getElementById(`argumentEvidence${i - 1}`).value = "";
+                }
+                localStorage.removeItem("argumentOutlineData");
+            }
+        }
+
+        // 提交議論大綱
+// 提交議論大綱
+async function submitArgumentOutline() {
+    const topic = localStorage.getItem("argumentCurrentTopic");
+    if (!topic) {
+        alert("請先設定題目");
+        return;
+    }
+    const table = document.getElementById("argumentOutlineTable");
+    const rows = table.rows;
+    const outlineData = [];
+    for (let i = 1; i < rows.length; i++) { // 跳過表頭
+        const part = rows[i].cells[0].innerText;
+        const pointTextarea = rows[i].cells[1].querySelector("textarea");
+        const evidenceTextarea = rows[i].cells[2].querySelector("textarea");
+        const point = pointTextarea ? pointTextarea.value.trim() : "";
+        const evidence = evidenceTextarea ? evidenceTextarea.value.trim() : "";
+        if (!point || !evidence) {
+            alert("請填寫所有大綱表格");
+            return;
+        }
+        outlineData.push({ part, point, evidence });
+    }
+    const tone = document.getElementById("argumentOutlineTone").value;
+    let toneNote = tone === "chen" ? "請用輕鬆隨意的語氣進行點評和建議，多用EMOJI，偶爾使用網絡用語。(「議論」中的「片段描寫/全文寫作」中的「建議」、「改寫範例」以及「大綱」的「建議」及「改寫後的大綱」維持嚴肅正經語氣）" : "請用嚴肅正經的語氣進行點評和建議。";
+    const note = categories["議論"].outlineCommentNote;
+    const partsList = outlineData.map(item => item.part).join(", ");
+    const prompt = `請根據以下大綱內容進行點評和建議，並提供改寫後的大綱。要求：
+    1. 在「=== 點評及建議 ===」部分，為以下每個結構段提供點評和建議：${partsList}。使用「[part]」標記每個結構段的開始，例如「[起]」，然後在下一行「點評：」後跟點評內容，再下一行「建議：」後跟建議內容。
+    2. 在「=== 改寫後的大綱 ===」部分，為以下每個結構段提供改寫後的「論點」和「論據及論證」：${partsList}。使用「[part]」標記每個結構段的開始，然後在下一行「論點：」後跟內容，再下一行「論據及論證：」後跟內容。
+    3. 請確保內容簡潔明了。
+    4. 請確保「=== 改寫後的大綱 ===」部分的「論點」用語生活化，不要運用過份抽象及理論化的字眼，例如「二元對立」等。
+    題目：${topic}
+    用戶輸入的大綱：
+    | 部份 | 論點 | 論據及論證 |
+    |------|------|------------|
+    ${outlineData.map(item => `| ${item.part} | ${item.point} | ${item.evidence} |`).join("\n")}
+        教學筆記：${note}
+    點評語氣：${toneNote}
+    建議和改寫後的大綱語氣：請使用嚴肅正經的語氣，不使用EMOJI或網絡用語。`;
+    document.getElementById("argumentOutlineResult").innerHTML = "陳SIR正在點評...";
+
+    try {
+        const comment = await callAPI(prompt);
+        console.log("API 回應:", comment); // 調試用
+        const sections = comment.split(/=== (.+?) ===/).filter(s => s.trim());
+        const commentIndex = sections.indexOf("點評及建議");
+        const rewriteIndex = sections.indexOf("改寫後的大綱");
+
+        const commentPart = commentIndex !== -1 ? sections[commentIndex + 1] : "";
+        const rewritePart = rewriteIndex !== -1 ? sections[rewriteIndex + 1] : "";
+
+        function parseCommentPart(commentPart) {
+            const comments = {};
+            const regex = /\[(.+?)\]\s*點評：\s*(.+?)(?=\s*建議：|\s*\[|$)/gs;
+            const suggestionRegex = /\[(.+?)\]\s*點評：.+?\s*建議：\s*(.+?)(?=\s*\[|$)/gs;
+            let match;
+
+            while ((match = regex.exec(commentPart)) !== null) {
+                const part = match[1];
+                comments[part] = comments[part] || {};
+                comments[part].comment = match[2].trim();
+            }
+            while ((match = suggestionRegex.exec(commentPart)) !== null) {
+                const part = match[1];
+                comments[part] = comments[part] || {};
+                comments[part].suggestion = match[2].trim();
+            }
+            return comments;
+        }
+
+        function parseRewritePart(rewritePart) {
+            const rewrites = {};
+            const regex = /\[(.+?)\]\s*論點：\s*(.+?)(?=\s*論據及論證：|\s*\[|$)/gs;
+            const evidenceRegex = /\[(.+?)\]\s*論點：.+?\s*論據及論證：\s*(.+?)(?=\s*\[|$)/gs;
+            let match;
+
+            while ((match = regex.exec(rewritePart)) !== null) {
+                const part = match[1];
+                rewrites[part] = rewrites[part] || {};
+                rewrites[part].point = match[2].trim();
+            }
+            while ((match = evidenceRegex.exec(rewritePart)) !== null) {
+                const part = match[1];
+                rewrites[part] = rewrites[part] || {};
+                rewrites[part].evidence = match[2].trim();
+            }
+            return rewrites;
+        }
+
+        const comments = parseCommentPart(commentPart);
+        const rewrites = parseRewritePart(rewritePart);
+
+        let commentTableHTML = `<h3>陳SIR點評及建議：</h3><div class="table-container"><table id="argumentCommentTable"><tr><th>部份</th><th>論點</th><th>論據及論證</th><th>點評</th><th>建議</th></tr>`;
+        outlineData.forEach(item => {
+            const comment = comments[item.part]?.comment || "未生成點評";
+            const suggestion = comments[item.part]?.suggestion || "未生成建議";
+            commentTableHTML += `<tr><td>${item.part}</td><td>${item.point}</td><td>${item.evidence}</td><td>${comment}</td><td>${suggestion}</td></tr>`;
+        });
+        commentTableHTML += "</table></div>";
+
+        let rewriteTableHTML = `<h3>改寫後的大綱：</h3><div class="table-container"><table id="argumentRewriteTable"><tr><th>部份</th><th>論點</th><th>論據及論證</th></tr>`;
+        outlineData.forEach(item => {
+            const rewrite = rewrites[item.part] || { point: "未生成論點", evidence: "未生成論據及論證" };
+            rewriteTableHTML += `<tr><td>${item.part}</td><td>${rewrite.point || "未生成論點"}</td><td>${rewrite.evidence || "未生成論據及論證"}</td></tr>`;
+        });
+        rewriteTableHTML += "</table></div>";
+
+        document.getElementById("argumentOutlineResult").innerHTML = commentTableHTML + rewriteTableHTML;
+    } catch (error) {
+        console.error("提交大綱時出錯:", error);
+        if (error.message === "所有 API 密鑰均無法使用") {
+            alert("今日 API 調用次數已用完或API無法連接，請明天再試");
+        } else {
+            alert("點評生成失敗，請重試");
+        }
+        document.getElementById("argumentOutlineResult").innerHTML = "";
+    }
+}
+
+        // 提交議論片段寫作/全文寫作
+        async function submitArgumentWriting() {
+            const topic = localStorage.getItem("argumentCurrentTopic");
+            if (!topic) {
+                alert("請先設定題目");
+                return;
+            }
+            const content = document.getElementById("argumentWritingContent").value.trim();
+            if (!content) {
+                alert("請輸入您的文章");
+                return;
+            }
+            const tone = document.getElementById("argumentWritingTone").value;
+            let toneNote = tone === "chen" ? "請用輕鬆隨意的語氣進行點評和建議，多用EMOJI，偶爾使用網絡用語。" : "請用嚴肅正經的語氣進行點評和建議。";
+            const note = categories["議論"].writingCommentNote;
+            const prompt = `請根據以下文章進行點評，要求：
+            1. 評估論點是否清晰明確，一語中的，能直接呼應題目
+            2. 評估論據是否與論點密切相關，全文論據是否涵蓋古今中外（不需要每段都有古今中外的例子）
+            3. 評估論證是否嚴謹，能具體解釋論據與論點的關係
+            4. 評估文句密度（詞匯量、實詞及虛詞比例）
+            5. 在「### 點評」及「### 建議」中，必須根據用家輸入的內容點評及建議，不能捏造事實，即先指出用家未曾提過的例子或論點，然後據此再作點評及建議。
+            6. 在「### 改寫範例」中，請注意例子密度的控制，不要連續舉例，宜運用兩詳（兩個詳細例子論證一個論點）、一詳二略（一個詳細例子加兩個簡略例子論證一個論點）或數略（數個簡略例子論證一個論點）等方式，使文章錯落有致。而且，請確保「### 改寫範例」用語生活化，不要運用過份抽象及理論化的字眼，例如「二元對立」等。
+            7. 輸出分為三個部分：### 點評、### 建議、### 改寫範例
+            8. 點評和建議以段落形式呈現，不使用列點
+                題目：${topic}
+    文章：${content}
+    教學筆記：${note}
+    點評語氣：${toneNote}
+    建議及改寫範例語氣：請使用嚴肅正經的語氣，不使用EMOJI或網絡用語。`;
+    document.getElementById("argumentWritingResult").innerHTML = "陳SIR正在點評...";
+
+            try {
+                const comment = await callAPI(prompt);
+                const commentParts = comment.split("###").map(part => part.trim()).filter(part => part);
+                let commentHTML = "<h3>陳SIR點評：</h3><table>";
+                commentParts.forEach(part => {
+                    const [title, ...content] = part.split("\n").filter(line => line.trim());
+                    commentHTML += `<tr><th><strong>${title}</strong></th></tr><tr><td>${content.join("<br>")}</td></tr>`;
+                });
+                commentHTML += "</table>";
+                document.getElementById("argumentWritingResult").innerHTML = commentHTML;
+            } catch (error) {
+                console.error("提交文章時出錯:", error);
+                if (error.message === "所有 API 密鑰均無法使用") {
+                    alert("今日 API 調用次數已用完或API無法連接，請明天再試");
+                } else {
+                    alert("點評生成失敗，請重試");
+                }
+                document.getElementById("argumentWritingResult").innerHTML = "";
+            }
+        }
+
+        // 提交議論指引
+        async function submitArgumentGuide() {
+            const topic = document.getElementById("argumentGuideTopic").value.trim();
+            const point = document.getElementById("argumentGuidePoint").value.trim();
+            const evidence = document.getElementById("argumentGuideEvidence").value.trim();
+            const argument = document.getElementById("argumentGuideArgument").value.trim();
+            if (!topic) {
+                alert("請輸入題目");
+                return;
+            }
+            const note = categories["議論"].guideNote;
+            let prompt = `請根據以下輸入提供參考建議。要求：
+            1. 若只輸入題目，則提供參考論點、參考論據和參考論證（「### 參考論證」的用語要生活化，不要運用過於抽象及理論化的用語，例如「二元對立」等）
+            2. 若輸入題目和論點，則提供參考論據和參考論證（「### 參考論證」的用語要生活化，不要運用過於抽象及理論化的用語，例如「二元對立」等）
+            3. 若輸入題目和論據，則提供參考論點和參考論證（「### 參考論證」的用語要生活化，不要運用過於抽象及理論化的用語，例如「二元對立」等）
+            4. 輸出分為相應的部分：### 參考論點、### 參考論據、### 參考論證
+            5. 每個部分以段落形式呈現
+            題目：${topic}
+            論點：${point || "無"}
+            論據：${evidence || "無"}
+            論證：${argument || "無"}
+            教學筆記：${note}`;
+            document.getElementById("argumentGuideResult").innerHTML = "陳SIR正在思考...";
+            try {
+                const guide = await callAPI(prompt);
+                const guideParts = guide.split("###").map(part => part.trim()).filter(part => part);
+                let guideHTML = "<h3>陳SIR指引：</h3><table>";
+                guideParts.forEach(part => {
+                    const [title, ...content] = part.split("\n").filter(line => line.trim());
+                    guideHTML += `<tr><th><strong>${title}</strong></th></tr><tr><td>${content.join("<br>")}</td></tr>`;
+                });
+                guideHTML += "</table>";
+                document.getElementById("argumentGuideResult").innerHTML = guideHTML;
+            } catch (error) {
+                console.error("提交指引時出錯:", error);
+                if (error.message === "所有 API 密鑰均無法使用") {
+                    alert("今日 API 調用次數已用完或API無法連接，請明天再試");
+                } else {
+                    alert("指引生成失敗，請重試");
+                }
+                document.getElementById("argumentGuideResult").innerHTML = "";
             }
         }
 
@@ -1307,6 +1722,8 @@ function loadOutline() {
             }
         }
 
+
+
         // 提交點評功能
         async function submitExpandComment() {
             const title = localStorage.getItem("expandCurrentTitle");
@@ -1421,3 +1838,4 @@ function loadOutline() {
     </script>
 </body>
 </html>
+
