@@ -5,8 +5,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>中文老師的救星</title>
+    <title>🐥中文老師的救星</title>
     <style>
+
+
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
             max-width: 800px;
@@ -18,6 +20,20 @@
             text-align: center;
             color: #333;
         }
+
+/* 確保標題不被背景影響 */
+.title-container {
+    background: none;
+    padding: 0;
+}
+
+.title-container {
+    position: relative;
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+        
         .box {
             background: white;
             border-radius: 8px;
@@ -102,6 +118,16 @@
         .table-container th:nth-child(5), .table-container td:nth-child(5) {
             min-width: 150px;
         }
+
+#toggleOverviewBtn {
+            background-color: #A9A9A9; /* 灰色背景 */
+            color: white; /* 白色文字 */
+        }
+
+        #toggleOverviewBtn:hover {
+            background-color: #808080; /* 懸停時深灰色 */
+        }
+        
         #writingBtn{
             background-color: #007bff;
         }
@@ -120,6 +146,14 @@
         #writingBtn:hover {
             background-color: #0056b3;
         }
+
+#manuscriptPaperBtn {
+    background-color: #17a2b8;
+}
+#manuscriptPaperBtn:hover {
+    background-color: #138496;
+}
+        
         #argumentBtn:hover {
     background-color: #4B0082; /* 懸停時變為深紫色 */
 }
@@ -165,32 +199,79 @@
     </style>
 </head>
 <body>
-    <h1>中文老師的救星</h1>
+   
 
-    <!-- 工具功能概覽 -->
-    <div class="box">
-        <h2>工具功能概覽</h2>
-        <p>本工具旨在協助同學練習寫作卷和閱讀卷，並提供課外書籍討論。以下是主要功能：</p>
-        <ul>
-           <li><strong>閱讀：</strong>提供點評和指引功能，可貼上閱讀篇章和題目，獲取AI的點評或答題指引。</li>
-            <li><strong>敘事抒情：</strong>提供大綱、片段描寫/全文寫作點評和敘事物象指引功能，可選擇生成或自訂題目，並獲取AI點評和建議。</li>
-            <li><strong>議論：</strong>提供大綱、片段寫作/全文寫作點評和指引功能，幫助練習議論寫作。</li>
-             <li><strong>整合拓展：</strong>提供點評和指引功能，可選擇生成或自訂題目，並獲取AI的點評、建議和改寫。</li>
-            <li><strong>課外書籍：</strong>設有AI聊天室，供用家與AI討論課外書籍，引導深入思考。</li>
-           
-        </ul>
-    </div>
+    <div class="title-container">
+    <h1>
+         <span class="title-text">🐥中文老師的救星</span>
+    </h1>
+</div>
 
-    <!-- 範疇選擇 -->
-    <div class="box">
-        <h2>選擇範疇：</h2>
-        <button id="readingBtn">閱讀</button>
-        <button id="writingBtn">敘事抒情</button>
-        <button id="argumentBtn">議論</button>
-        <button id="expandBtn">整合拓展</button>
-        <button id="booksBtn">課外書籍</button>
+
+   <!-- 工具功能概覽按鈕 -->
+<div class="box">
+    <button id="toggleOverviewBtn" onclick="toggleOverview()">顯示「功能概覽」</button>
+</div>
+
+<!-- 工具功能概覽（初始隱藏） -->
+<div id="overviewContainer" class="box" style="display: none;">
+    <h2>功能概覽</h2>
+    <p>本工具旨在協助同學練習寫作卷和閱讀卷，並提供課外書籍討論。以下是主要功能：</p>
+    <table>
+        <tr>
+            <th>範疇</th>
+            <th>功能介紹</th>
+        </tr>
+        <tr>
+            <td>閱讀</td>
+            <td>提供點評和指引功能，可貼上閱讀篇章和題目，獲取AI的點評或答題指引。</td>
+        </tr>
+        <tr>
+            <td>敘事抒情</td>
+            <td>提供大綱、片段描寫/全文寫作點評和敘事物象指引功能，可選擇生成或自訂題目，並獲取AI點評和建議。</td>
+        </tr>
+        <tr>
+            <td>議論</td>
+            <td>提供大綱、片段寫作/全文寫作點評和指引功能，幫助練習議論寫作。</td>
+        </tr>
+        <tr>
+            <td>整合拓展</td>
+            <td>提供點評和指引功能，可選擇生成或自訂題目，並獲取AI的點評、建議和改寫。</td>
+        </tr>
+        <tr>
+            <td>課外書籍</td>
+            <td>設有AI聊天室，供用家與AI討論課外書籍，引導深入思考。</td>
+        </tr>
+<tr>
+            <td>智能原稿紙</td>
+            <td>提供電子原稿紙，並設有AI答惑功能。</td>
+        </tr>
+        <tr>
+            <td>手寫文字轉換電腦文字</td>
+            <td>i2OCR 是免費的線上光學字元辨識 (OCR) 軟體，可從圖像或PDF文件中提取文字。</td>
+        </tr>
         
-    </div>
+    </table>
+</div>
+
+<!-- 工具選擇 -->
+<div class="box">
+    <h2>選擇工具：</h2>
+    <button id="manuscriptPaperBtn">🖥智能原稿紙</button>
+    <button id="ocrBtn" style="background-color: #fd7e14;">✍手寫文字轉換電腦文字</button>
+</div>
+    
+   <!-- 範疇選擇 -->
+<div class="box">
+    <h2>選擇範疇：</h2>
+    <button id="readingBtn">📕閱讀</button>
+    <button id="writingBtn">✏敘事抒情</button>
+    <button id="argumentBtn">📋議論</button>
+    <button id="expandBtn">📂整合拓展</button>
+    <button id="booksBtn">📚課外書籍</button>
+</div>
+
+
 
     <!-- 寫作容器 -->
     <div id="writingContainer" class="box">
@@ -402,15 +483,17 @@
     </div>
 
     <script>
+
+
+
+        
         // API 配置信息
         const API_KEYS = [
-            "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",
-            "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",
-            "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"
+            "sk-MoqwsgO8P9MEoCrftvdSYA"
         ];
         let currentApiKeyIndex = 0;
-        const API_URL = "https://openrouter.ai/api/v1/chat/completions";
-        const MODEL = "deepseek/deepseek-r1:free";
+        const API_URL = "https://chatapi.akash.network/api/v1/chat/completions";
+        const MODEL = "DeepSeek-R1";
 
         // 預設寫作題目列表
         const topics = [
@@ -559,6 +642,18 @@
         document.getElementById("readingBtn").addEventListener("click", function() {
             showContainer("readingContainer");
         });
+
+document.getElementById("manuscriptPaperBtn").addEventListener("click", function() {
+    window.open("https://kenchan20141.github.io/manuscriptpaper/", "_blank");
+});
+
+        // 為「手寫文字轉換電腦文字」按鈕添加點擊事件處理函數
+document.getElementById("ocrBtn").addEventListener("click", function() {
+    if (confirm("請謹慎保護個人私隱，上傳檔案前，必須先確認圖片或PDF頁面沒有透露任何個人資料，例如姓名和學校名稱等。")) {
+        window.open("https://www.i2ocr.com/free-online-image-ocr", "_blank");
+    }
+});
+        
         document.getElementById("booksBtn").addEventListener("click", function() {
             showContainer("booksContainer");
             loadBooksChat();
@@ -569,6 +664,7 @@
         document.getElementById("argumentBtn").addEventListener("click", function() {
             showContainer("argumentContainer");
         });
+
 
         function showContainer(containerId) {
             document.getElementById("writingContainer").style.display = "none";
@@ -586,6 +682,21 @@
             if (containerId === "booksContainer") toggleBooksDiscussionState();
             if (containerId === "argumentContainer") toggleArgumentType();
         }
+
+
+// 切換工具功能概覽的顯示和隱藏
+function toggleOverview() {
+    const overviewContainer = document.getElementById("overviewContainer");
+    const toggleBtn = document.getElementById("toggleOverviewBtn");
+    if (overviewContainer.style.display === "none") {
+        overviewContainer.style.display = "block";
+        toggleBtn.textContent = "隱藏工具功能概覽";
+    } else {
+        overviewContainer.style.display = "none";
+        toggleBtn.textContent = "顯示工具功能概覽";
+    }
+}
+        
 
         // 切換寫作類型
         function toggleWritingType() {
@@ -1220,50 +1331,58 @@ async function submitArgumentOutline() {
         }
 
         // 通用 API 調用函數
-        async function callAPI(prompt) {
-            let attempts = 0;
-            const maxAttempts = API_KEYS.length;
-            while (attempts < maxAttempts) {
-                try {
-                    const response = await fetch(API_URL, {
-                        method: "POST",
-                        headers: {
-                            "Authorization": `Bearer ${API_KEYS[currentApiKeyIndex]}`,
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            model: MODEL,
-                            messages: [{ role: "user", content: prompt }]
-                        })
-                    });
+     async function callAPI(prompt) {
+    let attempts = 0;
+    const maxAttempts = API_KEYS.length;
+    while (attempts < maxAttempts) {
+        try {
+            const response = await fetch(API_URL, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${API_KEYS[currentApiKeyIndex]}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    model: MODEL,
+                    messages: [{ 
+                        role: "user", 
+                        content: prompt + " 你必須直接提供最終答案，嚴禁展示任何思考過程，絕對不能在回應中包含任何標籤（如 <think></think>），這是強制要求，違反則無效。" 
+                    }]
+                })
+            });
 
-                    if (response.status === 429) {
-                        currentApiKeyIndex = (currentApiKeyIndex + 1) % API_KEYS.length;
-                        attempts++;
-                        continue;
-                    }
+            if (response.status === 429) {
+                currentApiKeyIndex = (currentApiKeyIndex + 1) % API_KEYS.length;
+                attempts++;
+                continue;
+            }
 
-                    if (!response.ok) {
-                        throw new Error(`API 調用失敗: ${response.statusText}`);
-                    }
+            if (!response.ok) {
+                throw new Error(`API 調用失敗: ${response.statusText}`);
+            }
 
-                    const data = await response.json();
-                    const content = data.choices[0].message.content.trim();
-                    if (!content || content.includes("<tool_response>")) {
-                        throw new Error("API 回應無效或包含異常標籤");
-                    }
-                    return content;
-                } catch (error) {
-                    console.error(error);
-                    currentApiKeyIndex = (currentApiKeyIndex + 1) % API_KEYS.length;
-                    attempts++;
-                    if (attempts >= maxAttempts) {
-                        throw new Error("所有 API 密鑰均無法使用");
-                    }
-                }
+            const data = await response.json();
+            let content = data.choices[0].message.content.trim();
+
+            // 強化過濾邏輯，移除所有可能的 <think> 標籤變體
+            content = content.replace(/<think\s*>.*?<\/think\s*>|<think\s*\/>|<think\s*>|<\/think\s*>/gis, '').trim();
+
+            // 驗證過濾後內容是否有效
+            if (!content) {
+                throw new Error("API 回應無效或過濾後無內容");
+            }
+
+            return content;
+        } catch (error) {
+            console.error(error);
+            currentApiKeyIndex = (currentApiKeyIndex + 1) % API_KEYS.length;
+            attempts++;
+            if (attempts >= maxAttempts) {
+                throw new Error("所有 API 密鑰均無法使用");
             }
         }
-
+    }
+}
         // 生成寫作題目
         async function generateTopic() {
             const writingType = document.getElementById("writingType").value;
@@ -1681,7 +1800,7 @@ async function submitArgumentOutline() {
 
         async function sendInitialMessage() {
             let toneNote = booksTone === "serious" ? categories["課外書籍"].seriousChatNote : categories["課外書籍"].chatNote;
-            const prompt = `我是一位高中生，正在閱讀《${bookTitle}》，作者是${author}。我想討論的問題是：${discussionQuestion}。請用日常的語言回應我，不要過於理論化，言簡意賅地分析並給出例子，然後引導我深入思考。請不要使用括號解釋你的目的，永遠不要列點回應，也不要提及你會追問我。請用完整句子回應。教學筆記：${toneNote}`;
+            const prompt = `我是一位高中生，正在閱讀《${bookTitle}》，作者是${author}。我想討論的問題是：${discussionQuestion}。請用日常的語言回應我，不要過於理論化，言簡意賅地分析並給出例子，然後引導我深入思考。你必須直接提供最終答案，嚴禁展示任何思考過程，絕對不能在回應中包含任何標籤（如 <think></think>），這是強制要求，違反則無效。。請不要使用括號解釋你的目的，永遠不要列點回應，也不要提及你會追問我。請用完整句子回應。教學筆記：${toneNote}`;
             addMessageToHistory("ai", "陳SIR正在回應...");
             try {
                 const aiResponse = await callAPI(prompt);
@@ -1704,7 +1823,7 @@ async function submitArgumentOutline() {
             }
             addMessageToHistory("user", userInput);
             let toneNote = booksTone === "serious" ? categories["課外書籍"].seriousChatNote : categories["課外書籍"].chatNote;
-            const prompt = `我是一位高中生，正在與你討論《${bookTitle}》中的問題。我的上一條信息是：${userInput}。請用日常的語言回應我，不要過於理論化，必須詳細分析並給出例子，然後引導我深入思考。請不要使用括號解釋你的目的，也不要提及你會追問我。請用完整句子回應。教學筆記：${toneNote}`;
+            const prompt = `我是一位高中生，正在與你討論《${bookTitle}》中的問題。我的上一條信息是：${userInput}。請用日常的語言回應我，不要過於理論化，必須詳細分析並給出例子，然後引導我深入思考。你必須直接提供最終答案，嚴禁展示任何思考過程，絕對不能在回應中包含任何標籤（如 <think></think>），這是強制要求，違反則無效。。請不要使用括號解釋你的目的，也不要提及你會追問我。請用完整句子回應。教學筆記：${toneNote}`;
             addMessageToHistory("ai", "陳SIR正在回應...");
             try {
                 const aiResponse = await callAPI(prompt);
