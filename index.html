@@ -493,7 +493,7 @@
         ];
         let currentApiKeyIndex = 0;
         const API_URL = "https://chatapi.akash.network/api/v1/chat/completions";
-        const MODEL = "DeepSeek-R1";
+        const MODEL = "Meta-Llama-4-Maverick-17B-128E-Instruct-FP8";
 
         // 預設寫作題目列表
         const topics = [
@@ -649,7 +649,7 @@ document.getElementById("manuscriptPaperBtn").addEventListener("click", function
 
         // 為「手寫文字轉換電腦文字」按鈕添加點擊事件處理函數
 document.getElementById("ocrBtn").addEventListener("click", function() {
-    if (confirm("請謹慎保護個人私隱，上傳檔案前，必須先確認圖片或PDF頁面沒有透露任何個人資料，例如姓名和學校名稱等。")) {
+    if (confirm("請小心保護個人私隱，上傳檔案前，必須先確認圖片或PDF頁面沒有透露任何個人資料，例如姓名和學校名稱等。")) {
         window.open("https://www.i2ocr.com/free-online-image-ocr", "_blank");
     }
 });
