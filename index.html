@@ -204,49 +204,6 @@
         #argumentTopicSelectionArea, #argumentCustomTopicArea, #argumentWritingArea, #argumentGuideArea {
             margin-top: 10px;
         }
-
-#music-player {
-    position: fixed;
-    bottom: 0; /* 改為 0，緊貼底部 */
-    left: 0;
-    width: 100%;
-    background-color: #444;
-    color: white;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    z-index: 1002;
-    box-sizing: border-box;
-    font-size: 14px;
-}
-
-#music-player.hidden {
-    display: none; /* 隱藏時不佔空間 */
-}
-
-#show-player {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    background: #444;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 50%;
-    cursor: pointer;
-    z-index: 1003;
-    display: none; /* 初始隱藏 */
-    font-size: 16px;
-}
-
-/* 為頁面內容留出空間 */
-body {
-    padding-bottom: 60px; /* 根據播放器高度調整 */
-}
-
-
-        
     </style>
 </head>
 <body>
@@ -537,32 +494,11 @@ body {
         </div>
     </div>
 
-    <div id="music-player">
-    <div class="controls">
-        <select id="music-select">
-            <option value="">選擇音樂</option>
-            <!-- 你的音樂選項保持不變 -->
-        </select>
-        <button id="play-pause">▶️</button>
-    </div>
-    <div class="progress">
-        <input type="range" id="progress-bar-music" value="0" min="0" max="100">
-    </div>
-    <div class="mode">
-        <select id="play-mode">
-            <option value="loop" selected>單曲循環</option>
-            <option value="next">自動播放下首</option>
-        </select>
-    </div>
-    <button class="hide-btn" id="hide-player">🔽</button>
-</div>
-<button id="show-player">🎵</button>
-<audio id="audio" preload="auto"></audio>
-
-
-    
     <script>
 
+
+
+        
         // API 配置信息
         const API_KEYS = [
             "sk-MoqwsgO8P9MEoCrftvdSYA"
@@ -571,64 +507,6 @@ body {
         const API_URL = "https://chatapi.akash.network/api/v1/chat/completions";
         const MODEL = "DeepSeek-R1";
 
-
-// 獲取 DOM 元素
-const musicPlayer = document.getElementById('music-player');
-const showPlayerBtn = document.getElementById('show-player');
-const audio = document.getElementById('audio');
-const playPauseBtn = document.getElementById('play-pause');
-const progressBar = document.getElementById('progress-bar-music');
-const musicSelect = document.getElementById('music-select');
-const hidePlayerBtn = document.getElementById('hide-player');
-
-// 隱藏播放器並調整頁面空間
-hidePlayerBtn.addEventListener('click', () => {
-    musicPlayer.classList.add('hidden');
-    showPlayerBtn.style.display = 'block';
-    document.body.style.paddingBottom = '0'; /* 隱藏時移除內邊距 */
-});
-
-// 顯示播放器並恢復頁面空間
-showPlayerBtn.addEventListener('click', () => {
-    musicPlayer.classList.remove('hidden');
-    showPlayerBtn.style.display = 'none';
-    document.body.style.paddingBottom = '60px'; /* 顯示時添加內邊距 */
-});
-
-// 播放與暫停
-playPauseBtn.addEventListener('click', () => {
-    if (audio.paused) {
-        audio.play();
-        playPauseBtn.textContent = '⏸️';
-    } else {
-        audio.pause();
-        playPauseBtn.textContent = '▶️';
-    }
-});
-
-// 選擇音樂
-musicSelect.addEventListener('change', (e) => {
-    const selectedMusic = e.target.value;
-    if (selectedMusic) {
-        audio.src = selectedMusic;
-        audio.play();
-        playPauseBtn.textContent = '⏸️';
-    }
-});
-
-// 更新進度條
-audio.addEventListener('timeupdate', () => {
-    const progress = (audio.currentTime / audio.duration) * 100;
-    progressBar.value = progress;
-});
-
-// 拖動進度條
-progressBar.addEventListener('input', (e) => {
-    const seekTime = (e.target.value / 100) * audio.duration;
-    audio.currentTime = seekTime;
-});
-
-        
         // 預設寫作題目列表
         const topics = [
             "旁觀", "舞台", "這件物件很是輕巧，卻讓我明白『但求無愧於心』的道理。", "山頂", "種子", "根", "疤痕",
@@ -824,10 +702,10 @@ function toggleOverview() {
     const toggleBtn = document.getElementById("toggleOverviewBtn");
     if (overviewContainer.style.display === "none") {
         overviewContainer.style.display = "block";
-        toggleBtn.textContent = "隱藏「功能概覽」";
+        toggleBtn.textContent = "隱藏工具功能概覽";
     } else {
         overviewContainer.style.display = "none";
-        toggleBtn.textContent = "顯示「功能概覽」";
+        toggleBtn.textContent = "顯示工具功能概覽";
     }
 }
         
