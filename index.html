@@ -14,15 +14,13 @@
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            background: url('https://i.ibb.co/CLfNMHR/3.png') center/cover fixed;
+            background-color: #f4f4f4;
         }
         h1 {
             text-align: center;
             color: #333;
         }
 
-
-        
 /* 確保標題不被背景影響 */
 .title-container {
     background: none;
@@ -1140,7 +1138,7 @@ async function submitArgumentOutline() {
         outlineData.push({ part, point, evidence });
     }
     const tone = document.getElementById("argumentOutlineTone").value;
-    let toneNote = tone === "chen" ? "請用輕鬆隨意的語氣進行點評和建議，多用EMOJI，偶爾使用網絡用語。(「議論」中的「片段描寫/全文寫作」中的「建議」、「改寫範例」以及「大綱」的「建議」及「改寫後的大綱」維持嚴肅正經語氣）" : "請用嚴肅正經的語氣進行點評和建議。";
+    let toneNote = tone === "chen" ? "請用輕鬆隨意的語氣進行點評和建議，多用EMOJI，偶爾使用網絡用語，用語要日常生活化一點。如果用戶表現良好，請大加讚賞；如果用戶表現不好，可以善意地揶揄一下，但要注意尺度，不能傷害用戶的自尊心。揶揄時，可運用生活化的比喻。(「點評」請用「陳SIR語氣」，而「建議」及「改寫後的大綱」維持嚴肅正經語氣）" : "請用嚴肅正經的語氣進行點評和建議。";
     const note = categories["議論"].outlineCommentNote;
     const partsList = outlineData.map(item => item.part).join(", ");
     const prompt = `請根據以下大綱內容進行點評和建議，並提供改寫後的大綱。要求：
@@ -1249,7 +1247,7 @@ async function submitArgumentOutline() {
                 return;
             }
             const tone = document.getElementById("argumentWritingTone").value;
-            let toneNote = tone === "chen" ? "請用輕鬆隨意的語氣進行點評和建議，多用EMOJI，偶爾使用網絡用語。" : "請用嚴肅正經的語氣進行點評和建議。";
+            let toneNote = tone === "chen" ? "請用輕鬆隨意的語氣進行點評和建議，多用EMOJI，偶爾使用網絡用語，用語要日常生活化一點。如果用戶表現良好，請大加讚賞；如果用戶表現不好，可以善意地揶揄一下，但要注意尺度，不能傷害用戶的自尊心。揶揄時，可運用生活化的比喻。" : "請用嚴肅正經的語氣進行點評和建議。";
             const note = categories["議論"].writingCommentNote;
             const prompt = `請根據以下文章進行點評，要求：
             1. 評估論點是否清晰明確，一語中的，能直接呼應題目
