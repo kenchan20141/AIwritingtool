@@ -206,6 +206,103 @@
         #argumentTopicSelectionArea, #argumentCustomTopicArea, #argumentWritingArea, #argumentGuideArea {
             margin-top: 10px;
         }
+
+#music-player {
+            position: fixed;
+            bottom: 50px;
+            left: 0;
+            width: 100%;
+            background-color: #444;
+            color: white;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1002;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        #music-player.hidden {
+            display: none;
+        }
+        #music-player .controls {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        #music-player .controls button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        #music-player .controls select {
+            background: #555;
+            color: white;
+            border: none;
+            padding: 5px;
+            border-radius: 3px;
+            max-width: 150px;
+        }
+        #music-player .progress {
+            flex: 1;
+            margin: 0 10px;
+            display: flex;
+            align-items: center;
+        }
+        #music-player .progress input[type="range"] {
+            width: 100%;
+        }
+        #music-player .mode {
+            margin-left: 10px;
+            flex-shrink: 0;
+        }
+        #music-player .mode select {
+            background: #555;
+            color: white;
+            border: none;
+            padding: 5px;
+            border-radius: 3px;
+        }
+        #music-player .hide-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        #show-player {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: #444;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1003;
+            display: none;
+            font-size: 16px;
+        }
+        @media (max-width: 600px) {
+            #music-player {
+                flex-wrap: wrap;
+                padding: 5px;
+            }
+            #music-player .controls select {
+                max-width: 100px;
+                font-size: 12px;
+            }
+            #music-player .mode select {
+                font-size: 12px;
+            }
+
+
+        
     </style>
 </head>
 <body>
@@ -495,9 +592,69 @@
         </div>
     </div>
 
+<div id="music-player">
+        <div class="controls">
+            <select id="music-select">
+                <option value="">選擇音樂</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/Battle-Abysswalker.mp3">The Abysswalker</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/Battle-Rosemoon.mp3">死せる都の戰乙女</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/Battle-deadly.mp3">五大罪</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/Battle-rapier.mp3">繼承劍的少女</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/Ariadne-Battle.mp3">不屈意志之刃</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/battle-arms.mp3">西部戰鬥</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/Battle.mp3">Battle Theme</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/Wanderers-City.mp3">流浪城鎮</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/Remotest-Liblary.mp3">沉睡的記憶</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/Nostalgia.mp3">麥田懷舊</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/sunbeams.mp3">放學後</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/village.mp3">鄉村生活</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/Take-a-Rest.mp3">休息一下</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/winter-snow.mp3">雪鄉</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/Forgotten-Place.mp3">被遺忘的地方</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/Rest-in-Peace.mp3">安息</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/Farewell.mp3">告別</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/reminiscence.mp3">回憶</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/starry-night.mp3">星夜</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/last-wish.mp3">當思念傳到某人耳畔</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/sorrow.mp3">超越悲傷</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/hotarumichi.mp3">螢火蟲之路</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/Sky-Airship.mp3">飛艇</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/Voyage_SE.mp3">跨越神秘之海</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/main-theme01.mp3">盼望</option>
+                <option value="https://youfulca.com/wp-content/uploads/2022/08/saikai637.mp3">約定之地</option>
+            </select>
+            <button id="play-pause">▶️</button>
+        </div>
+        <div class="progress">
+            <input type="range" id="progress-bar-music" value="0" min="0" max="100">
+        </div>
+        <div class="mode">
+            <select id="play-mode">
+                <option value="loop" selected>單曲循環</option>
+                <option value="next">自動播放下首</option>
+            </select>
+        </div>
+        <button class="hide-btn" id="hide-player">🔽</button>
+    </div>
+    <button id="show-player">🎵</button>
+    <audio id="audio" preload="auto"></audio>
+
+
+
+    
     <script>
 
+const audio = document.getElementById('audio');
+        const playPauseBtn = document.getElementById('play-pause');
+        const musicSelect = document.getElementById('music-select');
+        const progressBarMusic = document.getElementById('progress-bar-music');
+        const playMode = document.getElementById('play-mode');
+        const hidePlayerBtn = document.getElementById('hide-player');
+        const showPlayerBtn = document.getElementById('show-player');
+        const musicPlayer = document.getElementById('music-player');
 
+        let isPlaying = false;
+        let currentMusic = '';
 
         
         // API 配置信息
