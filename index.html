@@ -299,7 +299,7 @@
         font-size: 12px;
     }
     #music-player .progress {
-        min-width: 100px; /* 確保進度條在小屏幕上有足夠寬度 */
+        min-width: 20px; /* 確保進度條在小屏幕上有足夠寬度 */
     }
 }
 
@@ -939,10 +939,10 @@ function toggleOverview() {
     const toggleBtn = document.getElementById("toggleOverviewBtn");
     if (overviewContainer.style.display === "none") {
         overviewContainer.style.display = "block";
-        toggleBtn.textContent = "隱藏工具功能概覽";
+        toggleBtn.textContent = "隱藏「功能概覽」";
     } else {
         overviewContainer.style.display = "none";
-        toggleBtn.textContent = "顯示工具功能概覽";
+        toggleBtn.textContent = "顯示「功能概覽」";
     }
 }
         
