@@ -245,15 +245,50 @@
         border-radius: 3px;
         max-width: 150px;
     }
-    #music-player .progress {
-        flex: 1;
-        margin: 0 10px;
-        display: flex;
-        align-items: center;
-    }
-    #music-player .progress input[type="range"] {
-        width: 100%;
-    }
+   #music-player .progress {
+    flex: 1;
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+}
+
+#music-player .progress input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+#music-player .progress input[type="range"]::-webkit-slider-runnable-track {
+    background: #ddd;
+    height: 5px;
+    border-radius: 5px;
+}
+
+#music-player .progress input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    background: #007bff;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    margin-top: -5px;
+}
+
+#music-player .progress input[type="range"]::-moz-range-track {
+    background: #ddd;
+    height: 5px;
+    border-radius: 5px;
+}
+
+#music-player .progress input[type="range"]::-moz-range-thumb {
+    background: #007bff;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    border: none;
+}
     #music-player .mode {
         margin-left: 10px;
         flex-shrink: 0;
