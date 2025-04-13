@@ -961,6 +961,66 @@ document.getElementById("ocrBtn").addEventListener("click", function() {
             if (containerId === "argumentContainer") toggleArgumentType();
         }
 
+function playMusic(musicUrl) {
+    if (!musicUrl) return;
+    musicSelect.value = musicUrl;
+    currentMusic = musicUrl;
+    audio.src = musicUrl;
+    audio.load();
+    audio.play().then(() => {
+        isPlaying = true;
+        playPauseBtn.textContent = '⏸️';
+    }).catch(error => console.error('自動播放失敗:', error));
+}
+
+        playPauseBtn.addEventListener('click', function() {
+    if (isPlaying) {
+        audio.pause();
+        playPauseBtn.textContent = '▶️';
+        isPlaying = false;
+    } else {
+        if (!currentMusic) {
+            const options = Array.from(musicSelect.options).slice(1);
+            if (options.length > 0) {
+                const randomIndex = Math.floor(Math.random() * options.length);
+                const randomMusic = options[randomIndex].value;
+                playMusic(randomMusic);
+            } else {
+                alert('沒有可用的音樂');
+            }
+        } else {
+            audio.play();
+            playPauseBtn.textContent = '⏸️';
+            isPlaying = true;
+        }
+    }
+});
+
+        document.getElementById('next-btn').addEventListener('click', function() {
+    const options = Array.from(musicSelect.options);
+    if (options.length <= 1) {
+        alert('沒有可用的音樂');
+        return;
+    }
+    let currentIndex = -1;
+    for (let i = 1; i < options.length; i++) {
+        if (options[i].value === currentMusic) {
+            currentIndex = i;
+            break;
+        }
+    }
+    let nextIndex;
+    if (currentIndex === -1) {
+        nextIndex = 1;
+    } else {
+        nextIndex = (currentIndex + 1) % options.length;
+        if (nextIndex === 0) nextIndex = 1;
+    }
+    const nextMusic = options[nextIndex].value;
+    playMusic(nextMusic);
+});
+
+        
 
 // 切換工具功能概覽的顯示和隱藏
 function toggleOverview() {
