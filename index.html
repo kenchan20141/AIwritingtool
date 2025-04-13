@@ -250,38 +250,9 @@
         display: flex;
         align-items: center;
     }
-    #progress-bar-music {
-    -webkit-appearance: none;
-    width: 100%;
-    height: 5px;
-    background: #ddd;
-    outline: none;
-    border-radius: 5px;
-}
-
-#progress-bar-music::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 15px;
-    height: 15px;
-    background: #007bff;
-    cursor: pointer;
-    border-radius: 50%;
-}
-
-#progress-bar-music::-moz-range-track {
-    width: 100%;
-    height: 5px;
-    background: #ddd;
-    border-radius: 5px;
-}
-
-#progress-bar-music::-moz-range-thumb {
-    width: 15px;
-    height: 15px;
-    background: #007bff;
-    cursor: pointer;
-    border-radius: 50%;
-}
+    #music-player .progress input[type="range"] {
+        width: 100%;
+    }
     #music-player .mode {
         margin-left: 10px;
         flex-shrink: 0;
@@ -728,29 +699,11 @@ const audio = document.getElementById('audio');
         isPlaying = !isPlaying;
     });
 
-    let isUpdating = false;
-
-function updateProgress() {
-    if (!audio.duration) return;
-    const progress = (audio.currentTime / audio.duration) * 100;
-    progressBarMusic.value = progress;
-    if (isPlaying) {
-        requestAnimationFrame(updateProgress);
-    }
-}
-
-audio.addEventListener('play', function() {
-    isPlaying = true;
-    if (!isUpdating) {
-        isUpdating = true;
-        requestAnimationFrame(updateProgress);
-    }
-});
-
-audio.addEventListener('pause', function() {
-    isPlaying = false;
-    isUpdating = false;
-});
+    audio.addEventListener('timeupdate', function() {
+        if (!audio.duration) return;
+        const progress = (audio.currentTime / audio.duration) * 100;
+        progressBarMusic.value = progress;
+    });
 
     progressBarMusic.addEventListener('input', function() {
         const time = (this.value / 100) * audio.duration;
