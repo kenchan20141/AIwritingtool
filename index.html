@@ -286,7 +286,7 @@
         display: none;
         font-size: 16px;
     }
-    @media (max-width: 600px) {
+   @media (max-width: 600px) {
     #music-player {
         flex-wrap: wrap;
         padding: 5px;
@@ -298,8 +298,37 @@
     #music-player .mode select {
         font-size: 12px;
     }
-    #music-player .progress {
-        min-width: 16px; /* 確保進度條在小屏幕上有足夠寬度 */
+    #progress-bar-music {
+        height: 10px;
+        -webkit-appearance: none;
+        appearance: none;
+        background: #ddd;
+        border-radius: 5px;
+    }
+    #progress-bar-music::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        background: #007bff;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+    #progress-bar-music::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        background: #007bff;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+    #music-player .controls select, #music-player .mode select {
+        max-width: 80px;
+        padding: 3px;
+        font-size: 12px;
+    }
+    #music-player .controls button, #music-player .hide-btn {
+        padding: 5px;
+        font-size: 16px;
     }
 }
 
