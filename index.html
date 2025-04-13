@@ -251,42 +251,8 @@
         align-items: center;
     }
     #music-player .progress input[type="range"] {
-    -webkit-appearance: none; /* 移除瀏覽器默認樣式 */
-    width: 100%; /* 保持全寬 */
-    background: transparent; /* 背景透明，讓自定義樣式生效 */
-}
-
-#music-player .progress input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    height: 15px; /* 滑塊高度 */
-    width: 15px; /* 滑塊寬度 */
-    border-radius: 50%; /* 圓形滑塊 */
-    background: #ffffff; /* 白色滑塊 */
-    cursor: pointer; /* 手型光標 */
-    margin-top: -5px; /* 調整滑塊位置與軌道對齊 */
-}
-
-#music-player .progress input[type="range"]::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 5px; /* 軌道高度 */
-    background: #ddd; /* 灰色軌道 */
-    border-radius: 3px; /* 圓角軌道 */
-}
-
-#music-player .progress input[type="range"]::-moz-range-thumb {
-    height: 15px;
-    width: 15px;
-    border-radius: 50%;
-    background: #ffffff;
-    cursor: pointer;
-}
-
-#music-player .progress input[type="range"]::-moz-range-track {
-    width: 100%;
-    height: 5px;
-    background: #ddd;
-    border-radius: 3px;
-}
+        width: 100%;
+    }
     #music-player .mode {
         margin-left: 10px;
         flex-shrink: 0;
