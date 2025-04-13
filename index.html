@@ -287,18 +287,21 @@
         font-size: 16px;
     }
     @media (max-width: 600px) {
-        #music-player {
-            flex-wrap: wrap;
-            padding: 5px;
-        }
-        #music-player .controls select {
-            max-width: 100px;
-            font-size: 12px;
-        }
-        #music-player .mode select {
-            font-size: 12px;
-        }
+    #music-player {
+        flex-wrap: wrap;
+        padding: 5px;
     }
+    #music-player .controls select {
+        max-width: 100px;
+        font-size: 12px;
+    }
+    #music-player .mode select {
+        font-size: 12px;
+    }
+    #music-player .progress {
+        min-width: 100px; /* 確保進度條在小屏幕上有足夠寬度 */
+    }
+}
 
         
     </style>
