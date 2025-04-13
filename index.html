@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -15,6 +14,7 @@
             margin: 0 auto;
             padding: 20px;
             background: url('https://i.ibb.co/nNMDqGJt/4.png') center/cover fixed;
+            padding-bottom: 60px; /* 為頁面內容設置底部內邊距，避免被音樂播放器遮擋 */
         }
         h1 {
             text-align: center;
@@ -204,6 +204,135 @@
         #argumentTopicSelectionArea, #argumentCustomTopicArea, #argumentWritingArea, #argumentGuideArea {
             margin-top: 10px;
         }
+
+#music-player {
+        position: fixed;
+        bottom: 0px;
+        left: 0;
+        width: 100%;
+        background-color: #444;
+        color: white;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 1002;
+        box-sizing: border-box;
+        font-size: 14px;
+    }
+    #music-player.hidden {
+        display: none;
+    }
+    #music-player .controls {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+    }
+    #music-player .controls button {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+    #music-player .controls select {
+        background: #555;
+        color: white;
+        border: none;
+        padding: 5px;
+        border-radius: 3px;
+        max-width: 150px;
+    }
+    #music-player .progress {
+        flex: 1;
+        margin: 0 10px;
+        display: flex;
+        align-items: center;
+    }
+    #music-player .progress input[type="range"] {
+        width: 100%;
+    }
+    #music-player .mode {
+        margin-left: 10px;
+        flex-shrink: 0;
+    }
+    #music-player .mode select {
+        background: #555;
+        color: white;
+        border: none;
+        padding: 5px;
+        border-radius: 3px;
+    }
+    #music-player .hide-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        margin-left: 10px;
+    }
+    #show-player {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        background: #444;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 1003;
+        display: none;
+        font-size: 16px;
+    }
+   @media (max-width: 600px) {
+    #music-player {
+        flex-wrap: wrap;
+        padding: 5px;
+    }
+    #music-player .controls select {
+        max-width: 100px;
+        font-size: 12px;
+    }
+    #music-player .mode select {
+        font-size: 12px;
+    }
+    #progress-bar-music {
+        height: 10px;
+        -webkit-appearance: none;
+        appearance: none;
+        background: #ddd;
+        border-radius: 5px;
+    }
+    #progress-bar-music::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        background: #007bff;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+    #progress-bar-music::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        background: #007bff;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+    #music-player .controls select, #music-player .mode select {
+        max-width: 80px;
+        padding: 3px;
+        font-size: 12px;
+    }
+    #music-player .controls button, #music-player .hide-btn {
+        padding: 5px;
+        font-size: 16px;
+    }
+}
+
+        
     </style>
 </head>
 <body>
@@ -224,6 +353,15 @@
 <!-- 工具功能概覽（初始隱藏） -->
 <div id="overviewContainer" class="box" style="display: none;">
     <h2>功能概覽</h2>
+    <img src="https://i.ibb.co/Ngt8D5xm/image.jpg" alt="功能概覽圖片" style="max-width:100%; height:auto; margin-bottom:10px;">
+
+<audio controls style="width: 100%;">
+  <source 
+    src="https://pouch.jumpshare.com/preview/qycDjEfSkqL5r2MXoBh3E9cZiO6FjDp8eHTCWFi_S6PzYOqVSQgZP6FEsyTIFgewsYUkJYyp8MuL2JP6sV7bHblFusWv_NMcZtmYNTt5LzQdfTRIRk-ygIwR9tGiPkb0HKQ6w9Fuy69ClWDk044Bz26yjbN-I2pg_cnoHs_AmgI.mp3" 
+    type="audio/mpeg">
+  您的瀏覽器不支援音頻播放
+</audio>
+    
     <p>本工具旨在協助同學練習寫作卷和閱讀卷，並提供課外書籍討論。以下是主要功能：</p>
     <table>
         <tr>
@@ -285,6 +423,7 @@
     
     <div id="writingContainer" class="box">
         <h2>敘事抒情</h2>
+        <img src="https://i.ibb.co/pvf0Dnwm/image.jpg" alt="敘事抒情圖片" style="max-width:100%; height:auto; margin-bottom:10px;">
         <label for="writingType">選擇功能：</label>
         <select id="writingType" onchange="toggleWritingType()">
             <option value="大綱">大綱</option>
@@ -334,6 +473,7 @@
     <!-- 閱讀容器 -->
     <div id="readingContainer" class="box" style="display: none;">
         <h2>閱讀</h2>
+        <img src="https://i.ibb.co/WvjcKDvp/image.jpg" alt="閱讀圖片" style="max-width:100%; height:auto; margin-bottom:10px;">
         <label for="readingFunction">選擇功能：</label>
         <select id="readingFunction" onchange="toggleReadingFunction()">
             <option value="comment">點評</option>
@@ -361,6 +501,7 @@
     <!-- 課外書籍容器 -->
     <div id="booksContainer" class="box" style="display: none;">
         <h2>課外書籍討論</h2>
+        <img src="https://i.ibb.co/BHXd5YBF/image.jpg" alt="課外書籍圖片" style="max-width:100%; height:auto; margin-bottom:10px;">
         <p>請在下方填寫書名、作者和討論問題，開始與陳SIR對話：</p>
         <input type="text" id="bookTitle" placeholder="書名">
         <input type="text" id="author" placeholder="作者">
@@ -383,6 +524,7 @@
     <!-- 整合拓展容器 -->
     <div id="expandContainer" class="box" style="display: none;">
         <h2>整合拓展</h2>
+        <img src="https://i.ibb.co/DfqcS96d/image.jpg" alt="整合拓展圖片" style="max-width:100%; height:auto; margin-bottom:10px;">
         <label for="expandFunction">選擇功能：</label>
         <select id="expandFunction" onchange="toggleExpandFunction()">
             <option value="comment">點評</option>
@@ -434,6 +576,7 @@
     <!-- 議論容器 -->
     <div id="argumentContainer" class="box" style="display: none;">
         <h2>議論</h2>
+        <img src="https://i.ibb.co/gLcY3gP8/image.jpg" alt="議論圖片" style="max-width:100%; height:auto; margin-bottom:10px;">
         <label for="argumentType">選擇功能：</label>
         <select id="argumentType" onchange="toggleArgumentType()">
             <option value="outline">大綱</option>
@@ -494,22 +637,155 @@
         </div>
     </div>
 
+<!-- 音樂播放器 HTML -->
+<div id="music-player">
+    <div class="controls">
+        <select id="music-select">
+            <option value="">選擇音樂</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/Battle-Abysswalker.mp3">The Abysswalker</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/Battle-Rosemoon.mp3">死せる都の戰乙女</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/Battle-deadly.mp3">五大罪</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/Battle-rapier.mp3">繼承劍的少女</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/Ariadne-Battle.mp3">不屈意志之刃</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/battle-arms.mp3">西部戰鬥</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/Battle.mp3">Battle Theme</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/Wanderers-City.mp3">流浪城鎮</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/Remotest-Liblary.mp3">沉睡的記憶</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/Nostalgia.mp3">麥田懷舊</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/sunbeams.mp3">放學後</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/village.mp3">鄉村生活</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/Take-a-Rest.mp3">休息一下</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/winter-snow.mp3">雪鄉</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/Forgotten-Place.mp3">被遺忘的地方</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/Rest-in-Peace.mp3">安息</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/Farewell.mp3">告別</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/reminiscence.mp3">回憶</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/starry-night.mp3">星夜</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/last-wish.mp3">當思念傳到某人耳畔</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/sorrow.mp3">超越悲傷</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/hotarumichi.mp3">螢火蟲之路</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/Sky-Airship.mp3">飛艇</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/Voyage_SE.mp3">跨越神秘之海</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/main-theme01.mp3">盼望</option>
+            <option value="https://youfulca.com/wp-content/uploads/2022/08/saikai637.mp3">約定之地</option>
+        </select>
+        <button id="play-pause">▶️</button>
+    </div>
+    <div class="progress">
+        <input type="range" id="progress-bar-music" value="0" min="0" max="100">
+    </div>
+    <div class="mode">
+        <select id="play-mode">
+            <option value="loop" selected>單曲循環</option>
+            <option value="next">自動播放下首</option>
+        </select>
+    </div>
+    <button class="hide-btn" id="hide-player">🔽</button>
+</div>
+<button id="show-player">🎵</button>
+<audio id="audio" preload="auto"></audio>
+
+
+    
     <script>
 
 
 
-       // API 配置信息
+        
+        // API 配置信息
         const API_KEYS = [
-            "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"
+            "sk-MoqwsgO8P9MEoCrftvdSYA"
         ];
         let currentApiKeyIndex = 0;
-        const API_URL = "https://openrouter.ai/api/v1/chat/completions";
-        const MODEL = "deepseek/deepseek-r1:free";
+        const API_URL = "https://chatapi.akash.network/api/v1/chat/completions";
+        const MODEL = "DeepSeek-R1";
 
 
+const audio = document.getElementById('audio');
+    const playPauseBtn = document.getElementById('play-pause');
+    const musicSelect = document.getElementById('music-select');
+    const progressBarMusic = document.getElementById('progress-bar-music');
+    const playMode = document.getElementById('play-mode');
+    const hidePlayerBtn = document.getElementById('hide-player');
+    const showPlayerBtn = document.getElementById('show-player');
+    const musicPlayer = document.getElementById('music-player');
 
+    let isPlaying = false;
+    let currentMusic = '';
 
+    musicSelect.addEventListener('change', function() {
+        const selectedMusic = this.value;
+        if (selectedMusic) {
+            audio.src = selectedMusic;
+            audio.load();
+            currentMusic = selectedMusic;
+            audio.play().then(() => {
+                isPlaying = true;
+                playPauseBtn.textContent = '⏸️';
+            }).catch(error => console.error('自動播放失敗:', error));
+        }
+    });
 
+    audio.addEventListener('canplay', function() {
+        if (isPlaying) audio.play();
+    });
+
+    playPauseBtn.addEventListener('click', function() {
+        if (isPlaying) {
+            audio.pause();
+            playPauseBtn.textContent = '▶️';
+        } else {
+            if (currentMusic) {
+                audio.play();
+                playPauseBtn.textContent = '⏸️';
+            } else {
+                alert('請先選擇音樂');
+            }
+        }
+        isPlaying = !isPlaying;
+    });
+
+    audio.addEventListener('timeupdate', function() {
+        if (!audio.duration) return;
+        const progress = (audio.currentTime / audio.duration) * 100;
+        progressBarMusic.value = progress;
+    });
+
+    progressBarMusic.addEventListener('input', function() {
+        const time = (this.value / 100) * audio.duration;
+        audio.currentTime = time;
+    });
+
+    audio.addEventListener('ended', function() {
+        if (playMode.value === 'loop') {
+            audio.currentTime = 0;
+            audio.play();
+        } else if (playMode.value === 'next') {
+            const options = musicSelect.options;
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].value === currentMusic) {
+                    let nextIndex = (i + 1) % options.length;
+                    if (nextIndex === 0) nextIndex = 1;
+                    currentMusic = options[nextIndex].value;
+                    musicSelect.value = currentMusic;
+                    audio.src = currentMusic;
+                    audio.load();
+                    audio.play();
+                    break;
+                }
+            }
+        }
+    });
+
+    hidePlayerBtn.addEventListener('click', function() {
+        musicPlayer.classList.add('hidden');
+        showPlayerBtn.style.display = 'block';
+    });
+
+    showPlayerBtn.addEventListener('click', function() {
+        musicPlayer.classList.remove('hidden');
+        showPlayerBtn.style.display = 'none';
+    });
         
         // 預設寫作題目列表
         const topics = [
@@ -1399,7 +1675,6 @@ async function submitArgumentOutline() {
         }
     }
 }
-        
         // 生成寫作題目
         async function generateTopic() {
             const writingType = document.getElementById("writingType").value;
