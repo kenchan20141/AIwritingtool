@@ -250,9 +250,40 @@
         display: flex;
         align-items: center;
     }
-    #music-player .progress input[type="range"] {
-        width: 100%;
-    }
+   #music-player .progress input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #555;
+    height: 5px;
+    border-radius: 5px;
+}
+
+#music-player .progress input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#music-player .progress input[type="range"]::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#music-player .progress input[type="range"]::-ms-thumb {
+    width: 15px;
+    height: 15px;
+    background: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+}
     #music-player .mode {
         margin-left: 10px;
         flex-shrink: 0;
