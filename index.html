@@ -356,97 +356,106 @@
 </div>
 
 
+ <div class="title-container">
+    <h1>
+        <span class="title-text">神思</span>
+    </h1>
+</div>
+
 <div id="hitokoto-container" class="box">
-        <div id="hitokoto"></div>
-        <div id="hitokoto-footer">
-            <span id="hitokoto-from"></span>
-            <button id="refresh-btn"><i class="fas fa-sync-alt"></i></button>
-        </div>
+    <div id="hitokoto"></div>
+    <div id="hitokoto-footer">
+        <span id="hitokoto-from"></span>
+        <button id="refresh-btn"><i class="fas fa-sync-alt"></i></button>
     </div>
+</div>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    
-    <style>
-        #hitokoto-container {
-            background: rgba(220, 220, 220, 0.96);
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            padding: 16px;
-            margin: 15px 0;
-            text-align: center;
-            max-width: 800px;
-            position: relative;
+
+<style>
+    #hitokoto-container {
+        background: rgba(220, 220, 220, 0.96);
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        padding: 16px;
+        margin: 15px 0;
+        text-align: center;
+        max-width: 800px;
+        position: relative;
+    }
+
+    #hitokoto {
+        font-size: 21px;
+        font-style: italic;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    #hitokoto p {
+        margin: 5px 0;
+    }
+
+    #hitokoto-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    #hitokoto-from {
+        font-size: 16px;
+        color: #666;
+    }
+
+    #refresh-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 20px;
+        color: #666;
+        transition: color 0.3s;
+        padding: 0;
+        margin: 0;
+    }
+
+    #refresh-btn:hover {
+        color: #000;
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/full.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const converter = OpenCC.Converter({ from: 'cn', to: 'tw' });
+        const hitokotoElement = document.getElementById('hitokoto');
+        const hitokotoFromElement = document.getElementById('hitokoto-from');
+        const refreshBtn = document.getElementById('refresh-btn');
+
+        function fetchHitokoto() {
+            fetch('https://v1.hitokoto.cn/?c=d&c=i&c=k&encode=json')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.from.includes('魔道祖師')) {
+                        fetchHitokoto(); // 如果來源是「魔道祖師」，重新獲取名言
+                    } else {
+                        const convertedHitokoto = converter(data.hitokoto);
+                        const convertedFrom = converter(data.from);
+                        const convertedFromWho = data.from_who ? converter(data.from_who) : '佚名';
+                        hitokotoElement.innerHTML = `<p>${convertedHitokoto}</p>`;
+                        hitokotoFromElement.innerHTML = `—— ${convertedFromWho} 《${convertedFrom}》`;
+                    }
+                })
+                .catch(error => {
+                    console.error('獲取名言失敗:', error);
+                    hitokotoElement.innerHTML = '<p>獲取名言失敗，請稍後再試。</p>';
+                    hitokotoFromElement.innerHTML = '';
+                });
         }
 
-        #hitokoto {
-            font-size: 21px;
-            font-style: italic;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        #hitokoto p {
-            margin: 5px 0;
-        }
-
-        #hitokoto-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-        }
-
-        #hitokoto-from {
-            font-size: 16px;
-            color: #666;
-        }
-
-        #refresh-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 20px;
-            color: #666;
-            transition: color 0.3s;
-            padding: 0;
-            margin: 0;
-        }
-
-        #refresh-btn:hover {
-            color: #000;
-        }
-    </style>
-
-    <script src="https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/full.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const converter = OpenCC.Converter({ from: 'cn', to: 'tw' });
-            const hitokotoElement = document.getElementById('hitokoto');
-            const hitokotoFromElement = document.getElementById('hitokoto-from');
-            const refreshBtn = document.getElementById('refresh-btn');
-
-            function fetchHitokoto() {
-    fetch('https://v1.hitokoto.cn/?c=d&encode=json')
-        .then(response => response.json())
-        .then(data => {
-            const convertedHitokoto = converter(data.hitokoto);
-            const convertedFrom = converter(data.from);
-            const convertedFromWho = data.from_who ? converter(data.from_who) : '佚名';
-            hitokotoElement.innerHTML = `<p>${convertedHitokoto}</p>`;
-            hitokotoFromElement.innerHTML = `—— ${convertedFromWho} 《${convertedFrom}》`;
-        })
-        .catch(error => {
-            console.error('獲取名言失敗:', error);
-            hitokotoElement.innerHTML = '<p>獲取名言失敗，請稍後再試。</p>';
-            hitokotoFromElement.innerHTML = '';
-        });
-}
-
-            fetchHitokoto();
-            refreshBtn.addEventListener('click', fetchHitokoto);
-        });
-    </script>
-
+        fetchHitokoto();
+        refreshBtn.addEventListener('click', fetchHitokoto);
+    });
+</script>
 
 
     
