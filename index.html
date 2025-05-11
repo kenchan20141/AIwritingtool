@@ -238,20 +238,20 @@
         }
 
 #music-player {
-        position: fixed;
-        bottom: 0px;
-        left: 0;
-        width: 100%;
-        background-color: #444;
-        color: white;
-        padding: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        z-index: 1002;
-        box-sizing: border-box;
-        font-size: 14px;
-    }
+    position: fixed;
+    bottom: 0px;
+    left: 0;
+    width: 100%;
+    background-color: #444;
+    color: white;
+    padding: 10px;
+    display: none; /* 預設隱藏 */
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1002;
+    box-sizing: border-box;
+    font-size: 14px;
+}
     #music-player.hidden {
         display: none;
     }
@@ -304,20 +304,20 @@
         cursor: pointer;
         margin-left: 10px;
     }
-    #show-player {
-        position: fixed;
-        bottom: 10px;
-        right: 10px;
-        background: #444;
-        color: white;
-        border: none;
-        padding: 10px;
-        border-radius: 50%;
-        cursor: pointer;
-        z-index: 1003;
-        display: none;
-        font-size: 16px;
-    }
+   #show-player {
+    position: fixed;
+    bottom: 12px; /* 上移至 30px，可根據需要調整 */
+    right: 10px;
+    background: #444;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1003;
+    display: block; /* 初始顯示 */
+    font-size: 16px;
+}
    @media (max-width: 600px) {
     #music-player {
         flex-wrap: wrap;
@@ -827,90 +827,90 @@
 
 
 const audio = document.getElementById('audio');
-    const playPauseBtn = document.getElementById('play-pause');
-    const musicSelect = document.getElementById('music-select');
-    const progressBarMusic = document.getElementById('progress-bar-music');
-    const playMode = document.getElementById('play-mode');
-    const hidePlayerBtn = document.getElementById('hide-player');
-    const showPlayerBtn = document.getElementById('show-player');
-    const musicPlayer = document.getElementById('music-player');
+const playPauseBtn = document.getElementById('play-pause');
+const musicSelect = document.getElementById('music-select');
+const progressBarMusic = document.getElementById('progress-bar-music');
+const playMode = document.getElementById('play-mode');
+const hidePlayerBtn = document.getElementById('hide-player');
+const showPlayerBtn = document.getElementById('show-player');
+const musicPlayer = document.getElementById('music-player');
 
-    let isPlaying = false;
-    let currentMusic = '';
+let isPlaying = false;
+let currentMusic = '';
 
-    musicSelect.addEventListener('change', function() {
-        const selectedMusic = this.value;
-        if (selectedMusic) {
-            audio.src = selectedMusic;
-            audio.load();
-            currentMusic = selectedMusic;
-            audio.play().then(() => {
-                isPlaying = true;
-                playPauseBtn.textContent = '⏸️';
-            }).catch(error => console.error('自動播放失敗:', error));
-        }
-    });
+musicSelect.addEventListener('change', function() {
+    const selectedMusic = this.value;
+    if (selectedMusic) {
+        audio.src = selectedMusic;
+        audio.load();
+        currentMusic = selectedMusic;
+        audio.play().then(() => {
+            isPlaying = true;
+            playPauseBtn.textContent = '⏸️';
+        }).catch(error => console.error('自動播放失敗:', error));
+    }
+});
 
-    audio.addEventListener('canplay', function() {
-        if (isPlaying) audio.play();
-    });
+audio.addEventListener('canplay', function() {
+    if (isPlaying) audio.play();
+});
 
-    playPauseBtn.addEventListener('click', function() {
-        if (isPlaying) {
-            audio.pause();
-            playPauseBtn.textContent = '▶️';
-        } else {
-            if (currentMusic) {
-                audio.play();
-                playPauseBtn.textContent = '⏸️';
-            } else {
-                alert('請先選擇音樂');
-            }
-        }
-        isPlaying = !isPlaying;
-    });
-
-    audio.addEventListener('timeupdate', function() {
-        if (!audio.duration) return;
-        const progress = (audio.currentTime / audio.duration) * 100;
-        progressBarMusic.value = progress;
-    });
-
-    progressBarMusic.addEventListener('input', function() {
-        const time = (this.value / 100) * audio.duration;
-        audio.currentTime = time;
-    });
-
-    audio.addEventListener('ended', function() {
-        if (playMode.value === 'loop') {
-            audio.currentTime = 0;
+playPauseBtn.addEventListener('click', function() {
+    if (isPlaying) {
+        audio.pause();
+        playPauseBtn.textContent = '▶️';
+    } else {
+        if (currentMusic) {
             audio.play();
-        } else if (playMode.value === 'next') {
-            const options = musicSelect.options;
-            for (let i = 0; i < options.length; i++) {
-                if (options[i].value === currentMusic) {
-                    let nextIndex = (i + 1) % options.length;
-                    if (nextIndex === 0) nextIndex = 1;
-                    currentMusic = options[nextIndex].value;
-                    musicSelect.value = currentMusic;
-                    audio.src = currentMusic;
-                    audio.load();
-                    audio.play();
-                    break;
-                }
+            playPauseBtn.textContent = '⏸️';
+        } else {
+            alert('請先選擇音樂');
+        }
+    }
+    isPlaying = !isPlaying;
+});
+
+audio.addEventListener('timeupdate', function() {
+    if (!audio.duration) return;
+    const progress = (audio.currentTime / audio.duration) * 100;
+    progressBarMusic.value = progress;
+});
+
+progressBarMusic.addEventListener('input', function() {
+    const time = (this.value / 100) * audio.duration;
+    audio.currentTime = time;
+});
+
+audio.addEventListener('ended', function() {
+    if (playMode.value === 'loop') {
+        audio.currentTime = 0;
+        audio.play();
+    } else if (playMode.value === 'next') {
+        const options = musicSelect.options;
+        for (let i = 0; i < options.length; i++) {
+            if (options[i].value === currentMusic) {
+                let nextIndex = (i + 1) % options.length;
+                if (nextIndex === 0) nextIndex = 1;
+                currentMusic = options[nextIndex].value;
+                musicSelect.value = currentMusic;
+                audio.src = currentMusic;
+                audio.load();
+                audio.play();
+                break;
             }
         }
-    });
+    }
+});
 
-    hidePlayerBtn.addEventListener('click', function() {
-        musicPlayer.classList.add('hidden');
-        showPlayerBtn.style.display = 'block';
-    });
+hidePlayerBtn.addEventListener('click', function() {
+    musicPlayer.style.display = 'none';
+    showPlayerBtn.style.display = 'block';
+});
 
-    showPlayerBtn.addEventListener('click', function() {
-        musicPlayer.classList.remove('hidden');
-        showPlayerBtn.style.display = 'none';
-    });
+showPlayerBtn.addEventListener('click', function() {
+    musicPlayer.style.display = 'flex';
+    showPlayerBtn.style.display = 'none';
+});
         
         // 預設寫作題目列表
         const topics = [
