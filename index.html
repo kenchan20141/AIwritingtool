@@ -304,20 +304,20 @@
         cursor: pointer;
         margin-left: 10px;
     }
-    #show-player {
-        position: fixed;
-        bottom: 10px;
-        right: 10px;
-        background: #444;
-        color: white;
-        border: none;
-        padding: 10px;
-        border-radius: 50%;
-        cursor: pointer;
-        z-index: 1003;
-        display: none;
-        font-size: 16px;
-    }
+   #show-player {
+    position: fixed;
+    bottom: 10px;
+    left: 10px; /* 從 right: 10px 改為 left: 10px */
+    background: #444;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1003;
+    font-size: 16px;
+    display: block; /* 確保初始可見 */
+}
    @media (max-width: 600px) {
     #music-player {
         flex-wrap: wrap;
@@ -763,7 +763,7 @@
     </div>
 
 <!-- 音樂播放器 HTML -->
-<div id="music-player">
+<div id="music-player" class="hidden">
     <div class="controls">
         <select id="music-select">
             <option value="">選擇音樂</option>
