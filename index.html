@@ -306,7 +306,7 @@
     }
     #show-player {
         position: fixed;
-        bottom: 10px;
+        bottom: 12px;
         right: 10px;
         background: #444;
         color: white;
@@ -441,6 +441,8 @@
 <script src="https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/full.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('show-player').style.display = 'block';
+});
         const converter = OpenCC.Converter({ from: 'cn', to: 'tw' });
         const hitokotoElement = document.getElementById('hitokoto');
         const hitokotoFromElement = document.getElementById('hitokoto-from');
@@ -763,7 +765,7 @@
     </div>
 
 <!-- 音樂播放器 HTML -->
-<div id="music-player">
+<div id="music-player" class="hidden">
     <div class="controls">
         <select id="music-select">
             <option value="">選擇音樂</option>
