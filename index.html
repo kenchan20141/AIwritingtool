@@ -32,6 +32,27 @@
             color: #333;
         }
 
+ .copyright-footer {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            padding: 5px 10px;
+            background-color: #f1f1f1;
+        }
+
+        .copyright-footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .copyright-footer p {
+                font-size: 12px;
+            }
+        }
+
+
+        
 /* 確保標題不被背景影響 */
 .title-container {
     background: none;
@@ -2442,6 +2463,12 @@ async function submitArgumentOutline() {
             showContainer("writingContainer");
         };
     </script>
+
+<footer class="copyright-footer">
+        <p>Copyright © 2025 陳冠健. All rights reserved.</p>
+    </footer>
+
+    
 </body>
 </html>
 
