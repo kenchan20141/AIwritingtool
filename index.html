@@ -530,7 +530,7 @@
 <!-- 工具選擇 -->
 <div class="box">
     <h2>選擇工具：</h2>
-    <button id="manuscriptPaperBtn">🖥智能原稿紙</button>
+    <button id="aiGeneratorBtn" style="background-color: #fd7e14;">📝AI擬題</button>
     <button id="ocrBtn" style="background-color: #fd7e14;">✍手寫文字轉換電腦文字</button>
 </div>
     
@@ -1064,6 +1064,10 @@ showPlayerBtn.addEventListener('click', function() {
 
 document.getElementById("manuscriptPaperBtn").addEventListener("click", function() {
     window.open("https://kenchan20141.github.io/manuscriptpaper/", "_blank");
+});
+
+        document.getElementById("aiGeneratorBtn").addEventListener("click", function() {
+    window.open("https://kenchan20141.github.io/generator/", "_blank");
 });
 
 
