@@ -1,21 +1,33 @@
 
+
 <!DOCTYPE html>
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>神思</title>
+
+<!-- 添加到主畫面設定 -->
+<meta name="application-name" content="神思">
+<meta name="apple-mobile-web-app-title" content="神思">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="https://i.ibb.co/tpYQMG6z/SANSI.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
     
     <!-- Android 圖示 -->
-    <link rel="icon" sizes="192x192" href="https://i.ibb.co/VYSvrs7Z/image-27-5435354.png">
-    <link rel="icon" sizes="144x144" href="https://i.ibb.co/VYSvrs7Z/image-27-5435354.png">
-    <link rel="icon" sizes="96x96" href="https://i.ibb.co/VYSvrs7Z/image-27-5435354.png">
+    <link rel="icon" sizes="192x192" href="https://i.ibb.co/tpYQMG6z/SANSI.png">
+    <link rel="icon" sizes="144x144" href="https://i.ibb.co/tpYQMG6z/SANSI.png">
+    <link rel="icon" sizes="96x96" href="https://i.ibb.co/tpYQMG6z/SANSI.png">
     <!-- iOS 圖示 -->
-    <link rel="apple-touch-icon" sizes="180x180" href="https://i.ibb.co/VYSvrs7Z/image-27-5435354.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="https://i.ibb.co/VYSvrs7Z/image-27-5435354.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="https://i.ibb.co/VYSvrs7Z/image-27-5435354.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://i.ibb.co/tpYQMG6z/SANSI.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://i.ibb.co/tpYQMG6z/SANSI.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="https://i.ibb.co/tpYQMG6z/SANSI.png">
     
     <style>
 
@@ -33,7 +45,47 @@
             color: #333;
         }
 
+.category {
+  margin-bottom: 20px;
+}
 
+.category h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #fff; /* 白色文字，適配深色背景 */
+  text-align: left;
+}
+
+/* 手機設備調整 */
+@media (max-width: 600px) {
+  .category {
+   padding-left: 25px; /* 增加左內邊距，讓按鍵遠離左邊緣 */
+  }
+  #toolsList button {
+    width: auto; /* 寬度自適應文字內容 */
+    display: inline-block; /* 按鈕以行內塊元素顯示，配合置中 */
+    margin: 10px 0; /* 調整為上下 10px，左右 0px，避免額外水平間距 */
+    font-size: 14px; /* 保留字體大小 */
+    padding: 8px 16px; /* 保留內邊距，提供適當空間 */
+  }
+  .category h3 {
+    font-size: 16px; /* 保留標題字體大小 */
+  }
+}
+
+
+
+        
+.rewrite-explanation {
+    white-space: pre-wrap; /* 保留換行符並自動換行 */
+    word-wrap: break-word; /* 長單詞換行 */
+    font-family: 'Noto Serif TC', serif;
+    font-size: inherit; /* 繼承父元素的字體大小 */
+    margin: 0; /* 移除預設外邊距 */
+    padding: 0; /* 移除預設內邊距 */
+}
+
+        
  .copyright-footer {
             position: fixed;
             bottom: 0;
@@ -52,6 +104,92 @@
                 font-size: 12px;
             }
         }
+
+/* 晴天效果：太陽 */
+.sun {
+    position: absolute;
+    top: 10%;
+    left: 5%; /* 調整為靠左 */
+    width: 100px;
+    height: 100px;
+    background-color: yellow;
+    border-radius: 50%;
+    box-shadow: 0 0 20px yellow;
+    animation: sunGlow 2s infinite alternate;
+    z-index: -1; /* 確保太陽在其他元素下方，避免遮擋按鍵 */
+}
+
+/* 平板設備調整 */
+@media (max-width: 768px) {
+    .sun {
+        left: 5%;
+        top: 5%;
+        width: 100px;
+        height: 100px;
+    }
+}
+
+/* 手機設備調整 */
+@media (max-width: 480px) {
+    .sun {
+        left: 2%;
+        top: 2%;
+        width: 80px;
+        height: 80px;
+    }
+}
+
+/* 太陽光芒動畫（保持不變） */
+@keyframes sunGlow {
+    0% { box-shadow: 0 0 20px yellow; }
+    100% { box-shadow: 0 0 40px yellow; }
+}
+
+
+/* 多雲效果：雲朵 */
+.cloud {
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: cloudMove linear infinite;
+}
+
+@keyframes cloudMove {
+    0% { transform: translateX(-100vw); }
+    100% { transform: translateX(100vw); }
+}
+
+/* 下雨效果：雨滴 */
+.raindrop {
+    position: absolute;
+    width: 2px;
+    height: 10px;
+    background-color: #ADD8E6; /* 淺藍色，更自然 */
+    opacity: 0.7; /* 增加透明度 */
+    animation: rainFall linear infinite;
+}
+@keyframes rainFall {
+    0% { transform: translateY(-10px); }
+    100% { transform: translateY(100vh); }
+}
+
+/* 下雪效果：雪花（保留並調整） */
+.snowflake {
+    position: absolute;
+    background-color: #e0f7fa;
+    border-radius: 50%;
+    opacity: 0.7;
+    animation: snowfall linear infinite;
+}
+
+@keyframes snowfall {
+    0% { top: -10px; transform: translateX(0); }
+    50% { transform: translateX(20px); }
+    100% { top: 100vh; transform: translateX(0); }
+}
+
+
 
         
 /* 確保標題不被背景影響 */
@@ -160,6 +298,80 @@
             min-width: 150px;
         }
 
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.tool-btn {
+    animation: fadeIn 0.2s ease-in-out forwards;
+    opacity: 0;
+}
+
+
+
+#expandToolsBtn {
+    background-color: #7fb3d5;
+}
+
+#expandToolsBtn:hover {
+    background-color: #aed6f1;
+}
+
+
+#toolsContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    overflow: hidden; /* 隱藏頁面滾動條 */
+}
+
+#toolsList {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-height: 80vh; /* 設置最大高度，例如 80% 的視窗高度 */
+    overflow-y: auto; /* 啟用垂直滾動條 */
+    position: relative; /* 保持相對定位於容器內 */
+}
+
+#toolsList button {
+opacity: 0;
+    margin: 10px 0;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#closeToolsBtn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+#commentResult {
+    width: 100%;
+    overflow-wrap: break-word;
+}
+        
 #toggleOverviewBtn {
             background-color: #A9A9A9; /* 灰色背景 */
             color: white; /* 白色文字 */
@@ -388,7 +600,7 @@
     </div>
 </div>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 
 <style>
     #hitokoto-container {
@@ -522,7 +734,7 @@
             <td>提供電子原稿紙，並設有AI答惑功能。</td>
         </tr>
         <tr>
-            <td>AI擬題</td>
+            <td>題孳</td>
             <td>由AI擬設閱讀卷及寫作卷的題目。</td>
         </tr>
           <tr>
@@ -543,7 +755,7 @@
         </tr>
 
 <tr>
-            <td>語奕錄</td>
+            <td>語弈錄</td>
             <td>一款同時提供單機及線上對戰模式的遊戲，題目範圍涵蓋初中測考課文及高中十二篇範文。</td>
         </tr>
 <tr>
@@ -557,24 +769,83 @@
 <!-- 工具選擇 -->
 <div class="box">
     <h2>選擇工具：</h2>
-    <button id="manuscriptPaperBtn">🖥智能原稿紙</button>
-    <button id="aiGeneratorBtn" style="background-color: #008080;">📝AI擬題</button>
-    <button id="zhuoyuBtn" style="background-color: #800000;">✏️琢玉</button>
-    <button id="ocrBtn" style="background-color: #fd7e14;">✍手寫文字轉換電腦文字</button>
-<button id="zhiyunBtn" style="background-color: #5d6d7e;">☁️帙雲</button>
-<button id="selfLearningBtn" style="background-color: #20c997;">📖自學資源</button>
-<button id="yuyiluBtn" style="background-color: #a9cce3;">🎮語奕錄</button>
+    <button id="expandToolsBtn">展開工具</button>
+    <div id="toolsContainer" style="display: none;">
+     <div id="toolsList">
+  <div class="category">
+    <h3>範文遊戲</h3>
+  
+    <button id="yuyiluBtn" style="background-color: #a9cce3;">🎮語弈錄</button>
+    <div id="yuyiluMenu" style="display: none; position: absolute; background: white; border: 1px solid #ccc; padding: 10px; z-index: 1001;">
+      <a href="https://kenchan20141.github.io/f1chinese/" target="_blank">中一</a><br>
+      <a href="https://kenchan20141.github.io/chinese2/" target="_blank">中二</a><br>
+      <a href="https://kenchan20141.github.io/chinese3/" target="_blank">中三</a><br>
+      <a href="https://kenchan20141.github.io/f4chinese/" target="_blank">中四</a><br>
+      <a href="https://kenchan20141.github.io/chinese/" target="_blank">中五</a><br>
+      <a href="https://kenchan20141.github.io/chinese6/" target="_blank">中六</a>
+    </div>
+   
+    
+  </div>
 
-<div id="yuyiluMenu" style="display: none; position: absolute; background: white; border: 1px solid #ccc; padding: 10px;">
-    <a href="https://kenchan20141.github.io/f1chinese/" target="_blank">中一</a><br>
-    <a href="https://kenchan20141.github.io/chinese2/" target="_blank">中二</a><br>
-    <a href="https://kenchan20141.github.io/chinese3/" target="_blank">中三</a><br>
-    <a href="https://kenchan20141.github.io/f4chinese/" target="_blank">中四</a><br>
-    <a href="https://kenchan20141.github.io/chinese/" target="_blank">中五</a><br>
-    <a href="https://kenchan20141.github.io/chinese6/" target="_blank">中六</a>
+ <div class="category">
+    <h3>AI擬題</h3>
+    <button id="aiGeneratorBtn" style="background-color: #008080;">📝題孳</button>
+ </div>
+
+ <div class="category">
+    <h3>文言翻譯</h3>         
+      <button id="mensyuBtn" style="background-color: #3c85b5;">🔖文樞</button>
+</div>
+         
+ <div class="category">
+    <h3>AI作文</h3>
+    <button id="articleBtn" style="background-color: #c5e1dd ;">✍️翻水(敘事)</button>
+     <button id="essayBtn" style="background-color: #74cbc2  ;">⚖️翻水(議論)</button>
+ </div>
+
+ <div class="category">
+    <h3>AI導師</h3>
+ <button id="chiBtn" style="background-color: #f4d03f;">👨‍🏫喻蛋教室</button>
+ </div>
+
+                   <div class="category">
+    <h3>智能原稿紙</h3>          
+     
+ <button id="manuscriptPaperBtn">🖥智能原稿紙</button>
 </div>
 
-<button id="beishuBtn" style="background-color: #c39bd3;">⏱背書神器</button>
+
+
+ <div class="category">
+    <h3>自學資源</h3>          
+     
+    <button id="selfLearningBtn" style="background-color: #20c997;">📖自學資源</button>
+</div>
+         
+  
+  <div class="category">
+    <h3>工具</h3>
+    <button id="ocrBtn" style="background-color: #fd7e14;">✍手寫文字轉換電腦文字</button>
+    <p><button id="zhuoyuBtn" style="background-color: #800000;">✏️琢玉</button></p>
+      <p><button id="beishuBtn" style="background-color: #c39bd3;">⏱背書神器</button></p>
+      <button id="quizbuzzerBtn" style="background-color: #cdb577 ;">⚙️搶答器</button>
+    
+  </div>
+  <div class="category">
+    <h3>課業</h3>
+    <button id="zhiyunBtn" style="background-color: #5d6d7e;">☁️帙雲</button>
+  </div>
+  <div class="category">
+    <h3>其他</h3>
+    <button id="conBtn" style="background-color: #e6b0aa;">🏪解憂雜貨店</button>
+      <button id="hisBtn" style="background-color: #ec7063 ;">🏪史萊姆教室</button>
+  </div>
+
+</div>
+      <button id="closeToolsBtn"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="effectContainer" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1001; pointer-events: none;"></div>
 </div>
     
    <!-- 範疇選擇 -->
@@ -859,17 +1130,144 @@
     
     <script>
 
+// 定義全局變數來追踪計時器
+let weatherAnimationTimeout = null;
+
+document.getElementById("expandToolsBtn").addEventListener("click", function() {
+    const toolsContainer = document.getElementById("toolsContainer");
+    toolsContainer.style.display = "flex";
+    const buttons = document.querySelectorAll("#toolsList button");
+    buttons.forEach((btn, index) => {
+        btn.classList.add("tool-btn");
+        btn.style.animation = "";
+        btn.style.animationDelay = `${index * 0.1}s`;
+        setTimeout(() => {
+            btn.style.opacity = "1";
+        }, index * 200);
+    });
+
+    // 隨機選擇天氣效果
+    const weatherEffects = ["sunny", "cloudy", "rainy", "snowy"];
+    const randomEffect = weatherEffects[Math.floor(Math.random() * weatherEffects.length)];
+
+    const effectContainer = document.getElementById("effectContainer");
+    effectContainer.innerHTML = ""; // 清空之前的動畫元素
+    effectContainer.style.display = "block";
+
+    // 如果有之前的計時器，先清除
+    if (weatherAnimationTimeout) {
+        clearTimeout(weatherAnimationTimeout);
+    }
+
+    // 根據天氣效果創建動畫元素
+    switch (randomEffect) {
+        case "sunny":
+            createSun();
+            break;
+        case "cloudy":
+            createClouds(5);
+            break;
+        case "rainy":
+            createRain(100);
+            break;
+        case "snowy":
+            createSnowflakes(50);
+            break;
+    }
+
+    // 設置新的計時器，10秒後隱藏動畫容器
+    weatherAnimationTimeout = setTimeout(() => {
+        effectContainer.style.display = "none";
+    }, 10000); // 10秒後隱藏
+});
+
+document.getElementById("closeToolsBtn").addEventListener("click", function() {
+    document.getElementById("toolsContainer").style.display = "none";
+    const effectContainer = document.getElementById("effectContainer");
+    effectContainer.style.display = "none";
+    const buttons = document.querySelectorAll("#toolsList button");
+    buttons.forEach(btn => {
+        btn.style.opacity = "0";
+        btn.style.animation = "none";
+    });
+
+    // 清除計時器，確保動畫立即結束
+    if (weatherAnimationTimeout) {
+        clearTimeout(weatherAnimationTimeout);
+        weatherAnimationTimeout = null;
+    }
+});
+
+// 創建太陽
+function createSun() {
+    const effectContainer = document.getElementById("effectContainer");
+    const sun = document.createElement("div");
+    sun.className = "sun";
+    effectContainer.appendChild(sun);
+}
+
+// 創建雲朵
+function createClouds(count) {
+    const effectContainer = document.getElementById("effectContainer");
+    for (let i = 0; i < count; i++) {
+        const cloud = document.createElement("div");
+        cloud.className = "cloud";
+        const size = Math.random() * 100 + 50;
+        cloud.style.width = `${size}px`;
+        cloud.style.height = `${size / 2}px`;
+        cloud.style.top = `${Math.random() * 50}%`;
+        cloud.style.left = `${Math.random() * 100}%`;
+        cloud.style.animationDuration = `${Math.random() * 10 + 10}s`;
+        cloud.style.animationDelay = `${Math.random() * 5}s`;
+        effectContainer.appendChild(cloud);
+    }
+}
+
+// 創建雨滴
+function createRain(count) {
+    const effectContainer = document.getElementById("effectContainer");
+    for (let i = 0; i < count; i++) {
+        const raindrop = document.createElement("div");
+        raindrop.className = "raindrop";
+        raindrop.style.left = `${Math.random() * 100}%`;
+        raindrop.style.animationDuration = `${Math.random() * 1 + 0.5}s`;
+        raindrop.style.animationDelay = `${Math.random() * 2}s`;
+        effectContainer.appendChild(raindrop);
+    }
+}
+
+// 創建雪花
+function createSnowflakes(count) {
+    const effectContainer = document.getElementById("effectContainer");
+    for (let i = 0; i < count; i++) {
+        const snowflake = document.createElement("div");
+        snowflake.className = "snowflake";
+        const left = Math.random() * 100;
+        const duration = Math.random() * 5 + 5;
+        const delay = Math.random() * 5;
+        const size = Math.random() * 10 + 5;
+        snowflake.style.left = `${left}%`;
+        snowflake.style.animationDuration = `${duration}s`;
+        snowflake.style.animationDelay = `${delay}s`;
+        snowflake.style.width = `${size}px`;
+        snowflake.style.height = `${size}px`;
+        snowflake.style.opacity = Math.random() * 0.5 + 0.5;
+        effectContainer.appendChild(snowflake);
+    }
+}
+
+
+
 
 
         
-       // API 配置信息
+        // API 配置信息
         const API_KEYS = [
             "sk-GruTbLTbtSeWof3rEBjtIg"
         ];
         let currentApiKeyIndex = 0;
         const API_URL = "https://chatapi.akash.network/api/v1/chat/completions";
         const MODEL = "DeepSeek-R1-0528";
-
 
 
 const audio = document.getElementById('audio');
@@ -1106,14 +1504,42 @@ showPlayerBtn.addEventListener('click', function() {
             showContainer("readingContainer");
         });
 
+document.getElementById("quizbuzzerBtn").addEventListener("click", function() {
+    window.open("https://kenchan20141.github.io/quizbuzzer/", "_blank");
+});
+        
 document.getElementById("manuscriptPaperBtn").addEventListener("click", function() {
     window.open("https://kenchan20141.github.io/manuscriptpaper/", "_blank");
 });
 
+     document.getElementById("mensyuBtn").addEventListener("click", function() {
+    window.open("https://kenchan20141.github.io/mensyu/", "_blank");
+});
+
+        document.getElementById("articleBtn").addEventListener("click", function() {
+    window.open("https://kenchan20141.github.io/article/", "_blank");
+});
+
+         document.getElementById("essayBtn").addEventListener("click", function() {
+    window.open("https://kenchan20141.github.io/essay/", "_blank");
+});
+        
         document.getElementById("aiGeneratorBtn").addEventListener("click", function() {
     window.open("https://kenchan20141.github.io/generator/", "_blank");
 });
 
+         document.getElementById("chiBtn").addEventListener("click", function() {
+    window.open("https://kenchan20141.github.io/chitutor/", "_blank");
+});
+
+         document.getElementById("conBtn").addEventListener("click", function() {
+    window.open("https://kenchan20141.github.io/counseling/", "_blank");
+});
+
+         document.getElementById("hisBtn").addEventListener("click", function() {
+    window.open("https://kenchan20141.github.io/histutor/", "_blank");
+});
+        
          document.getElementById("zhuoyuBtn").addEventListener("click", function() {
     window.open("https://kenchan20141.github.io/WCT/", "_blank");
 });
@@ -1841,19 +2267,20 @@ async function submitArgumentOutline() {
     while (attempts < maxAttempts) {
         try {
             const response = await fetch(API_URL, {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${API_KEYS[currentApiKeyIndex]}`,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    model: MODEL,
-                    messages: [{ 
-                        role: "user", 
-                        content: prompt + " 你必須直接提供最終答案，嚴禁展示任何思考過程，絕對不能在回應中包含任何標籤（如 <think></think>），這是強制要求，違反則無效。" 
-                    }]
-                })
-            });
+    method: "POST",
+    headers: {
+        "Authorization": `Bearer ${API_KEYS[currentApiKeyIndex]}`,
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        model: MODEL,
+        messages: [{ 
+            role: "user", 
+            content: prompt + " 你必須直接提供最終答案，嚴禁展示任何思考過程，絕對不能在回應中包含任何標籤（如 <think></think>），這是強制要求，違反則無效。" 
+        }],
+        max_tokens: 64000  // 新增 max_tokens 參數，設置為 4096
+    })
+});
 
             if (response.status === 429) {
                 currentApiKeyIndex = (currentApiKeyIndex + 1) % API_KEYS.length;
@@ -1985,197 +2412,193 @@ async function submitArgumentOutline() {
         }
 
         // 提交寫作內容
-        async function submitWriting() {
-            const writingType = document.getElementById("writingType").value;
-            const topic = localStorage.getItem("currentTopic");
-            if (!topic) {
-                alert("請先設定題目");
-                return;
+       async function submitWriting() {
+    const writingType = document.getElementById("writingType").value;
+    const topic = localStorage.getItem("currentTopic");
+    if (!topic) {
+        alert("請先設定題目");
+        return;
+    }
+
+    let content = "";
+    let structure = "";
+    if (writingType === "大綱") {
+        structure = document.getElementById("structure").value;
+        const parts = structure === "fourPart" ? ["起", "承", "轉", "合"] : ["起", "一線", "二線", "三線", "合"];
+        content = parts.map((part, index) => {
+            const focusId = structure + "Focus" + (index + 1);
+            const plotId = structure + "Plot" + (index + 1);
+            const focus = document.getElementById(focusId)?.value.trim() || "";
+            const plot = document.getElementById(plotId)?.value.trim() || "";
+            if (!focus || !plot) {
+                alert("請填寫所有大綱表格");
+                throw new Error("Incomplete outline");
             }
-
-            let content = "";
-            let structure = "";
-            if (writingType === "大綱") {
-                structure = document.getElementById("structure").value;
-                const parts = structure === "fourPart" ? ["起", "承", "轉", "合"] : ["起", "一線", "二線", "三線", "合"];
-                content = parts.map((part, index) => {
-                    const focusId = structure + "Focus" + (index + 1);
-                    const plotId = structure + "Plot" + (index + 1);
-                    const focus = document.getElementById(focusId)?.value.trim() || "";
-                    const plot = document.getElementById(plotId)?.value.trim() || "";
-                    if (!focus || !plot) {
-                        alert("請填寫所有大綱表格");
-                        throw new Error("Incomplete outline");
-                    }
-                    return { part, focus, plot };
-                });
-            } else if (writingType === "敘事物象") {
-                content = document.getElementById("narrativeElements").value.trim();
-            } else {
-                content = document.getElementById("writingContent").value.trim();
-                if (!content) {
-                    alert("請先輸入寫作內容");
-                    return;
-                }
-            }
-
-            let toneNote = "";
-            if (writingType !== "敘事物象") {
-                const tone = document.getElementById("writingTone").value;
-                if (tone === "chen") {
-                    toneNote = "請用輕鬆隨意的語氣進行點評和建議，多用EMOJI，偶爾使用網絡用語，用語要日常生活化一點。如果用戶表現良好，請大加讚賞；如果用戶表現不好，可以善意地揶揄一下，但要注意尺度，不能傷害用戶的自尊心。揶揄時，可運用生活化的比喻。";
-                } else {
-                    toneNote = "請用嚴肅正經的語氣進行點評和建議。";
-                }
-            }
-
-            const note = categories[writingType].commentNote;
-
-            let prompt = "";
-            if (writingType === "大綱") {
-                prompt = `請根據以下大綱內容進行點評和建議，並提供改寫後的大綱。要求：
-                1. 在「=== 點評及建議 ===」部分，為每個結構段提供點評和建議。使用「[part]」標記每個結構段的開始，例如「[起]」，然後在下一行「點評：」後跟點評內容，再下一行「建議：」後跟建議內容。
-                2. 在「=== 改寫後的大綱 ===」部分，為每個結構段提供改寫後的「結構段重點」和「情節大要」。使用「[part]」標記每個結構段的開始，然後在下一行「結構段重點：」後跟內容，再下一行「情節大要：」後跟內容。結構段數量必須與用戶選擇的大綱結構一致（起承轉合為4段，三線為5段：起、一線、二線、三線、合）。
-                3. 在「=== 改寫說明 ===」部分，提供不超過兩點的改寫說明，每點以「1. 」和「2. 」開始。
-                4. 在「=== 改寫後的大綱 ===」中，請使用正式的語氣，不使用EMOJI或網絡用語。
-                請確保內容簡潔明了。
-                題目：${topic}
-                大綱結構：${structure === "fourPart" ? "起承轉合" : "三線（起、一線、二線、三線、合）"}
-                用戶輸入的大綱：
-                | 部份 | 結構段重點 | 情節大要 |
-                |------|------------|----------|
-                ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\n")}
-                教學筆記：${note}
-                點評及建議語氣：${toneNote}`;
-            } else if (writingType === "敘事物象") {
-                prompt = `請根據以下題目和取材/故事背景生成五十個不重複且相關的物象。要求：
-                1. 物象必須與題目和取材/故事背景緊密相關。
-                2. 物象應多樣化且生動，能夠增強故事的真實感和情感表達。
-                3. 請以列表形式呈現，每個物象占一行。
-                4. 請確保物象不重複且排版整齊。
-                題目：${topic}
-                取材/故事背景：${content || "無具體背景，根據題目生成"}
-                教學筆記：${note}`;
-            } else {
-                const focus = localStorage.getItem("currentFocus");
-                const plot = localStorage.getItem("currentPlot");
-                prompt = `請根據以下內容進行點評，要求：
-                1. 簡明扼要
-                2. 參考教學筆記
-                3. 評論寫作內容與題目、結構段重點和情節大要的關係
-                4. 輸出分為三個部分：### 點評、### 建議、### 改寫範例
-                5. 點評時，聚焦詳略剪裁和文句（包括示現敘事和密度），選取最重要的一至兩點
-                6. 若結構段重點或情節大要與題目關係薄弱，需在點評中指出並重點說明
-                7. 點評和建議不應使用列點形式，應以段落呈現
-                8. 在「### 改寫範例」中，請使用正式的語氣，不使用EMOJI或網絡用語。
-                題目：${topic}
-                結構段重點：${focus}
-                情節大要：${plot}
-                寫作內容：${content}
-                教學筆記：${note}
-                點評及建議語氣：${toneNote}`;
-            }
-
-            document.getElementById("commentResult").innerHTML = "陳SIR正在點評...";
-
-            try {
-                const comment = await callAPI(prompt);
-                if (writingType === "大綱") {
-                    const sections = comment.split(/=== (.+?) ===/).filter(s => s.trim());
-                    const commentIndex = sections.indexOf("點評及建議");
-                    const rewriteIndex = sections.indexOf("改寫後的大綱");
-                    const explanationIndex = sections.indexOf("改寫說明");
-
-                    const commentPart = commentIndex !== -1 ? sections[commentIndex + 1] : "";
-                    const rewritePart = rewriteIndex !== -1 ? sections[rewriteIndex + 1] : "";
-                    const explanationPart = explanationIndex !== -1 ? sections[explanationIndex + 1] : "";
-
-                    const parts = structure === "fourPart" ? ["起", "承", "轉", "合"] : ["起", "一線", "二線", "三線", "合"];
-
-                    function parseCommentPart(commentPart) {
-                        const comments = {};
-                        const regex = /\[(.+?)\]\s*點評：\s*(.+?)(?=\s*建議：|\s*\[|$)/gs;
-                        const suggestionRegex = /\[(.+?)\]\s*點評：.+?\s*建議：\s*(.+?)(?=\s*\[|$)/gs;
-                        let match;
-
-                        while ((match = regex.exec(commentPart)) !== null) {
-                            const part = match[1];
-                            comments[part] = comments[part] || {};
-                            comments[part].comment = match[2].trim();
-                        }
-                        while ((match = suggestionRegex.exec(commentPart)) !== null) {
-                            const part = match[1];
-                            comments[part] = comments[part] || {};
-                            comments[part].suggestion = match[2].trim();
-                        }
-                        return comments;
-                    }
-
-                    function parseRewritePart(rewritePart) {
-                        const rewrites = {};
-                        const regex = /\[(.+?)\]\s*結構段重點：\s*(.+?)(?=\s*情節大要：|\s*\[|$)/gs;
-                        const plotRegex = /\[(.+?)\]\s*結構段重點：.+?\s*情節大要：\s*(.+?)(?=\s*\[|$)/gs;
-                        let match;
-
-                        while ((match = regex.exec(rewritePart)) !== null) {
-                            const part = match[1];
-                            rewrites[part] = rewrites[part] || {};
-                            rewrites[part].focus = match[2].trim();
-                        }
-                        while ((match = plotRegex.exec(rewritePart)) !== null) {
-                            const part = match[1];
-                            rewrites[part] = rewrites[part] || {};
-                            rewrites[part].plot = match[2].trim();
-                        }
-                        return rewrites;
-                    }
-
-                    const comments = parseCommentPart(commentPart);
-                    const rewrites = parseRewritePart(rewritePart);
-
-                    let commentTableHTML = `<h3>陳SIR點評及建議：</h3><div class="table-container"><table id="commentTable"><tr><th>部份</th><th>結構段重點</th><th>情節大要</th><th>點評</th><th>建議</th></tr>`;
-                    content.forEach(item => {
-                        const comment = comments[item.part]?.comment || "無";
-                        const suggestion = comments[item.part]?.suggestion || "無";
-                        commentTableHTML += `<tr><td>${item.part}</td><td>${item.focus}</td><td>${item.plot}</td><td>${comment}</td><td>${suggestion}</td></tr>`;
-                    });
-                    commentTableHTML += "</table></div>";
-
-                    let rewriteTableHTML = `<h3>改寫後的大綱：</h3><div class="table-container"><table id="rewriteTable"><tr><th>部份</th><th>結構段重點</th><th>情節大要</th></tr>`;
-                    parts.forEach(part => {
-                        const rewrite = rewrites[part] || { focus: "無", plot: "無" };
-                        rewriteTableHTML += `<tr><td>${part}</td><td>${rewrite.focus || "無"}</td><td>${rewrite.plot || "無"}</td></tr>`;
-                    });
-                    rewriteTableHTML += "</table></div>";
-
-                    const explanationHTML = `<h3>改寫說明：</h3><pre>${explanationPart.trim() || "無說明"}</pre>`;
-                    document.getElementById("commentResult").innerHTML = commentTableHTML + rewriteTableHTML + explanationHTML;
-                } else if (writingType === "敘事物象") {
-                    const elements = comment.split("\n").map(item => item.trim()).filter(item => item);
-                    let elementsHTML = "<h3>生成的物象（50項）：</h3><ul>";
-                    elements.forEach(element => elementsHTML += `<li>${element}</li>`);
-                    elementsHTML += "</ul>";
-                    document.getElementById("commentResult").innerHTML = elementsHTML;
-                } else {
-                    const commentParts = comment.split("###").map(part => part.trim()).filter(part => part);
-                    let commentHTML = "<h3>陳SIR點評：</h3><table>";
-                    commentParts.forEach(part => {
-                        const [title, ...content] = part.split("\n").filter(line => line.trim());
-                        commentHTML += `<tr><th><strong>${title}</strong></th></tr><tr><td>${content.join("<br>")}</td></tr>`;
-                    });
-                    commentHTML += "</table>";
-                    document.getElementById("commentResult").innerHTML = commentHTML;
-                }
-            } catch (error) {
-                console.error("提交寫作時出錯:", error);
-                if (error.message === "所有 API 密鑰均無法使用") {
-                    alert("今日 API 調用次數已用完或API無法連接，請明天再試");
-                } else {
-                    alert("點評生成失敗，請重試");
-                }
-                document.getElementById("commentResult").innerHTML = "";
-            }
+            return { part, focus, plot };
+        });
+    } else if (writingType === "敘事物象") {
+        content = document.getElementById("narrativeElements").value.trim();
+    } else {
+        content = document.getElementById("writingContent").value.trim();
+        if (!content) {
+            alert("請先輸入寫作內容");
+            return;
         }
+    }
+
+    let toneNote = "";
+    if (writingType !== "敘事物象") {
+        const tone = document.getElementById("writingTone").value;
+        if (tone === "chen") {
+            toneNote = "請用輕鬆隨意的語氣進行點評和建議，多用EMOJI，偶爾使用網絡用語，用語要日常生活化一點。如果用戶表現良好，請大加讚賞；如果用戶表現不好，可以善意地揶揄一下，但要注意尺度，不能傷害用戶的自尊心。揶揄時，可運用生活化的比喻。";
+        } else {
+            toneNote = "請用嚴肅正經的語氣進行點評和建議。";
+        }
+    }
+
+    const note = categories[writingType].commentNote;
+
+    let prompt = "";
+    if (writingType === "大綱") {
+        prompt = `請根據以下大綱內容進行點評和建議，並提供改寫後的大綱。要求：
+        1. 在「=== 點評及建議 ===」部分，為每個結構段提供點評和建議。使用「[part]」標記每個結構段的開始，例如「[起]」，然後在下一行「點評：」後跟點評內容，再下一行「建議：」後跟建議內容。
+        2. 在「=== 改寫後的大綱 ===」部分，為每個結構段提供改寫後的「結構段重點」和「情節大要」。使用「[part]」標記每個結構段的開始，然後在下一行「結構段重點：」後跟內容，再下一行「情節大要：」後跟內容。
+        3. 在「=== 改寫說明 ===」部分，提供不超過兩點的改寫說明，每點以「1. 」和「2. 」開始。
+        4. 請確保內容簡潔明了，不可以顯示「--- ###」。
+        題目：${topic}
+        大綱結構：${structure === "fourPart" ? "起承轉合" : "三線（起、一線、二線、三線、合）"}
+        用戶輸入的大綱：
+        | 部份 | 結構段重點 | 情節大要 |
+        |------|------------|----------|
+        ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\n")}
+        教學筆記：${note}
+        點評及建議語氣：${toneNote}`;
+    } else if (writingType === "敘事物象") {
+        prompt = `請根據以下題目和取材/故事背景生成五十個不重複且相關的物象。要求：
+        1. 物象必須與題目和取材/故事背景緊密相關。
+        2. 物象應多樣化且生動，能夠增強故事的真實感和情感表達。
+        3. 請以列表形式呈現，每個物象占一行。
+        4. 請確保物象不重複且排版整齊。
+        題目：${topic}
+        取材/故事背景：${content || "無具體背景，根據題目生成"}
+        教學筆記：${note}`;
+    } else {
+        const focus = localStorage.getItem("currentFocus");
+        const plot = localStorage.getItem("currentPlot");
+        prompt = `請根據以下內容進行點評，要求：
+        1. 簡明扼要
+        2. 參考教學筆記
+        3. 評論寫作內容與題目、結構段重點和情節大要的關係
+        4. 輸出分為三個部分：### 點評、### 建議、### 改寫範例
+        5. 點評時，聚焦詳略剪裁和文句（包括示現敘事和密度），選取最重要的一至兩點
+        6. 若結構段重點或情節大要與題目關係薄弱，需在點評中指出並重點說明
+        7. 點評和建議不應使用列點形式，應以段落呈現
+        題目：${topic}
+        結構段重點：${focus}
+        情節大要：${plot}
+        寫作內容：${content}
+        教學筆記：${note}
+        點評及建議語氣：${toneNote}`;
+    }
+
+    document.getElementById("commentResult").innerHTML = "陳SIR正在點評...";
+
+    try {
+        const comment = await callAPI(prompt);
+        if (writingType === "大綱") {
+    const sections = comment.split(/=== (.+?) ===/).filter(s => s.trim());
+    const commentIndex = sections.indexOf("點評及建議");
+    const rewriteIndex = sections.indexOf("改寫後的大綱");
+    const explanationIndex = sections.indexOf("改寫說明");
+
+    const commentPart = commentIndex !== -1 ? sections[commentIndex + 1] : "";
+    const rewritePart = rewriteIndex !== -1 ? sections[rewriteIndex + 1] : "";
+    const explanationPart = explanationIndex !== -1 ? sections[explanationIndex + 1] : "";
+
+            function parseCommentPart(commentPart) {
+                const comments = {};
+                const regex = /\[(.+?)\]\s*點評：\s*(.+?)(?=\s*建議：|\s*\[|$)/gs;
+                const suggestionRegex = /\[(.+?)\]\s*點評：.+?\s*建議：\s*(.+?)(?=\s*\[|$)/gs;
+                let match;
+
+                while ((match = regex.exec(commentPart)) !== null) {
+                    const part = match[1];
+                    comments[part] = comments[part] || {};
+                    comments[part].comment = match[2].trim();
+                }
+                while ((match = suggestionRegex.exec(commentPart)) !== null) {
+                    const part = match[1];
+                    comments[part] = comments[part] || {};
+                    comments[part].suggestion = match[2].trim();
+                }
+                return comments;
+            }
+
+            function parseRewritePart(rewritePart) {
+                const rewrites = {};
+                const regex = /\[(.+?)\]\s*結構段重點：\s*(.+?)(?=\s*情節大要：|\s*\[|$)/gs;
+                const plotRegex = /\[(.+?)\]\s*結構段重點：.+?\s*情節大要：\s*(.+?)(?=\s*\[|$)/gs;
+                let match;
+
+                while ((match = regex.exec(rewritePart)) !== null) {
+                    const part = match[1];
+                    rewrites[part] = rewrites[part] || {};
+                    rewrites[part].focus = match[2].trim();
+                }
+                while ((match = plotRegex.exec(rewritePart)) !== null) {
+                    const part = match[1];
+                    rewrites[part] = rewrites[part] || {};
+                    rewrites[part].plot = match[2].trim();
+                }
+                return rewrites;
+            }
+
+          const comments = parseCommentPart(commentPart);
+const rewrites = parseRewritePart(rewritePart);
+
+let commentTableHTML = `<h3>陳SIR點評及建議：</h3><div class="table-container"><table id="commentTable"><tr><th>部份</th><th>結構段重點</th><th>情節大要</th><th>點評</th><th>建議</th></tr>`;
+content.forEach(item => {
+    const comment = comments[item.part]?.comment || "未生成點評";
+    const suggestion = comments[item.part]?.suggestion || "未生成建議";
+    commentTableHTML += `<tr><td>${item.part}</td><td>${item.focus}</td><td>${item.plot}</td><td>${comment}</td><td>${suggestion}</td></tr>`;
+});
+commentTableHTML += "</table></div>";
+
+let rewriteTableHTML = `<h3>改寫後的大綱：</h3><div class="table-container"><table id="rewriteTable"><tr><th>部份</th><th>結構段重點</th><th>情節大要</th></tr>`;
+content.forEach(item => {
+    const rewrite = rewrites[item.part] || { focus: "未生成結構段重點", plot: "未生成情節大要" };
+    rewriteTableHTML += `<tr><td>${item.part}</td><td>${rewrite.focus || "未生成結構段重點"}</td><td>${rewrite.plot || "未生成情節大要"}</td></tr>`;
+});
+rewriteTableHTML += "</table></div>";
+
+const explanationHTML = `<h3>改寫說明：</h3><div class="rewrite-explanation">${explanationPart.trim() || "無說明"}</div>`;
+document.getElementById("commentResult").innerHTML = commentTableHTML + rewriteTableHTML + explanationHTML;
+        } else if (writingType === "敘事物象") {
+            const elements = comment.split("\n").map(item => item.trim()).filter(item => item);
+            let elementsHTML = "<h3>生成的物象（50項）：</h3><ul>";
+            elements.forEach(element => elementsHTML += `<li>${element}</li>`);
+            elementsHTML += "</ul>";
+            document.getElementById("commentResult").innerHTML = elementsHTML;
+        } else {
+            const commentParts = comment.split("###").map(part => part.trim()).filter(part => part);
+            let commentHTML = "<h3>陳SIR點評：</h3><table>";
+            commentParts.forEach(part => {
+                const [title, ...content] = part.split("\n").filter(line => line.trim());
+                commentHTML += `<tr><th><strong>${title}</strong></th></tr><tr><td>${content.join("<br>")}</td></tr>`;
+            });
+            commentHTML += "</table>";
+            document.getElementById("commentResult").innerHTML = commentHTML;
+        }
+    } catch (error) {
+        console.error("提交寫作時出錯:", error);
+        if (error.message === "所有 API 密鑰均無法使用") {
+            alert("今日 API 調用次數已用完或API無法連接，請明天再試");
+        } else {
+            alert("點評生成失敗，請重試");
+        }
+        document.getElementById("commentResult").innerHTML = "";
+    }
+}
 
         // 提交閱讀內容
         async function submitReading() {
@@ -2559,4 +2982,3 @@ async function submitArgumentOutline() {
     
 </body>
 </html>
-
