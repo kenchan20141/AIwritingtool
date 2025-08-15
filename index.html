@@ -4909,6 +4909,161 @@ showContainer('writingContainer', defaultButton);
 }
 });
 
+/// =======================================================
+// === 通用懸浮視窗編輯器 (最終版 - 標題修正) ===
+// =======================================================
+document.addEventListener('DOMContentLoaded', function() {
+
+// --- 為動態生成的「自訂題目」輸入框加上排除標記 (保持不變) ---
+
+const originalShowCustomTopicInput = window.showCustomTopicInput;
+window.showCustomTopicInput = function(buttonElement) {
+originalShowCustomTopicInput(buttonElement);
+const customTopicInput = document.getElementById('customTopic');
+if (customTopicInput) {
+customTopicInput.classList.add('no-modal-editor');
+}
+};
+
+const originalShowArgumentCustomTopicInput = window.showArgumentCustomTopicInput;
+window.showArgumentCustomTopicInput = function(buttonElement) {
+originalShowArgumentCustomTopicInput(buttonElement);
+const argumentCustomTopicInput = document.getElementById('argumentCustomTopic');
+if (argumentCustomTopicInput) {
+argumentCustomTopicInput.classList.add('no-modal-editor');
+}
+};
+
+const originalShowExpandCustomTopicInput = window.showExpandCustomTopicInput;
+window.showExpandCustomTopicInput = function(buttonElement) {
+originalShowExpandCustomTopicInput(buttonElement);
+const container = document.getElementById('expandCustomTopicInputArea');
+if (container) {
+container.querySelectorAll('input[type="text"], textarea').forEach(el => el.classList.add('no-modal-editor'));
+}
+};
+
+// --- 懸浮視窗核心邏輯 (標題生成部分已重寫) ---
+
+const modal = document.getElementById('outline-editor-modal');
+const modalTextarea = document.getElementById('modal-textarea');
+const modalTitle = document.getElementById('modal-title');
+const modalSaveBtn = document.getElementById('modal-save-btn');
+const modalCloseBtn = document.getElementById('modal-close-btn');
+
+if (!modal || !modalTextarea || !modalSaveBtn || !modalCloseBtn) {
+console.error("懸浮視窗的 HTML 結構不完整或未找到！");
+return;
+}
+
+let currentEditingElement = null;
+
+function openModalEditor(element) {
+currentEditingElement = element;
+modalTextarea.value = currentEditingElement.value;
+
+let titleText = '編輯內容'; // 先設定一個預設標題
+
+// =================================================
+// === 【核心修訂】針對特定輸入框，給予專屬標題 ===
+// =================================================
+if (element.id === 'writingContent' || element.id === 'argumentWritingContent') {
+titleText = '輸入您的文章'; // 如果是敘事抒情或議論的寫作區，標題固定為「輸入您的文章」
+}
+// 如果不是上述的特殊情況，才執行原有的標題尋找邏輯
+else {
+const parentTableCell = element.closest('td');
+
+// 策略一：如果是在表格內 (例如大綱)
+if (parentTableCell) {
+const parentRow = parentTableCell.closest('tr');
+if (parentRow) {
+const headerCell = parentRow.cells[0];
+const table = parentRow.closest('table');
+if (table && table.rows.length > 0) {
+const columnHeaderCell = table.rows[0].cells[parentTableCell.cellIndex];
+
+const rowTitle = headerCell ? headerCell.textContent.trim().replace(/[:：]/g, '') : '';
+const colTitle = columnHeaderCell ? columnHeaderCell.textContent.trim().replace(/[:：]/g, '') : '';
+
+if (rowTitle && colTitle && rowTitle !== colTitle) {
+titleText = `編輯「${rowTitle}」的「${colTitle}」`;
+} else if (rowTitle) {
+titleText = `編輯「${rowTitle}」`;
+} else if (colTitle) {
+titleText = `編輯「${colTitle}」`;
+}
+}
+}
+} 
+// 策略二：如果不是在表格內，則尋找與它關聯的 <label> 標籤
+else {
+let associatedLabel = null;
+if (element.id) {
+associatedLabel = document.querySelector(`label[for="${element.id}"]`);
+}
+
+if (!associatedLabel) {
+const parentContainer = element.closest('div');
+if (parentContainer) {
+associatedLabel = parentContainer.querySelector('label');
+}
+}
+
+if (associatedLabel) {
+titleText = `編輯「${associatedLabel.textContent.trim().replace(/[:：]/g, '')}」`;
+}
+}
+}
+
+// 將最終決定的標題設定到懸浮視窗上
+modalTitle.textContent = titleText;
+
+// 顯示懸浮視窗
+modal.style.display = 'flex';
+modalTextarea.focus();
+}
+
+function closeModalEditor() {
+modal.style.display = 'none';
+currentEditingElement = null;
+}
+
+function saveAndCloseEditor() {
+if (currentEditingElement) {
+currentEditingElement.value = modalTextarea.value;
+if (currentEditingElement.id === 'expandContent') {
+updateCharCount();
+}
+}
+closeModalEditor();
+}
+
+
+
+
+// 主事件監聽器 (保持不變)
+    document.body.addEventListener('click', function(event) {
+        const target = event.target;
+        
+        const isTextInput = target.tagName === 'INPUT' && target.type === 'text';
+        const isTextarea = target.tagName === 'TEXTAREA';
+
+        if ((isTextInput || isTextarea) && !target.classList.contains('no-modal-editor') && target.id !== 'modal-textarea') {
+            event.preventDefault();
+            openModalEditor(target);
+        }
+    });
+
+    // 為懸浮視窗的按鈕和外部區域綁定事件 (保持不變)
+    modalSaveBtn.addEventListener('click', saveAndCloseEditor);
+    modalCloseBtn.addEventListener('click', closeModalEditor);
+    modal.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            closeModalEditor();
+        }
+    });
+});
 
 
 </script>
@@ -4923,7 +5078,7 @@ showContainer('writingContainer', defaultButton);
         <h3 id="modal-title">編輯內容</h3>
         <textarea id="modal-textarea" rows="15"></textarea>
         <div class="modal-buttons">
-     
+         
             
             <button id="modal-save-btn" class="btn-action">輸入</button>
         </div>
