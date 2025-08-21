@@ -5463,62 +5463,7 @@ closeModalEditor();
 });
 });
 
-// =======================================================
-// === OCR 整合邏輯 開始 ===
-// =======================================================
-document.addEventListener('DOMContentLoaded', function() {
-// 獲取新加入的 OCR 按鈕和懸浮視窗的文字輸入區
-const ocrBtn = document.getElementById('modal-ocr-btn');
-const modalTextarea = document.getElementById('modal-textarea');
 
-// 這個變數用來存放我們打開的 OCR 視窗的參照，以便後續可以關閉它
-let ocrWindow = null; 
-
-// 【重要】這裡填寫您 Vercel OCR 工具的完整網址
-const VERCEL_OCR_URL = 'https://gemini-ocr-proxy.vercel.app/'; 
-
-// 確保按鈕存在
-if (ocrBtn) {
-// 為 OCR 按鈕加上點擊事件
-ocrBtn.addEventListener('click', function() {
-// 如果上一個視窗還開著，先關掉它
-if (ocrWindow && !ocrWindow.closed) {
-ocrWindow.focus();
-return;
-}
-// 打開一個新的子視窗來載入 OCR 工具，並保留它的參照
-ocrWindow = window.open(VERCEL_OCR_URL, 'OCRWindow', 'width=650,height=850,scrollbars=yes,resizable=yes');
-});
-}
-
-// 監聽來自其他視窗的 'message' 事件，這是跨視窗通訊的核心
-window.addEventListener('message', function(event) {
-
-// 【安全性檢查】確保訊息是從我們信任的 Vercel 應用程式來源發送的
-// 這一步非常重要，可以防止惡意網站發送訊息給您的工具
-if (event.origin !== new URL(VERCEL_OCR_URL).origin) {
-console.warn('收到來源不明的訊息，已忽略:', event.origin);
-return;
-}
-
-// 檢查收到的資料是否是我們定義的 OCR 結果格式
-if (event.data && event.data.type === 'ocrResult') {
-const ocrText = event.data.text;
-
-// 將收到的辨識文字，附加到懸浮視窗的輸入框中
-// 如果輸入框原本就有內容，會先加上一個換行符，體驗更好
-modalTextarea.value += (modalTextarea.value.trim() ? '\n' : '') + ocrText;
-
-// 收到結果後，自動關閉 OCR 子視窗
-if (ocrWindow) {
-ocrWindow.close();
-}
-
-// 將焦點移回輸入框
-modalTextarea.focus();
-}
-});
-});
 
 // =======================================================
 // === 全新評等系統邏輯 (Grading System Logic) ===
@@ -6452,35 +6397,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // --- OCR 整合邏輯 ---
-    const ocrBtn = document.getElementById('modal-ocr-btn');
-    let ocrWindow = null;
-    const VERCEL_OCR_URL = 'https://gemini-ocr-proxy.vercel.app/';
-
-    if (ocrBtn) {
-        ocrBtn.addEventListener('click', function() {
-            if (ocrWindow && !ocrWindow.closed) {
-                ocrWindow.focus();
-                return;
-            }
-            ocrWindow = window.open(VERCEL_OCR_URL, 'OCRWindow', 'width=650,height=850,scrollbars=yes,resizable=yes');
-        });
-    }
-
-    window.addEventListener('message', function(event) {
-        if (event.origin !== new URL(VERCEL_OCR_URL).origin) {
-            console.warn('收到來源不明的訊息，已忽略:', event.origin);
-            return;
-        }
-        if (event.data && event.data.type === 'ocrResult') {
-            const ocrText = event.data.text;
-            modalTextarea.value += (modalTextarea.value.trim() ? '\n' : '') + ocrText;
-            if (ocrWindow) {
-                ocrWindow.close();
-            }
-            modalTextarea.focus();
-        }
-    });
+  
 });
 
 // 頁面加載時初始化
@@ -6504,8 +6421,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <h3 id="modal-title">編輯內容</h3>
 <textarea id="modal-textarea" rows="15"></textarea>
 <div class="modal-buttons">
-<!-- 【新增的按鈕】 -->
-<button id="modal-ocr-btn" class="btn-action" style="background-color: #17a2b8;">OCR</button>
+
 
 <button id="modal-save-btn" class="btn-action">輸入</button>
 </div>
