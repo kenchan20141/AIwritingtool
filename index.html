@@ -3849,7 +3849,7 @@ async function submitArgumentOutline() {
         
         // 【核心修訂】改用閱讀專用的 API 函式
         
-const response = await callReadingAPI(prompt, 0.4);       
+const response = await callReadingAPI(prompt, 0);       
         const sections = response.split(/=== (.+?) ===/).filter(s => s.trim());
         const commentIndex = sections.indexOf("點評及建議");
         const rewriteIndex = sections.indexOf("改寫後的大綱");
@@ -4443,7 +4443,7 @@ async function submitWriting() {
         }
 
         document.getElementById("commentResult").innerHTML = "陳SIR正在點評...";
-        const response = await callAPI(prompt, 0.4); 
+        const response = await callAPI(prompt, 0); 
 
         if (writingType === "片段描寫" || writingType === "全文寫作") {
              // 對於修改過的部分，調用評分顯示函式
