@@ -2291,8 +2291,8 @@ refreshBtn.addEventListener('click', fetchHitokoto);
 <label for="writingType">選擇功能：</label>
 <select id="writingType" onchange="toggleWritingType()">
 <option value="" selected disabled>請在此選擇功能</option>
-<option value="大綱">大綱</option>
-<option value="片段描寫">片段描寫/全文寫作</option>
+<option value="大綱">大綱點評</option>
+<option value="片段描寫">文章點評</option>
 <option value="敘事物象">敘事物象</option>
 </select>
 </div>
@@ -2519,8 +2519,8 @@ refreshBtn.addEventListener('click', fetchHitokoto);
 <label for="argumentType">選擇功能：</label>
 <select id="argumentType" onchange="toggleArgumentType()">
 <option value="" selected disabled>請在此選擇功能</option>
-<option value="outline">大綱</option>
-<option value="writing">片段寫作/全文寫作</option>
+<option value="outline">大綱點評</option>
+<option value="writing">文章點評</option>
 <option value="guide">指引</option>
 </select>
 </div>
@@ -2626,7 +2626,7 @@ refreshBtn.addEventListener('click', fetchHitokoto);
 <option value="https://youfulca.com/wp-content/uploads/2022/08/main-theme01.mp3">盼望</option>
 <option value="https://youfulca.com/wp-content/uploads/2022/08/saikai637.mp3">約定之地</option>
 </select>
-<button id="play-pause">▶️</button>
+<button id="play-pause"▶️</button>
 </div>
 <div class="progress">
 <input type="range" id="progress-bar-music" value="0" min="0" max="100">
@@ -2782,20 +2782,6 @@ refreshBtn.addEventListener('click', fetchHitokoto);
 </div>
 
 
-<!-- Preview Modal (修訂後) -->
-<div id="previewModal" class="preview-modal-overlay">
-<div class="preview-modal-content">
-<div class="preview-modal-body">
-<iframe id="previewIframe" src="" frameborder="0"></iframe>
-<div class="preview-modal-footer">
-<div id="previewDescription" class="preview-description"></div>
-<a id="previewGoToPageBtn" href="" target="_blank" class="preview-goto-btn">前往</a>
-</div>
-</div>
-<button id="previewCloseBtn" class="preview-close-btn" title="關閉">&times;</button>
-</div>
-</div>
-
 
 <!-- Video Modal (新增) -->
 <div id="videoModal" class="video-modal-overlay">
@@ -2895,61 +2881,69 @@ const READING_API_URL = "https://chatapi.akash.network/api/v1/chat/completions";
 const READING_MODEL = "DeepSeek-R1-0528";
 
 
+
 // [新增] 閱讀專用 API 呼叫函式
-async function callReadingAPI(prompt) {
-let attempts = 0;
-const maxAttempts = READING_API_KEYS.length;
-// 每次調用都從一個隨機的索引開始
-let currentApiKeyIndex = Math.floor(Math.random() * READING_API_KEYS.length);
+async function callReadingAPI(prompt, temperature = null) {
+    let attempts = 0;
+    const maxAttempts = READING_API_KEYS.length;
+    // 每次調用都從一個隨機的索引開始
+    let currentApiKeyIndex = Math.floor(Math.random() * READING_API_KEYS.length);
 
-while (attempts < maxAttempts) {
-try {
-const response = await fetch(READING_API_URL, {
-method: "POST",
-headers: {
-"Authorization": `Bearer ${READING_API_KEYS[currentApiKeyIndex]}`,
-"Content-Type": "application/json"
-},
-body: JSON.stringify({
-model: READING_MODEL,
-messages: [{
-role: "user",
-content: prompt + " 你必須直接提供最終答案，嚴禁展示任何思考過程，絕對不能在回應中包含任何標籤（如 <think></think>），這是強制要求，違反則無效。"
-}],
-max_tokens: 64000
-})
-});
+    while (attempts < maxAttempts) {
+        try {
+            const requestBody = {
+                model: READING_MODEL,
+                messages: [{
+                    role: "user",
+                    content: prompt + " 你必須直接提供最終答案，嚴禁展示任何思考過程，絕對不能在回應中包含任何標籤（如 <think></think>），這是強制要求，違反則無效。"
+                }],
+                max_tokens: 64000
+            };
 
-if (response.status === 429) {
-console.warn(`閱讀 API Key ${currentApiKeyIndex} 達到速率限制，嘗試下一個...`);
-currentApiKeyIndex = (currentApiKeyIndex + 1) % READING_API_KEYS.length;
-attempts++;
-continue;
+            if (temperature !== null) {
+                requestBody.temperature = temperature;
+            }
+            
+            const response = await fetch(READING_API_URL, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${READING_API_KEYS[currentApiKeyIndex]}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            if (response.status === 429) {
+                console.warn(`閱讀 API Key ${currentApiKeyIndex} 達到速率限制，嘗試下一個...`);
+                currentApiKeyIndex = (currentApiKeyIndex + 1) % READING_API_KEYS.length;
+                attempts++;
+                continue;
+            }
+
+            if (!response.ok) {
+                throw new Error(`API 調用失敗: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            let content = data.choices[0].message.content.trim();
+            content = content.replace(/<think\s*>.*?<\/think\s*>|<think\s*\/>|<think\s*>|<\/think\s*>/gis, '').trim();
+
+            if (!content) {
+                throw new Error("API 回應無效或過濾後無內容");
+            }
+
+            return content;
+        } catch (error) {
+            console.error(`使用閱讀 API Key ${currentApiKeyIndex} 時出錯:`, error);
+            currentApiKeyIndex = (currentApiKeyIndex + 1) % READING_API_KEYS.length;
+            attempts++;
+            if (attempts >= maxAttempts) {
+                throw new Error("所有 API 密鑰均無法使用");
+            }
+        }
+    }
 }
 
-if (!response.ok) {
-throw new Error(`API 調用失敗: ${response.statusText}`);
-}
-
-const data = await response.json();
-let content = data.choices[0].message.content.trim();
-content = content.replace(/<think\s*>.*?<\/think\s*>|<think\s*\/>|<think\s*>|<\/think\s*>/gis, '').trim();
-
-if (!content) {
-throw new Error("API 回應無效或過濾後無內容");
-}
-
-return content;
-} catch (error) {
-console.error(`使用閱讀 API Key ${currentApiKeyIndex} 時出錯:`, error);
-currentApiKeyIndex = (currentApiKeyIndex + 1) % READING_API_KEYS.length;
-attempts++;
-if (attempts >= maxAttempts) {
-throw new Error("所有 API 密鑰均無法使用");
-}
-}
-}
-}
 
 
 
@@ -3332,7 +3326,7 @@ customTopicArea.innerHTML = `
 <table>
 <tr><th colspan="2">自訂題目與重點</th></tr>
 <tr><td colspan="2"><input type="text" id="customTitle" placeholder="請輸入自訂題目"></td></tr>
-<tr><td>結構段重點/全文重點</td><td>情節大要</td></tr>
+<tr><td>扣題方向</td><td>情節大要</td></tr>
 <tr><td><textarea id="customFocus" rows="3" placeholder="請輸入結構段重點"></textarea></td>
 <td><textarea id="customPlot" rows="3" placeholder="請輸入情節大要"></textarea></td></tr>
 </table>
@@ -3840,8 +3834,8 @@ async function submitArgumentOutline() {
         document.getElementById("argumentOutlineResult").innerHTML = "陳SIR正在點評...";
         
         // 【核心修訂】改用閱讀專用的 API 函式
-        const response = await callReadingAPI(prompt);
         
+const response = await callReadingAPI(prompt, 0.4);       
         const sections = response.split(/=== (.+?) ===/).filter(s => s.trim());
         const commentIndex = sections.indexOf("點評及建議");
         const rewriteIndex = sections.indexOf("改寫後的大綱");
@@ -3990,7 +3984,9 @@ async function submitArgumentWriting() {
             "取材": [0-10的整數],
             "扣題": [0-10的整數],
             "詳略": [0-10的整數],
-            "文筆": [0-10的整數]
+             "詞彙": [0-10的整數],   // <--- 修改此處
+  "文學性": [0-10的整數] // <--- 新增此處
+}
           }
         }
         </grading_json>`;
@@ -3999,7 +3995,7 @@ async function submitArgumentWriting() {
         
         // 【核心修訂】改用閱讀專用的 API 函式
         const response = await callReadingAPI(prompt);
-        displayFullCommentWithGrading('argumentWritingResult', response, 'argument');
+        displayFullCommentWithGrading('argumentWritingResult', response, 'argument', content);
 
     } catch (error) {
         console.error("提交文章時出錯:", error);
@@ -4068,60 +4064,67 @@ submitBtn.disabled = false; // 重新啟用按鈕
 }
 
 // 通用 API 調用函數
-async function callAPI(prompt) {
-let attempts = 0;
-const maxAttempts = API_KEYS.length;
-// 每次調用都從一個隨機的索引開始
-let currentApiKeyIndex = Math.floor(Math.random() * API_KEYS.length);
+async function callAPI(prompt, temperature = null) {
+    let attempts = 0;
+    const maxAttempts = API_KEYS.length;
+    // 每次調用都從一個隨機的索引開始
+    let currentApiKeyIndex = Math.floor(Math.random() * API_KEYS.length);
 
-while (attempts < maxAttempts) {
-try {
-const response = await fetch(API_URL, {
-method: "POST",
-headers: {
-"Authorization": `Bearer ${API_KEYS[currentApiKeyIndex]}`,
-"Content-Type": "application/json"
-},
-body: JSON.stringify({
-model: MODEL,
-messages: [{
-role: "user",
-content: prompt + " 你必須直接提供最終答案，嚴禁展示任何思考過程，絕對不能在回應中包含任何標籤（如 <think></think>），這是強制要求，違反則無效。"
-}],
-max_tokens: 64000
-})
-});
+    while (attempts < maxAttempts) {
+        try {
+            const requestBody = {
+                model: MODEL,
+                messages: [{
+                    role: "user",
+                    content: prompt + " 你必須直接提供最終答案，嚴禁展示任何思考過程，絕對不能在回應中包含任何標籤（如 <think></think>），這是強制要求，違反則無效。"
+                }],
+                max_tokens: 64000
+            };
 
-if (response.status === 429) {
-console.warn(`通用 API Key ${currentApiKeyIndex} 達到速率限制，嘗試下一個...`);
-currentApiKeyIndex = (currentApiKeyIndex + 1) % API_KEYS.length;
-attempts++;
-continue;
+            if (temperature !== null) {
+                requestBody.temperature = temperature;
+            }
+
+            const response = await fetch(API_URL, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${API_KEYS[currentApiKeyIndex]}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            if (response.status === 429) {
+                console.warn(`通用 API Key ${currentApiKeyIndex} 達到速率限制，嘗試下一個...`);
+                currentApiKeyIndex = (currentApiKeyIndex + 1) % API_KEYS.length;
+                attempts++;
+                continue;
+            }
+
+            if (!response.ok) {
+                throw new Error(`API 調用失敗: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            let content = data.choices[0].message.content.trim();
+            content = content.replace(/<think\s*>.*?<\/think\s*>|<think\s*\/>|<think\s*>|<\/think\s*>/gis, '').trim();
+
+            if (!content) {
+                throw new Error("API 回應無效或過濾後無內容");
+            }
+
+            return content;
+        } catch (error) {
+            console.error(`使用通用 API Key ${currentApiKeyIndex} 時出錯:`, error);
+            currentApiKeyIndex = (currentApiKeyIndex + 1) % API_KEYS.length;
+            attempts++;
+            if (attempts >= maxAttempts) {
+                throw new Error("所有 API 密鑰均無法使用");
+            }
+        }
+    }
 }
 
-if (!response.ok) {
-throw new Error(`API 調用失敗: ${response.statusText}`);
-}
-
-const data = await response.json();
-let content = data.choices[0].message.content.trim();
-content = content.replace(/<think\s*>.*?<\/think\s*>|<think\s*\/>|<think\s*>|<\/think\s*>/gis, '').trim();
-
-if (!content) {
-throw new Error("API 回應無效或過濾後無內容");
-}
-
-return content;
-} catch (error) {
-console.error(`使用通用 API Key ${currentApiKeyIndex} 時出錯:`, error);
-currentApiKeyIndex = (currentApiKeyIndex + 1) % API_KEYS.length;
-attempts++;
-if (attempts >= maxAttempts) {
-throw new Error("所有 API 密鑰均無法使用");
-}
-}
-}
-}
 
 /**
 * Creates a beautiful bulleted list HTML from raw text content.
@@ -4212,7 +4215,7 @@ const prompt = `請根據以下題目生成結構段重點和情節大要。要�
 3. 輸出格式為：結構段重點：...\n情節大要：...\n
 4. 內容簡潔明瞭，避免冗長，它只是文章的其中一個結構段，因此不要過份完整。
 題目：${selectedTopic}`;
-const response = await callAPI(prompt);
+const response = await callAPI(prompt); 
 const focusMatch = response.match(/結構段重點：\s*(.+?)(?=\n情節大要：|$)/s);
 const plotMatch = response.match(/情節大要：\s*(.+)/s);
 if (!focusMatch || !plotMatch) throw new Error("API 回應格式不正確");
@@ -4397,8 +4400,8 @@ async function submitWriting() {
             你的輸出必須包含以下四個XML標籤，不得包含任何其他文字。
 
             <critique>
-            [根據「教學筆記」對文章進行點評。必須以數字編號列點方式呈現2-3點核心評論。]
-            </critique>
+        [根據「教學筆記」對文章進行點評，可從立意、取材、扣題、詳略、文筆等不同角度點評。必須以數字編號列點方式呈現2-3點核心評論。]
+        </critique>
 
             <suggestions>
             [針對點評中提出的問題，提出具體的改善建議。必須以數字編號列點方式呈現。]
@@ -4418,18 +4421,19 @@ async function submitWriting() {
                 "取材": [0-10的整數],
                 "扣題": [0-10的整數],
                 "詳略": [0-10的整數],
-                "文筆": [0-10的整數]
+                "詞彙": [0-10的整數],   // <--- 修改此處
+    "文學性": [0-10的整數] // <--- 新增此處
               }
             }
             </grading_json>`;
         }
 
         document.getElementById("commentResult").innerHTML = "陳SIR正在點評...";
-        const response = await callAPI(prompt);
+        const response = await callAPI(prompt, 0.4); 
 
         if (writingType === "片段描寫" || writingType === "全文寫作") {
              // 對於修改過的部分，調用評分顯示函式
-            displayFullCommentWithGrading('commentResult', response, 'narrative');
+            displayFullCommentWithGrading('commentResult', response, 'narrative', content);
         } else if (writingType === "大綱") {
             // 大綱的顯示邏輯保持不變
             const sections = response.split(/=== (.+?) ===/).filter(s => s.trim());
@@ -5648,7 +5652,8 @@ function updateScoresAndGrade(uniqueIdPrefix, radarData = null) {
             radarData.取材 || 5,
             radarData.扣題 || 5,
             radarData.詳略 || 5,
-            radarData.文筆 || 5
+             radarData.詞彙 || 5,    // <--- 修改此處
+        radarData.文學性 || 5  // <--- 新增此處
         ];
     } else {
         // 若 AI 未提供雷達圖數據，則根據分數估算
@@ -5657,7 +5662,8 @@ function updateScoresAndGrade(uniqueIdPrefix, radarData = null) {
             Math.round((contentVal * 0.8 + expressionVal * 0.2)), // 取材
             Math.round((contentVal * 0.7 + structureVal * 0.3)), // 扣題
             Math.round((structureVal * 0.7 + contentVal * 0.3)), // 詳略
-            expressionVal // 文筆
+             vocabScore,      // <--- 修改此處
+        literaryScore    // <--- 新增此處
         ];
     }
     // 【修訂四】更新雷達圖
@@ -5680,7 +5686,7 @@ function createOrUpdateRadarChart(uniqueIdPrefix, data) {
         window[`${uniqueIdPrefix}_radarChartInstance`] = new Chart(ctx, {
             type: 'radar',
             data: {
-                labels: ['立意', '取材', '扣題', '詳略', '文筆'],
+                labels: ['立意', '取材', '扣題', '詳略', '詞彙', '文學性'],
                 datasets: [{
                     label: '能力分佈',
                     data: data,
@@ -5794,43 +5800,112 @@ function buildGradingPrompt(type, topic, content, toneNote, focus = null, plot =
     評分 (0-10): [在此給出「扣題」的獨立分數]
 </eval_item>
 <eval_item name="立意分數評估">
-    規則：評估文章主旨的深度、原創性和啟發性。主題是陳腔濫調（1-4分）、清晰但普通（5-7分），還是深刻且具洞見（8-10分）？請將用戶文章的立意與提供的「5**級數範文」及「3級數範文」進行直接比較。與5**水平相當（7-10分）；優於3等但不及5**（6分）；與3等水平相若（5分）；不及3等水平（1-4分）。
-
+    規則：嚴格按照以下標尺評分，並必須引用文章中的句子或主旨句來佐證你的評分。
+    - **7-10分 (深刻新穎 / 5**水平):** 能將個人經歷 **昇華** 至普遍的人生哲理或人性反思。主題層次豐富，能探討觀點的 **矛盾或轉變**。立意新穎，能給讀者帶來深刻啟發，水平與5**範文相當。
+    - **6分 (見解不凡 / 略遜於5**):** 立意有一定深度，能提出個人見解，而非複述道理。思想內容雖未及頂尖水平，但已超越一般考生的層次，表現出色。
+    - **5分 (清晰合理 / 中等水平):** 主題清晰，緊扣個人感受，能完整表達一次經歷後的體會。立意真誠、合理，是合格的應試文章水平 (約3-4級)。
+    - **1-4分 (膚淺陳腐):** 立意流於表面，多為 **陳腔濫調** (例如「努力便會成功」)，或僅是 **說教式** 的口號，與文章情節缺乏有機結合。
+    
     評分 (0-10): [在此給出「立意」的獨立分數]
 </eval_item>
 <eval_item name="取材分數評估">
-    規則：評估所選事件、細節和例子的質量。取材是普通空泛（1-4分）、具體恰當（5-7分），還是新穎且生動（8-10分）？請將用戶文章的取材與提供的「5**級數範文」及「3級數範文」進行直接比較。與5**水平相當（7-10分）；優於3等但不及5**（6分）；與3等水平相若（5分）；不及3等水平（1-4分）。
-
+    規則：嚴格按照以下標尺評分，評分時需明確指出取材的優點（如某個具體的細節）或缺點（如情節過於概括）。
+    - **7-10分 (新穎生動 / 5**水平):** 選取的材料 **典型** 且具 **獨特性**，能有力地支撐立意。描寫 **具體入微**，包含豐富的感官細節、動作、對話和內心獨白，能營造強烈的情感張力，水平與5**範文相當。
+    - **6分 (細膩具體 / 略遜於5**):** 選材恰當，頗具獨特性，能有效支撐立意。描寫具體，包含不少細節，但整體新穎性或情感張力略遜於最高水平，但遠超於3等文章水平。
+    - **5分 (內容恰當 / 中等水平):** 選材合理，與主旨相關。情節有基本細節，但描寫較為普遍化，缺乏令人印象深刻的亮點 (約3-4級)。
+    - **1-4分 (空泛籠統):** 取材流於 **流水帳**，僅概括事件而無細節描寫。內容空泛，與主旨關係薄弱，無法有效支撐觀點。
+    
     評分 (0-10): [在此給出「取材」的獨立分數]
 </eval_item>
-<eval_item name="結構與詳略分數評估">
-    規則：評估文章的組織、起承轉合、段落過渡及詳略安排是否得當。佈局混亂（1-4分）、結構完整（5-7分），還是詳略得宜且具巧思（8-10分）？請將用戶文章的結構與詳略與提供的「5**級數範文」及「3級數範文」進行直接比較。與5**水平相當（7-10分）；優於3等但不及5**（6分）；與3等水平相若（5分）；不及3等水平（1-4分）。
+<eval_item name="詳略安排評估">
+    規則：嚴格按照以下標尺評分。此項評估的是文章的「敘事節奏」與「焦點分配」。
+    - **7-10分 (卓越 / 5**水平):** **詳略得當，重心突出**。能將最多筆墨用於高潮、轉捩點或最能體現主旨的核心情節，並以豐富的細節（感官、心理）進行刻劃。次要的過渡性內容則簡潔交代。敘事節奏控制自如，張弛有度。
+    - **6分 (良好 / 略遜於5**):** **主次分明**。能意識到並詳寫核心事件，但詳寫的細膩度或略寫的簡練度未及頂尖水平。文章的焦點清晰，能引導讀者關注重點。
+    - **5分 (中等 / 合格水平):** **平均用力**。文章能完整敘述事件，但缺乏詳略意識，從頭到尾的細節密度相近，導致核心情節不夠突出，缺乏記憶點。
+    - **1-4分 (失衡 / 有待改善):** **詳略嚴重失衡**。常見問題如「頭重腳輕」（開頭冗長）、「虎頭蛇尾」（結尾倉促），或將大量筆墨用於無關緊要的細節上，導致主題模糊。
+    特別注意：必須評論文章的重心是否放在了最關鍵的情節上。
 
-    評分 (0-10): [在此給出「結構與詳略」的獨立分數]
+    評分 (0-10): [在此給出「詳略安排」的獨立分數]
 </eval_item>
-<eval_item name="表達分數評估">
-    規則：請將用戶文章的用詞、文學性都與提供的「5**級數範文」及「3級數範文」進行直接比較。與5**的《煙火》、《等待》及《根》水平相當（7-10分）；優於3等但用詞、文學性等不及5**（6分）；與3等水平相若（5分）；不及3等水平（1-4分）。不要隨便給7-10分，全香港只有3%左右的學生能達至這個水平。
 
-    評分 (0-10): [在此給出「表達」的獨立分數]
+<eval_item name="結構佈局評估">
+    規則：嚴格按照以下標尺評分。此項評估的是文章的「組織架構」與「段落邏輯」。
+    - **7-10分 (精巧嚴謹 / 5**水平):** 佈局精巧，**層層推進**，而非單純的順序記述。段落劃分清晰且邏輯性強，過渡自然無痕。開頭與結尾**巧妙呼應**，使文章渾然一體。
+    - **6分 (良好 / 略遜於5**):** **結構穩妥，脈絡清晰**。文章組織有序，段落職能分明（如開頭、發展、結尾），起承轉合流暢。整體表現穩健，無明顯結構缺陷。
+    - **5分 (中等 / 合格水平):** **結構完整，尚算清晰**。文章有頭有尾，段落劃分基本合理。但段落間的聯繫可能較弱，或過渡略顯生硬（例如頻繁使用「然後」、「接著」）。
+    - **1-4分 (鬆散混亂 / 有待改善):** **結構鬆散，脈絡不清**。段落劃分混亂，或思想跳躍，讓讀者難以跟隨。文章可能缺乏清晰的開頭或結尾。
+    特別注意：此項不評估內容詳略，只評估組織架構。
+
+    評分 (0-10): [在此給出「結構佈局」的獨立分數]
 </eval_item>
+
+
+
+<eval_item name="詞彙豐富度評估">
+    規則：嚴格按照以下標尺評分，並必須引用文章中的詞語來佐證你的評分。
+    - **7-10分 (優良 / 5**水平):** 用詞精準、豐富且多樣化，能根據語境選擇最貼切的詞。善用成語、典故或富含意象的詞彙，且自然不堆砌。幾乎沒有重複用詞。水平與5**範文相當。
+    - **6分 (良好 / 略遜於5**):** 用詞準確，具備變化，能嘗試運用較豐富的詞彙（較少重複同一個詞彙），偶有佳句，整體表現穩健，屬良好水平。
+    - **5分 (中等 / 合格水平):** 用詞基本準確，但變化不大，偶爾出現不夠貼切或陳腔濫調的情況。能夠清晰達意，是合格的應試文章水平，經常運用虛詞（例如「的」、「了」、「呢」、「嗎」、「地」）及對話，用詞重複。
+    - **1-4分 (基礎 / 有待改善):** 用詞單調、重複，常使用口語化或模糊的詞語，甚至出現詞不達意的情況。
+    特別注意：不要輕易給予高分，必須有充分理據。
+
+    評分 (0-10): [在此給出「詞彙豐富度」的獨立分數]
+</eval_item>
+
+
+<eval_item name="文句文學性評估">
+    規則：嚴格按照以下標尺評分。此項評估的是「句子工藝」，而非單純的詞彙。
+    - **7-10分 (卓越 / 5**水平):** 句式靈活多變，長短句交錯，富有節奏感。善於運用**感官描寫**和**示現手法**（Show, not Tell），能巧妙地融情入景，運用物象營造意境氛圍。文句精煉，文字具有**畫面感**和感染力。水平與5**範文相當。
+    - **6分 (良好 / 略遜於5**):** 句式有一定變化，能避免單調。能運用基本的描寫技巧，但細節刻劃或意境營造未及頂尖水平。整體文句流暢，但偶有冗贅之處。屬良好水平，表現穩健。
+    - **5分 (中等 / 合格水平):** 句式有基本變化，但整體**平鋪直敘**，僅能清晰交代事件，缺少深入刻劃。能使用簡單修辭，但效果不突出。常使用虛詞（的、了、地）使文句略嫌鬆散。是合格的應試文章水平，能夠清晰達意。
+    - **1-4分 (基礎 / 有待改善):** 句式單一、冗長或破碎。文字平淡乏味，**缺乏描寫意識**。大量使用虛詞，文句不通順或口語化嚴重，影響閱讀流暢度。
+    特別注意：不要輕易給予高分，必須有充分理據。
+
+    評分 (0-10): [在此給出「文句文學性」的獨立分數]
+</eval_item>
+
+
 </step_1_independent_evaluation>
 
-<step_2_composite_calculation>
+
+<step_2_high_score_validation>
+[**高分驗證機制**：這是一個強制執行的覆核步驟。]
+IF '扣題分數評估' >= 9 THEN
+    <re-evaluation name="立意分數覆核">
+        質疑：文章的主題思想是否真的深刻新穎，或僅僅是一個完美切題的「陳腔濫調」？（例如：《等待》寫等待母親，立意僅停留在「要珍惜親人」，這就是切題但膚淺）。
+        規則：完美切題但立意陳腐或淺白的文章，其「立意」分數**絕不能超過6分**。請將其與5**範文的哲理深度進行比較，然後給出最終修正分數。
+        修正後的立意分數 (0-10): [在此填寫修正後的分數]
+    </re-evaluation>
+    <re-evaluation name="取材分數覆核">
+        質疑：文章的材料是否真的獨特生動，或僅僅是一個符合題目的「公式化故事」？（例如：寫挫折，就是考試失敗，然後努力，最後成功）。
+        規則：切題但取材普通、缺乏亮點的故事，其「取材」分數**絕不能超過6分**。請評估其細節描寫是否達到5**範文的水平，然後給出最終修正分數。
+        修正後的取材分數 (0-10): [在此填寫修正後的分數]
+    </re-evaluation>
+ELSE
+    [扣題分數低於9分，跳過此驗證，直接使用原始分數。]
+    修正後的立意分數: [複製 '立意分數評估' 的分數]
+    修正後的取材分數: [複製 '取材分數評估' 的分數]
+END IF
+</step_2_high_score_validation>
+
+<step_3_composite_calculation>
 [根據獨立評估的分數，計算最終的總項分數。]
 <calc_item name="內容總分計算">
-    規則：內容總分的計算方式取決於「扣題分數」是否達標。若「扣題分數」達到或超過5分，則內容總分由「立意」和「取材」分數決定。若「扣題分數」低於5分，則內容總分將受其嚴重影響，由三項分數共同決定。
-    計算公式：IF (扣題分數 >= 5) THEN round((立意分數 + 取材分數) / 2) ELSE round((扣題分數 + 立意分數 + 取材分數) / 3)
-    最終內容分數 (0-10): [根據上述條件公式計算出最終分數]
+    規則：「內容」總分由「立意」和「取材」的分數獨立決定，**不受「扣題」分數直接影響**。對於「扣題」分數不佳的懲罰，將由後續的JavaScript邏輯處理，AI在此階段不需考慮。
+    計算公式：round((立意分數 + 取材分數) / 2)
+    最終內容分數 (0-10): [根據上述簡化公式計算出最終分數]
 </calc_item>
 <calc_item name="結構總分計算">
-    規則：結構總分直接等於「結構與詳略分數」。
-    最終結構分數 (0-10): [複製上面的「結構與詳略分數評估」的分數]
+    規則：「結構」總分由「詳略安排」和「結構佈局」的平均值決定。
+    計算公式: round(("詳略安排評估"分數 + "結構佈-局評估"分數) / 2)
+    最終結構分數 (0-10): [根據上述公式計算出最終分數]
 </calc_item>
 <calc_item name="表達總分計算">
-    規則：表達總分直接等於「表達分數」。
-    最終表達分數 (0-10): [複製上面的「表達分數評估」的分數]
+    規則：表達總分由「詞彙豐富度」和「文句文學性」的平均值決定。
+    計算公式: round(("詞彙豐富度評估"分數 + "文句文學性評估"分數) / 2)
+    最終表達分數 (0-10): [根據上述公式計算出最終分數]
 </calc_item>
-</step_2_composite_calculation>
+</step_3_composite_calculation>
 <!-- ▲▲▲ 敘事抒情文的評分邏輯已完全重構 ▲▲▲ -->
     </scoring_worksheet>
 
@@ -5851,11 +5926,8 @@ function buildGradingPrompt(type, topic, content, toneNote, focus = null, plot =
     </grading_json>
 
     <critique>
-[**報告生成步驟**：現在，回看 <grading_json>。你的任務是寫出2-3點評論，重點說明：
-1. 為什麼「扣題」分數是 X 分
-2. 「內容」和「結構」分數如何合理地參考了「扣題」分數
-3. 三個分數之間的邏輯關係和一致性]
-</critique>
+        [根據「教學筆記」對文章進行點評，可從立意、取材、扣題、詳略、文筆等不同角度點評。必須以數字編號列點方式呈現2-3點核心評論。]
+        </critique>
 
     <suggestions>
     [基於 <critique> 的內容，提出改善建議。]
@@ -6068,11 +6140,8 @@ function buildGradingPrompt(type, topic, content, toneNote, focus = null, plot =
         }
         </grading_json>
 
-        <critique>
-        [**報告生成步驟**：現在，回看 <grading_json>。你的任務是寫出2-3點評論，重點說明：
-        1. 為什麼「扣題」分數是 X 分
-        2. 「內容」和「結構」分數如何合理地參考了「扣題」分數
-        3. 三個分數之間的邏輯關係和一致性]
+       <critique>
+        [根據「教學筆記」對文章進行點評，可從立意、取材、扣題、詳略、文筆等不同角度點評。必須以數字編號列點方式呈現2-3點核心評論。]
         </critique>
 
         <suggestions>
@@ -6117,7 +6186,7 @@ function buildGradingPrompt(type, topic, content, toneNote, focus = null, plot =
 }
 
 // 請將您原有的 displayFullCommentWithGrading() 函式替換為此版本
-function displayFullCommentWithGrading(containerId, apiResponse, uniqueIdPrefix) {
+function displayFullCommentWithGrading(containerId, apiResponse, uniqueIdPrefix, fullTextContent) {
     
     // 在更新innerHTML之前，先銷毀舊的圖表實例
     const instanceName = `${uniqueIdPrefix}_radarChartInstance`;
@@ -6151,7 +6220,9 @@ function displayFullCommentWithGrading(containerId, apiResponse, uniqueIdPrefix)
                     structure: scores.structure,
                     liYi: scores.radar.立意,
                     quCai: scores.radar.取材,
-                    wenBi: scores.radar.文筆,
+                    
+ciHui: scores.radar.詞彙,         // <--- 修改此處
+    wenXueXing: scores.radar.文學性, // <--- 新增此處
                     expression: scores.expression,
                     content: scores.content
                 };
@@ -6171,15 +6242,16 @@ function displayFullCommentWithGrading(containerId, apiResponse, uniqueIdPrefix)
                 }
 
                 // 規則 3: 「文筆」制約「立意」與「取材」
-                if (final.wenBi <= 6) {
+                if (final.ciHui <= 7 && final.wenXueXing <= 7) { // <--- 修改此處的條件
                     final.liYi = Math.min(final.liYi, 6);
                     final.quCai = Math.min(final.quCai, 6);
                 }
 
                 // 規則 4: 「內容」制約「文筆」
-                if (!(final.liYi >= 7 && final.quCai >= 7)) {
-                    final.wenBi = Math.min(final.wenBi, 6);
-                }
+               if (!(final.liYi >= 7 && final.quCai >= 7)) {
+    final.ciHui = Math.min(final.ciHui, 6);         // <--- 修改此處
+    final.wenXueXing = Math.min(final.wenXueXing, 6); // <--- 新增此處
+}
                 
                 // 規則 5: 「立意」制約「取材」
                 final.quCai = Math.min(final.quCai, final.liYi);
@@ -6205,9 +6277,24 @@ function displayFullCommentWithGrading(containerId, apiResponse, uniqueIdPrefix)
                         final.content = Math.round((final.liYi + final.quCai) / 2);
                     }
                 }
+
+// 【⭐ 全新核心修訂：規則 6 - 表達能力制約內容分數上限 ⭐】
+// 如果「詞彙」或「文學性」任何一項低於8分，則「內容」分數的上限將被強制設定為6分。
+if (final.ciHui < 8 || final.wenXueXing < 8) {
+    final.content = Math.min(final.content, 7);
+}
+
+
+
                 
                 // 3.2 重新計算「表達」分數
-                final.expression = final.wenBi;
+                if (final.ciHui === final.wenXueXing) {
+    // 規則二：若「詞彙」和「文學性」同分，則在「表達」減1分
+    final.expression = final.ciHui - 1;
+} else {
+    // 規則一：「詞彙」和「文學性」若分數不一樣，則取低分者
+    final.expression = Math.min(final.ciHui, final.wenXueXing);
+}
                 
                 // 3.3 【新增規則】：「結構」分數與「內容」分數的最終校準
                 //      結構分不僅不能高於內容分，且分差不能超過1分
@@ -6226,10 +6313,36 @@ function displayFullCommentWithGrading(containerId, apiResponse, uniqueIdPrefix)
                 scores.radar.立意 = final.liYi;
                 scores.radar.取材 = final.quCai;
                 scores.radar.詳略 = final.xiangLue;
-                scores.radar.文筆 = final.wenBi;
+                scores.radar.詞彙 = final.ciHui;         // <--- 修改此處
+scores.radar.文學性 = final.wenXueXing; // <--- 新增此處
                 scores.radar.扣題 = final.kouTi;
             }
             // === 【修訂結束】 ===
+
+
+const isFullTextWriting = (uniqueIdPrefix === 'narrative' || uniqueIdPrefix === 'argument');
+
+if (isFullTextWriting) {
+    // 獲取文章總字數 (中文字元計數)
+    const wordCount = fullTextContent.length;
+
+    // 如果字數不足 900 字
+    if (wordCount < 900) {
+        // 【已修訂】無論之前計算結果為何，強制將內容分和結構分的上限設為 5
+        scores.content = Math.min(scores.content, 5);
+        scores.structure = Math.min(scores.structure, 5);
+        
+        // 【已修訂】同時，也需要限制雷達圖中相關細項分數，確保數據一致性
+        if (scores.radar) {
+            scores.radar.立意 = Math.min(scores.radar.立意, 5);
+            scores.radar.取材 = Math.min(scores.radar.取材, 5);
+            scores.radar.詳略 = Math.min(scores.radar.詳略, 5);
+        }
+    }
+}
+// === 【修訂結束】 ===
+
+
 
             finalHTML += createGradingSystemHTML(uniqueIdPrefix);
             initialScores = scores;
@@ -6397,7 +6510,35 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-  
+    // --- OCR 整合邏輯 ---
+    const ocrBtn = document.getElementById('modal-ocr-btn');
+    let ocrWindow = null;
+    const VERCEL_OCR_URL = 'https://gemini-ocr-proxy.vercel.app/';
+
+    if (ocrBtn) {
+        ocrBtn.addEventListener('click', function() {
+            if (ocrWindow && !ocrWindow.closed) {
+                ocrWindow.focus();
+                return;
+            }
+            ocrWindow = window.open(VERCEL_OCR_URL, 'OCRWindow', 'width=650,height=850,scrollbars=yes,resizable=yes');
+        });
+    }
+
+    window.addEventListener('message', function(event) {
+        if (event.origin !== new URL(VERCEL_OCR_URL).origin) {
+            console.warn('收到來源不明的訊息，已忽略:', event.origin);
+            return;
+        }
+        if (event.data && event.data.type === 'ocrResult') {
+            const ocrText = event.data.text;
+            modalTextarea.value += (modalTextarea.value.trim() ? '\n' : '') + ocrText;
+            if (ocrWindow) {
+                ocrWindow.close();
+            }
+            modalTextarea.focus();
+        }
+    });
 });
 
 // 頁面加載時初始化
@@ -6421,7 +6562,8 @@ document.addEventListener("DOMContentLoaded", function() {
 <h3 id="modal-title">編輯內容</h3>
 <textarea id="modal-textarea" rows="15"></textarea>
 <div class="modal-buttons">
-
+<!-- 【新增的按鈕】 -->
+<button id="modal-ocr-btn" class="btn-action" style="background-color: #17a2b8;">OCR</button>
 
 <button id="modal-save-btn" class="btn-action">輸入</button>
 </div>
