@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -24,52 +25,27 @@ form-action 'self';
 <meta name="apple-mobile-web-app-title" content="神思">
 <link rel="manifest" href="manifest.json">
 
-
-
-<link rel="apple-touch-icon" href="https://i.ibb.co/tpYQMG6z/SANSI.png">
-
-
+<link rel="apple-touch-icon" href="https://i.ibb.co/tpYQMG6/SANSI.png">
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-
-
 
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
 
-
-
-
 <!-- Android 圖示 -->
-<link rel="icon" sizes="192x192" href="https://i.ibb.co/tpYQMG6z/SANSI.png">
-
-
-
-<link rel="icon" sizes="144x144" href="https://i.ibb.co/tpYQMG6z/SANSI.png">
-
-
-
-<link rel="icon" sizes="96x96" href="https://i.ibb.co/tpYQMG6z/SANSI.png">
-
-
+<link rel="icon" sizes="192x192" href="https://i.ibb.co/tpYQMG6/SANSI.png">
+<link rel="icon" sizes="144x144" href="https://i.ibb.co/tpYQMG6/SANSI.png">
+<link rel="icon" sizes="96x96" href="https://i.ibb.co/tpYQMG6/SANSI.png">
 
 <!-- iOS 圖示 -->
-<link rel="apple-touch-icon" sizes="180x180" href="https://i.ibb.co/tpYQMG6z/SANSI.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://i.ibb.co/tpYQMG6/SANSI.png">
+<link rel="apple-touch-icon" sizes="152x152" href="https://i.ibb.co/tpYQMG6/SANSI.png">
+<link rel="apple-touch-icon" sizes="120x120" href="https://i.ibb.co/tpYQMG6/SANSI.png">
 
-
-
-<link rel="apple-touch-icon" sizes="152x152" href="https://i.ibb.co/tpYQMG6z/SANSI.png">
-
-
-
-<link rel="apple-touch-icon" sizes="120x120" href="https://i.ibb.co/tpYQMG6z/SANSI.png">
-
-
-
+<!-- 引入 Chart.js 以繪製雷達圖 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 body {
@@ -1691,42 +1667,42 @@ padding: 10px 12px; /* 也可以微調內邊距讓視覺效果更好 */
 
 /* --- 新增：答題步驟及思路美化樣式 --- */
 .steps-container {
-    margin-top: 20px; /* 與上方標題的間距 */
-    padding-left: 15px; /* 內邊距，讓內容與邊框有距離 */
-    border-left: 4px solid #4A90E2; /* 左側的裝飾性藍色邊框 */
+margin-top: 20px; /* 與上方標題的間距 */
+padding-left: 15px; /* 內邊距，讓內容與邊框有距離 */
+border-left: 4px solid #4A90E2; /* 左側的裝飾性藍色邊框 */
 }
 
 .step-card {
-    background-color: #f7f9fc; /* 非常淺的藍灰色背景，增加層次感 */
-    border-radius: 8px; /* 圓角 */
-    padding: 15px 20px; /* 卡片內部空間 */
-    margin-bottom: 20px; /* 這就是步驟之間的垂直距離 */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.08); /* 輕微的陰影效果，提升立體感 */
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* 平滑的互動效果 */
+background-color: #f7f9fc; /* 非常淺的藍灰色背景，增加層次感 */
+border-radius: 8px; /* 圓角 */
+padding: 15px 20px; /* 卡片內部空間 */
+margin-bottom: 20px; /* 這就是步驟之間的垂直距離 */
+box-shadow: 0 2px 5px rgba(0,0,0,0.08); /* 輕微的陰影效果，提升立體感 */
+transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* 平滑的互動效果 */
 }
 
 /* 當滑鼠移到卡片上時，卡片會輕微上浮，陰影加深，提供互動回饋 */
 .step-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+transform: translateY(-3px);
+box-shadow: 0 4px 10px rgba(0,0,0,0.12);
 }
 
 /* 最後一個步驟不需要下邊距，避免多餘的空白 */
 .step-card:last-child {
-    margin-bottom: 0;
+margin-bottom: 0;
 }
 
 .step-title {
-    font-weight: bold; /* 步驟標題加粗 */
-    font-size: 1.1em; /* 標題字體稍大，更突出 */
-    color: #0056b3; /* 使用有質感的深藍色 */
-    margin-bottom: 10px; /* 標題與下方內容的間距 */
+font-weight: bold; /* 步驟標題加粗 */
+font-size: 1.1em; /* 標題字體稍大，更突出 */
+color: #0056b3; /* 使用有質感的深藍色 */
+margin-bottom: 10px; /* 標題與下方內容的間距 */
 }
 
 .step-content {
-    font-size: 1em; /* 內容字體大小 */
-    line-height: 1.7; /* 增加行高，讓文字更容易閱讀 */
-    color: #333; /* 標準的深灰色文字 */
+font-size: 1em; /* 內容字體大小 */
+line-height: 1.7; /* 增加行高，讓文字更容易閱讀 */
+color: #333; /* 標準的深灰色文字 */
 }
 
 /* --- 新增：禁用按鈕的通用樣式 --- */
@@ -1755,8 +1731,173 @@ transform: none; /* 移除變形效果 */
 /* 【新增這兩行】針對整合拓展的「指引」功能內的輸入框 */
 #expandGuideArea input[type="text"],
 #expandGuideArea textarea {
-    font-size: 1rem !important; /* 使用 !important 確保覆蓋，1rem 為標準大小 */
-    padding: 10px 12px;       /* 配合較小字體，微調內邊距 */
+font-size: 1rem !important; /* 使用 !important 確保覆蓋，1rem 為標準大小 */
+padding: 10px 12px; /* 配合較小字體，微調內邊距 */
+}
+
+/* --- 新增：評等系統專用樣式 (修訂版) --- */
+.grading-container {
+    margin-top: 25px;
+    border-top: 2px dashed #aeb6bf;
+    padding-top: 20px;
+    /* 【新增】確保整個評等容器也不會超出主容器 */
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.grading-grid {
+    display: grid;
+    /* 預設為兩欄佈局 */
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.grading-scores, .grading-radar {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    max-width: 100%;
+    box-sizing: border-box;
+    /* 【新增】確保寬度只佔90% */
+    width: 90%;
+    margin: 0 auto; /* 【新增】讓容器置中 */
+}
+
+.grading-scores h3, .grading-radar h3 {
+    margin-top: 0;
+    color: #343a40;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.score-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    gap: 10px; /* 在項目間增加一些間隙 */
+}
+
+.score-item label {
+    font-weight: bold;
+    color: #495057;
+    flex-shrink: 0;
+    margin-right: 10px;
+}
+
+.score-item .slider-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 160px;
+}
+
+.score-item .progress-bar-container {
+    width: 120px;
+    height: 12px;
+    background-color: #e9ecef;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #ced4da;
+}
+
+.score-item .progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background-color: #007bff;
+    border-radius: 6px;
+    transition: width 0.4s ease-in-out;
+}
+
+.score-item .score-display {
+    font-weight: bold;
+    width: 25px;
+    text-align: center;
+    color: #0056b3;
+}
+
+.total-score-container {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+}
+
+#finalGrade,
+[id$="FinalGrade"] {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #d9534f;
+    line-height: 1;
+}
+
+#totalScoreDisplay,
+[id$="TotalScoreDisplay"] {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+}
+
+.radar-chart-container {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    max-height: 350px;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .grading-container {
+        margin-top: 25px;
+        border-top: 2px dashed #aeb6bf;
+        padding-top: 20px;
+    }
+
+    .grading-grid {
+        /* 改為單欄佈局 */
+        grid-template-columns: 1fr; 
+        /* 【新增】確保整個網格置中並達到95%寬度 */
+        width: 95%;
+        margin: 0 auto;
+        justify-items: center;
+    }
+    
+    .grading-scores, .grading-radar {
+        padding: 15px;
+        /* 【核心修訂】在手機版確保寬度達到95% */
+        width: 95%;
+        max-width: 95%;
+    }
+    
+    .radar-chart-container {
+        /* 在手機上圖表獨佔一行，可以讓它更高 */
+        aspect-ratio: 1 / 1; 
+        max-height: 400px;
+    }
+
+    /* 【新增修訂】稍微減少左右邊距，為內容爭取更多空間 */
+    .grading-scores, .grading-radar {
+        padding: 15px;
+    }
+
+    /* 【新增修訂】讓評分項目可以提前換行，避免內容擠壓導致溢出 */
+    .score-item {
+        flex-wrap: wrap; 
+    }
+    .score-item label {
+        width: 100%; /* 讓標籤（如：內容 (40)）獨佔一行 */
+        margin-bottom: 5px; /* 在標籤和下方的進度條之間增加一點間距 */
+    }
+    .score-item .slider-container {
+        max-width: 100%; /* 讓進度條容器佔滿可用寬度 */
+    }
 }
 
 </style>
@@ -1879,8 +2020,6 @@ transform: scale(1.15);
 
 <script src="https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/full.js"></script>
 
-
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 const converter = OpenCC.Converter({ from: 'cn', to: 'tw' });
@@ -1912,6 +2051,212 @@ refreshBtn.addEventListener('click', fetchHitokoto);
 });
 </script>
 
+<!-- 內置的 5** 級數範文 (隱藏) -->
+<div id="five-star-examples" style="display: none;">
+    <div id="example-yanhuo">
+        <h3>《煙火》</h3>
+        <p>回鄉的我凝望著門前的「河流」，沉默不語。那場璀璨的煙火又在我杳遠的回憶隱然綻放。
+        我記得，故鄉梁莊的那夜是樸素的，是低調的，就像默默俯身收割莊稼的農民；我記得，那時祖屋的遠處種著桑樹，樹上迴響著清亮的蟬聲，而近處蜿蜒著一道河，河畔的蘆葦總傳來蛙鳴；那是元旦，鄰居李叔親切地送上祝福，又從吳鎮的煙火廠帶來了龍吐珠，與村民慶賀新春。煙花在夜幕訇然盛放之時，七歲的我正環抱著爺爺的頸項。所有的澄黃、亮綠和緋紅倏爾煥爛在我的眼眸。火光乍現，煙花便瞬即璀璨而華麗地枯萎了，只賸下硝煙和火藥的氣息。
+        我哭了，爺爺以為我被煙火嚇壞了，瞬即摩娑著我的背。
+        其實，我不過是驚詫於一切美好的幻滅。
+        後來，我才瞭解人生有許多事情都注定是一場美好的幻滅，如同煙火。
+        爺爺是我的留守歲月最璀璨的印記。我從村校放學回家時，爺爺總會捧著熱氣騰騰的、白花花的饅頭迎接著我。阿念，吃吧，快點吃吧。爺爺沙啞的聲線仍猶在耳。童年的我總喜歡伏在爺爺的背上諦聽著時間，一秒，兩秒，是多麼沉穩的幸福呢。背並不厚實，但卻溫暖和煦。時間仿佛會一直定格在這一幀。然而在我九歲那年，爺爺死了，就淹死在門前的河。建築公司在河底挖沙蓋樓，河道看來平靜，卻暗藏漩渦。爺爺游泳時被暗湧拉扯到河底，就活活淹死了。短短數年的歲月，在人生裡不過是一場倉卒燃燒的煙火，爺爺在我的回憶裡綻放過澄黃、亮綠和緋紅，卻連一縷硝煙都沒有遺下，只遺下了一件濡濕的、皺巴巴的汗衣，儼如因衰老而再無能為力綻放的煙花。
+        還有門前的河流，在爺爺死後十年，已經沉默得如患上了失語症，河水乾涸，河床裸露，像被歲月無情強暴了一樣。夏蟬和青蛙，都憂鬱得噤聲不語，遷徙到回憶之外。李叔前年在電鍍廠中毒過身了。童年時一切一切的美好，都如海市蜃樓般驟然無存。歲月燃點了一場煙花，最後只遺下沉重的回憶，以及沉重地回憶的我。煙火再璀璨，也是匆促的。
+        本來我是這樣認為的。
+        直至又再離鄉之際，我才赫然窺探到煙火的秘密。
+        村口的大樹懸掛著纍纍碩大的林柿，那一個個橘橙的果實每年都爛在樹上，沒有村民採摘，連雀鳥都不屑一顧。在我準備踏出村口時，一顆飽滿的柿子掉落到我面前。我啃咬了一口，還是一如回憶的苦澀、難吃，我急不及待將咀嚼中的柿肉吐出來，且棄之如敝屣。我倏爾發現，縱然梁莊物換星移已不知幾度秋，但仍有許多回憶的遺跡，比如是眼前這棵金玉其外的柿樹。它的果實仍然是澀的，我想，是因為它仍然鮮活、茂盛、強壯，是因為它仍未枯謝、凋零、衰敝。假如它成為了歲月匆促幻滅的過客，也許那味道會是甘甜的苦澀，也許我會懷念那苦澀。
+        我再次凝望著那乾涸的河道。曩昔我嫌棄過蟬囀蛙鳴聒耳，擾人清夢；我埋怨過蘆葦纖長，阻礙了我的視野；我拒絕過爺爺的饅頭，因為寡淡無味，因為我想吃肉香滿溢的五香肘子啊，不想吃寡淡的、慘白的饅頭。我討厭過李叔蠟黃的臉色，討厭過他衣衫襤褸，討厭過他渾身汗臭，我討厭過李叔的一切。諷刺的是，隨著物和事匆促的面目全非，我竟爾留戀上一切我討厭過的。
+        於是我開始明白煙花的璀璨，在於它的匆促和幻滅。
+        時間會過濾掉所有人和事的雜質，隨著泯滅變易，我們開始犯賤地珍惜，然而珍惜的唯一意義僅在於遺憾，但正因為遺憾，才體現到事物的璀璨。倘若爺爺和李叔仍然在世，倘若門前的河仍然流淌不斷，倘若蟬聲蛙鳴依舊，倘若絢爛永恆，那麼一切便將腐爛而不再璀璨，他們和它們都將蛻變成被棄如敝屣的柿子。我曾以為煙火再璀璨，也是匆促的。但原來我錯了。原來煙火璀璨，正因為匆促。一旦煙火永恆，它將失去生命，教人徒然目眩。
+        離鄉的這夜，恰巧是元旦。是夜天陰，無雨。梁莊寂寥如一場夢，再沒有盛放的煙火。因為，煙花從此只在我的回憶裡燦爛地綻開、匆促地結果。</p>
+    </div>
+    <div id="example-gen">
+        <h3>《根》</h3>
+        <p>火焰燃起了一瓣又一瓣的灰燼，它們即生即滅，像飄萍，是一種無根的存在。餘燼隨風零落，又再揚起，終落入了深邃的虛無裡。人們說，紙錢燒成灰燼，便會飛落到地獄，交到亡靈的手裡。
+        父親，你收到了嗎？
+        你，尋到你的根了嗎？
+        我向着一枚貝殼問道。
+        我們的故鄉是一個江南小鎮，名曰周莊。明代江南首富沈萬三昔曾坐落此處發施號令，指點江山，各種契約、決斷和銀票都有這裡大進大出過，如今卻只賸下沈廳的空寂。鎮上到處都是貫穿南北的河道，就像永不乾涸的阡陌。周莊的河網養活了一代又一代的周莊人，從這裡出發，可借河道而東西南北，近至蘇杭，遠通東南亞。我的父親，只是貿易的一塊細小的零件——卑微的船夫，但他卻盤根錯節，支撐著整個家庭。
+        「爸，你甚麼時候回家？」
+        小時候，每當我牽扯著他的衣襬問他這道問題時，他總會帶著疲憊的莞爾，摩娑著我的腦殼說道：
+        「很快了，很快了。」
+        於是，一去便是三兩個月了。他在無垠的河川和滄渤航行了一輩子，曾為多少家庭送上過物資，又曾目睹過多少匆忙歸家的白鷗呢？然而，他自己卻成為了一個無根的人。他飄洋過海，仿佛只為回來時睡一覺昏沉的。無根的浪花，便是父親的象徵；一身的鹹腥，便是他半生的註腳。
+        他細碎又重複的夢囈被年幼的我記住了。
+        在漫長的夢裡，他是參天巨樹，偉岸的、繁茂的，扎根在風吹草低見牛羊的草原。風拂過他的臉龐，他貪婪地流了一行涎液。
+        一切都只為了養活我們四兄弟姐妹，成為這個家庭的根。母親呢，從不嚮往自由而無根的蒲公英，在我們孩提時代，她已經從周莊的河網掙脫出去了。只賸下父親，像根一樣默默無言地支撐著這個家庭的經濟，用河水澆灌，為它提供養份；用船櫓翻土，使它茁壯成長。我們幾兄弟姐妹，就恍如纍纍碩大的果實。果實之所以飽滿豐美，全因深扎泥土的根。
+        短暫洗去風塵後，又是一個擾人的昒暝。陽光揉開他的眼瞼，那沉重的眼瞼，一場無垠的旅程又將展開。
+        他成為了我們的根，自己呢，卻一直飄泊於風波不定的大海。我一直想，他的根究竟在哪裡呢？
+        也許，從來都不在印有郵遞編號的地方，而在我們。但早在十年前，都被我們砍斷了。終於，父親失去了他惟一的根。
+        長大後，我們不再牽扯父親的衣襬。父親在我們的印象，是一種昏睡的存在，我們之間存在著一種歲月孕育出來的隔閡——不冷淡又不溫韾的沉默。就像周莊的河水，既不溷濁，又不清澈。只有生活的氣息。隨著長大，我們一個又一個離開了日復如是的故鄉。他用一身風塵支撐的家，早在歲月的長河中淡褪了顏色。
+        被淹沒了。
+        大哥從來沒有帶過孩子回鄉。
+        二姐結婚時沒有邀請過父親。
+        妹妹幾年來音信杳無，聽說到加拿大去了。
+        只有我偶爾回鄉。父親總是無所事事，落寞地坐在斜曛映照的碼頭上，抽著雙喜牌香煙，眺望著那平靜如日子的河川。夕陽落在他身上，拓出了一個單薄的黑影。我這才知道，原來影子是會老，是會萎縮的。
+        他的身體開始坍塌，大不如曩日的壯碩，因為失去了根，失去了人生角色的緣故。他已經沒有了壯碩的理由。在病榻上，只有噏動的嘴唇透露著生命的跡象，在明滅不定的沉吟裡，我諦聽到我們的暱稱，又諦聽到那個關於樹的夢的碎片。不一樣的是，樹好像連根拔起了，似乎被一場颱風吹倒了。
+        我不會遺忘父親的好。每次他回周莊，他總會為我們帶來一枚貝殼，我愛把貝殼湊在耳畔聽那大海的聲音，有溫煦的，有舒爽的，有寂寞的，有思念的。他出航的畫面，總如真似幻地映照在我的腦海裡。但我無法將愛裸裎地宣之於口。父親，你飄泊半生，四海為家，卻終於失去了支撐你努力活著的角色。為了成為我們的根，你失去了自己的根。也許，也許你無法扎根在這個世界任何一隅，但我卻早為你預留了一捧最肥沃的泥土——在我心裡，讓你終於可以安息，終於可以落葉歸根，終於不用再飄泊不定。
+        海風永不止息地吹拂著一個夢，雲亦舒捲著無根的故事。</p>
+    </div>
+    <div id="example-dengdai">
+        <h3>《等待》</h3>
+        <p>月亮高懸在闃寂的夜空，儼如吊著一顆無眠的眼睛。它仿佛記得，自己已用幾千年的時間等待一個人，但卻已遺忘了等待的對象。於是，它映照著下方喧囂的城市，映照著每一個在城市裡等待著的人。
+        比如說，一個在晚窗前許願的孩子，他在等待著綠豆的幼苗在濕潤的棉花裡茁壯成長，並開花結果。
+        又比如說，一個無聲吶喊著的女人。他的丈夫，那醉醺醺的男人，又在發瘋。一頓拳打腳踢之後，她身上青一片、紫一片的。原來人的皮膚可以呈現如此斑駁的顏色。然而，她已不驚詫，因為暴力早教她看見青紫色的自己。不過，她在等待，她依猶在等待，依猶在等待那個婚禮上替自己戴上婚戒的他。
+        想著想著，她無端落下了一滴淚。原來，許多人也在歲月的長河裡無止境地等待著。等待的人並不孤單。
+        一幀泛黃且充滿顆粒感的照片裡，一個小女孩正佻皮地捏著母親的臉頰，母親佯作生氣，她幸福地「生氣」著。
+        可愛吧？這個左邊的小女孩，便是我的女兒。 
+        嗯，可愛。
+        同樣的對話，同樣的故事，在這八年的時光裡重重複複地敘述著。仿佛是一本八百頁的長篇小說，只有這樣的一段對話。但是，她仍樂此不疲地閱讀著小說的每一頁。因為，因為她已遺忘了上一頁的所有內容。
+        那個小女孩，便是我，而那位母親患了病，一場將我遺忘的病。
+        我一直等待著，等待著她有天重新憶記起我；等待著她像小時候一樣，摩娑著我的腦殼，溫柔地哄我入睡；等待著她生活裡每句使人心煩的嘮叨。我等待了八年，為此，我與她一起翻閱舊相冊，一起重遊所有老地方，然而奇蹟一直保持沉默，不作任何回應。在歲月的長河裡，只賺下佇立著、等候著的我。
+        女兒啊……
+        她又再躺在沙發上說著朦朦朧朧的囈語。
+        今晚煮了湯，放在客廳的……
+        「桌上」兩個音節裹未孵出來，便已胎死在掛掉的話裡了。那時的我，在過著燈紅酒綠的生活。月，仿佛才是昒暝的日出。一杯又一杯的長島冰茶灌進肚裡，根本容不下一碗溫熱的湯。
+        恰巧，也是八年的時間，媽媽也等待了八年的時間。她每一個晚上都在夢囈裡盼望著我歸家。然而等待一次又一次落空，只有蒼然寂寞的月色悄悄地透過窗戶，替她蓋上一張沒有溫度的被子。
+        八年後，我才真正明白等待的滋味，才體會到等待的煎熬。你是如何孤單地度過每一個昏暗的夜，如何忍受著一句句使你痛徹心扉的說話？一切的等待為了甚麼？
+        我的女兒回來了嗎？
+        你瞇著惺忪的睡眼問我。
+        還未，她還未回來，再等一下吧。
+        其實，她永遠都不會回來了，因為她已永恆地滯留在時光的隧道裡。在那個地方，夢即現實，回憶即現實，人永遠不會長大，更不會蒼老。因此之故，她永遠不會回來了。
+        至於我等待的人，等待的一聲呼喊，也不會回來了。她已羈困在一段停滯的時光裡，沒有逃逸，亦沒有人想逃逸。因為，她已等待得支離破碎，疲憊不堪了。
+        我們的等待，注定了落空。
+        但八年的等待裡，我終究參悟了落空的意義。正如那棵似乎會勃發生長的綠豆苗，也許一星期後便會似一場曉夢般枯萎，但孩子學會了生命的價值，學會了甚麼是失落，學會了憧憬在字典外的含義；又正如那個滿佈瘡痍的女人，在漫無邊際的等待裡，或許終於明白了有些等待並不值得，明白了有些等待並不值得，明白了有些等待只是一廂情願，於是鼓起離婚的勇氣。在等待裡，所有人都會找到新的意義。也許，等待只是一場燦爛奪目的煙花，只承諾開花，卻從不承諾結果。但在等待裡，我們都重新認識了自己和他人，甚或是人生。一如八年的等待，使我終於能體會媽媽的體會，孤寂、失望、無奈、感慨、悱惻，我都一一感受到了。她沒有遺下一句說話，便將我遺留在時光的彼岸，然而她內心最隱密的說話，我已諦聽到了。因為，我也成為了一個等待的人。等待的過程裡，我還學會了堅強、勇氣和耐心。從前，我何曾耐心地回應過她一句呢？
+        等著等著，她便像個孩子似的，哭嚷著要女兒回來，我溫柔地摩娑著她的髮絲、她的臉龐、她的下巴、她的背、她的手，又在她耳畔低語：「別怕，我與你一起等女兒回來，好不好？」她冷靜下來，默默地頷著首。
+        煙花，終於結了果，一如等待，終於在落空中結了果。</p>
+    </div>
+
+<div id="example-yanhuo-l3">
+    <h3>《煙火》(3等範文)</h3>
+    <p>夏天的夜晚，總是充滿了期待。小明是小六的學生，他最喜歡的事情就是和家人一起去看煙火。每年的鎮上夏日祭典，廣場上都會放一場盛大的煙火表演。那絢麗的光芒、絢爛的色彩，總讓小明看得目不轉睛，心裡充滿了驚奇與快樂。
+    這一天，小明早早就吃完了晚飯，興奮地拉著爸爸媽媽的手，往廣場走去。路上，他看見許多鄰居和同學，大家都帶著笑容，提著小板凳或鋪著野餐墊，準備找個好位置欣賞煙火。小明的妹妹小芳也跟著，蹦蹦跳跳地哼著歌，手裡還拿著一根螢光棒，閃閃發光。
+    到了廣場，已經人山人海。小明一家找了一塊空地，鋪上毯子，坐下來等待。天空還有些微亮，夕陽的餘輝灑在遠處的山頭上，像一幅美麗的畫。廣場上有人在賣棉花糖和烤魷魚，香味飄過來，讓小明忍不住嚥了口口水。爸爸笑著說：「等看完煙火，爸爸給你買一串烤魷魚好不好？」小明高興地點點頭。
+    終於，天色完全暗了下來。突然，一聲「砰」的巨響劃破夜空，第一顆煙火像一朵巨大的金色菊花，在天空中綻放開來。人群中傳來一陣驚呼，小明瞪大了眼睛，嘴巴張成了「O」形。接著，紅的、藍的、綠的、紫的煙火一個接一個升空，有的像流星劃過，有的像瀑布傾瀉，還有的像一顆顆閃亮的星星，點亮了整個夜空。
+    小明最喜歡的是那種會「咻咻」轉圈的煙火。它們先是像火箭一樣衝上天，然後在空中轉出一個個彩色的光圈，好像在跳舞一樣。小芳拍著手喊：「好漂亮！像仙女在撒花！」小明也忍不住跟著喊：「再來一個！再來一個！」爸爸媽媽在一旁笑著，看著孩子們開心的模樣，也覺得特別幸福。
+    煙火表演持續了半個多小時，每一顆煙火都讓小明覺得驚喜萬分。他心想，這些煙火是怎麼做出來的呢？為什麼它們可以在天空中變出這麼多不同的形狀和顏色？表演結束後，小明忍不住問爸爸：「煙火是怎麼來的？是誰發明的？」
+    爸爸摸摸小明的頭，笑著說：「煙火的歷史很長喔！聽說是古代的中國人發明的。他們發現一些化學物質混在一起會爆炸，後來就用來做煙火，讓節日更熱鬧。每一顆煙火裡都有不同的化學藥劑，這些藥劑決定了它們的顏色和形狀。紅色的煙火可能有鍶，藍色的有銅，綠色的有鋇，這些都是科學的魔法！」
+    小明聽得眼睛亮亮的，覺得好神奇。他想像著一群科學家在實驗室裡調配藥劑，試著做出最漂亮的煙火。他心裡暗暗決定，回家後要上網查更多關於煙火的知識，或許將來他也能成為一個會做煙火的人！
+    煙火結束後，廣場上的人群慢慢散去。小明一家走在回家的路上，夜風輕輕吹過，帶著一絲涼意。小芳已經累得在爸爸的懷裡睡著了，小明卻還在回味剛剛的煙火。他抬起頭，看著滿天的星星，心裡充滿了夢想。他想，煙火就像人生一樣，雖然短暫，卻可以綻放出最美的光芒。只要努力，他相信自己也能像煙火一樣，在未來某一天閃耀屬於自己的光彩。
+    回到家，小明拿出日記本，寫下了今天的感受：「今晚的煙火好美！它們在天空中飛舞，像在告訴我，只要有夢想，就能飛得很高很高。我要好好學習，將來也要像煙火一樣，點亮別人的眼睛！」</p>
+</div>
+
+<!-- 新增議論文示例 -->
+<div id="example-song-li">
+    <h3>《送禮之我見》</h3>
+    <p>每個人的一生都與禮物結下不解之緣。親友的滿月賀禮，承載著對新生命的祝福；長輩的壓歲紅包，包裹著對後輩的期許。然而，當物質洪流席捲現代社會，送禮這項古老習俗，卻在功利浪潮的沖刷下漸失本真，淪為人情往來的籌碼與攀比虛榮的角力場。人們穿梭於琳琅禮品間，精打細算著禮物的「價值」能否匹配關係的「份量」，卻鮮少思量這份心意是否仍如初生赤子般純粹無雜質。當饋贈的初衷被異化為計算，我們是否該停下腳步，重新審視禮物的真諦？
+
+禮物的靈魂，從來不在其金玉其外的華美包裝，而在其蘊含的情意之真摯與純粹。古訓有云：「千里送鵝毛，禮輕情意重。」此語道破了饋贈的核心價值——心意遠勝物質。唐代詩人白居易在《秦中吟》中，對權貴間「一叢深色花，十戶中人賦」的奢靡饋贈極盡諷刺，揭露其虛榮浮誇的本質。反之，近代文豪魯迅，常以親筆題簽的書籍贈予青年學子。那薄薄一冊書，承載的是一位啟蒙者對後輩深沉的期許與精神火種的傳遞。魯迅深知，真正有力量的禮物，是能點亮心靈、啟迪思想的火炬，而非點綴門面的俗物。由此觀之，禮物之重，在於心意之深。若僅以價格衡量價值，則再貴重的禮品，亦不過是冰冷交易的憑證，失卻了情感交流的溫度。
+
+可惜，當代社會中，禮物的異化現象俯拾皆是。饋贈時常淪為維繫社會關係網絡的工具，甚至背負著隱形的「債務枷鎖」。法國人類學家莫斯在《禮物》一書中精闢指出，傳統社會的禮物交換蘊含著「給予、接受、回報」的義務性循環，這股無形的社會壓力，常使受贈者感到負擔。反觀今日，此現象愈演愈烈。職場上，年節贈禮常被視為人情投資；婚宴嫁娶，賓客更暗自計較紅包厚薄是否「等值」。更甚者，如《紅樓夢》中賈府壽宴，王熙鳳對各房禮單的斤斤計較，將人情世故的算計演繹得淋漓盡致。當送禮者與受禮者皆困於「人情債」的算計，禮物便不再是心意的載體，而是淪為衡量利害得失的冰冷砝碼。這份計較，不僅磨損人際真誠，更使饋贈的初衷蒙塵。
+
+或許有人辯稱，身處人情社會，送禮難以擺脫功利色彩，所謂「真誠」不過是理想化的奢談。此言差矣。禮物的真偽，關鍵在於饋贈者的用心與純粹。魏晉名士嵇康，面對好友山濤欲舉薦其為官的「厚禮」，選擇以《與山巨源絕交書》明志。這封看似決絕的信，恰恰是嵇康回贈給山濤最貴重的禮物——一份對本真與氣節的堅守。他寧願承受斷交的「失」，也不願以人格自由作為交換官位的「得」。嵇康的行為啟示我們，真正的禮物，源自內在的誠懇與尊重，而非外在的價值或目的。若內心澄澈，即便是婉拒，亦可成為一份震撼靈魂的厚禮；反之，若動機不純，再華貴的饋贈，亦不過是包裹著糖衣的虛偽交易。禮物的重量，終究繫於心意之秤，而非物質之衡。
+
+誠然，在現實的夾縫中尋求全然超脫的饋贈境界並非易事。我們或許無法徹底摒棄人情往來的社會習性，但至少能在每一次饋贈前，叩問己心：這份禮物，是否源自純粹的關懷與祝福？而非包裹著交換、償還或炫耀的雜質。英國文豪王爾德曾諷刺道：「憤世嫉俗者知道所有東西的價格，卻不知道任何東西的價值。」這警語猶如明鏡，映照出我們在物質洪流中對價值的迷失。當我們過分執著於禮物的價格標籤，便極易遺忘其無價的情感內核。歸根結柢，送禮的最高藝術，在於使物質載體成為傳遞真情的使者，讓每一次贈予，都成為心靈間溫暖的交匯點。贈人玫瑰，手有餘香——這份香氣，源於真誠，存於心意，與物質的貴賤無涉。你我能否在下次饋贈時，讓這份芬芳，蓋過世俗的塵囂？</p>
+</div>
+
+<div id="example-lun-dushu">
+    <h3>《論讀書》</h3>
+    <p>讀書是一件很有趣又很重要的事情。小朋友們，你們喜歡讀書嗎？也許有的小朋友覺得讀書很無聊，但其實讀書可以讓我們變聰明、開心，還能認識很多新東西。今天我要來跟你們說說，為什麼讀書是一件很棒的事情。我會用簡單的理由告訴你們，讀書對我們有多好！
+
+讀書就像打開一扇神奇的大門，裡面有很多新東西等著我們去發現。比如說，你有沒有想過恐龍是怎麼生活的？或者太空裡有什麼祕密？當你讀一本關於恐龍或太空的書，你就會知道好多有趣的事情。比如，我讀過一本書，說霸王龍的牙齒像香蕉一樣大！這是不是很酷？讀書可以讓我們學到課堂上沒教的東西，讓我們的腦袋裝滿知識。
+
+不只科學，讀書還能讓我們認識不同的地方和文化。比如，你可以讀一本關於非洲的故事，知道那裡有大大的草原和跑得很快的獅子。這些知識讓我們對世界更好奇，也讓我們變得更聰明。所以，讀書就像一個寶藏箱，裡面裝滿了讓我們變厲害的知識！
+
+你有沒有想過自己變成一個勇敢的騎士，或是飛到天上的超人？讀書可以幫我們想像這些很棒的事情！當我們讀故事書時，我們會跟著書裡的角色一起冒險。比如，我讀過一本書，講一個小男孩在森林裡找到一個魔法棒，然後他用魔法棒打敗了壞巫師。讀的時候，我好像也跟著他一起去冒險，感覺好刺激！
+
+想像力很重要，因為它讓我們會想出新點子。當你畫畫、寫故事，或是玩遊戲時，好的想像力可以讓你做出很棒的事情。比如，你可能會因為讀了一本關於海盜的書，就自己畫了一艘很酷的海盜船！所以，讀書不只讓我們開心，還能讓我們的腦袋變得更有創意。
+
+讀書不只能讓我們變聰明，還能讓我們的心變得更善良。有的書會教我們怎麼跟朋友相處，怎麼幫助別人。比如，我讀過一本書，講一個小女孩幫助了一隻受傷的小鳥，後來他們變成了好朋友。這個故事讓我覺得，幫助別人是一件很快樂的事情。
+
+當我們讀這些故事時，我們會學到什麼是對的，什麼是錯的。這些書就像老師一樣，教我們怎麼做一個好人。比如，當你看到書裡的角色分享玩具，你也會想跟朋友分享東西。這樣，我們的心就會變得更溫暖，朋友也會更多！
+
+有些小朋友可能會說：「讀書好無聊，我想玩遊戲或看電視！」我知道，玩遊戲和看電視也很開心，但它們跟讀書不一樣。遊戲和電視很快就會看完，但書裡的故事可以讓你慢慢想、慢慢感受。而且，讀書可以讓你自己決定故事怎麼走，比如你可以用想像力幫故事裡的角色想新的結局，這是遊戲和電視做不到的！
+
+還有小朋友可能說：「書裡的字好多，看不懂！」沒關係，我們可以從簡單的書開始，比如圖畫書，裡面有好看的圖片，字也不多。慢慢地，你會發現讀書越來越簡單，也越來越有趣。所以，別害怕，試著讀一本你喜歡的書，你會發現它有多好玩！
+
+總之，讀書是一件很棒的事情！它讓我們學到新知識，變得更有想像力，還能讓我們的心更溫暖。雖然有時候讀書可能有點難，但只要我們找到自己喜歡的書，就會覺得它像一個好朋友，陪我們一起成長。小朋友們，讓我們一起拿起書，開始一場知識的冒險吧！不管是故事書、科學書，還是漫畫書，每一本書都是一個新世界，等著我們去探索。每天讀一點書，你會發現自己越來越厲害，也越來越快樂！</p>
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- 內置的 DSE 評分原則 (隱藏) -->
+<div id="dse-grading-principles" style="display: none;">
+    <h3>【擬卷理念】</h3>
+    <p>1. 考核能力：考核考生構思、表達、創作等能力。</p>
+    <p>2. 設題方式：或命題，或指定情境，並提供選擇。</p>
+    <p>3. 設題方向：主要環繞考生生活經驗及日常思考、關注的情或事；並盡量給予寫作空間，讓考生發揮創意。</p>
+    <p>4. 寫作要求：考生宜透過審題，思考寫作立意，選取材料，書寫文章。</p>
+    <p>5. 文體要求：以某類文體為主，或文體不限。</p>
+    
+    <h3>【一般評分原則：審題、入品】</h3>
+    <p>1. 準確理解關鍵概念。</p>
+    <p>2. 明白寫作要求。</p>
+    <p>3. 把握不同品位的入品要求。</p>
+
+    <h3>【評分項目詳解】</h3>
+    <p><strong>內容 (40分):</strong></p>
+    <ul>
+        <li>立意、內容是否合乎寫作要求；是否豐富、深刻。</li>
+        <li>取材是否恰當；能否彰顯立意。</li>
+        <li>闡述是否合理、飽滿。</li>
+    </ul>
+    <p><strong>表達 (30分):</strong></p>
+    <ul>
+        <li>用詞是否精確、豐富。(主)</li>
+        <li>文句是否簡潔流暢。(主)</li>
+        <li>表達手法是否純熟靈活。(輔)</li>
+    </ul>
+    <p><strong>結構 (20分):</strong></p>
+    <ul>
+        <li>段落區分是否明晰。</li>
+        <li>起承轉合是否自然。</li>
+        <li>輕重詳略是否恰當。</li>
+    </ul>
+    <p><strong>標點字體 (10分):</strong></p>
+    <ul>
+        <li>字體為主，標點為輔。</li>
+        <li>標點使用在於準確和靈活，不在於數量多少。</li>
+    </ul>
+    <p><strong>錯別字 (3分):</strong></p>
+    <ul>
+        <li>0-1個給3分；2-4個給2分；5-7個給1分；8個或以上不給分。</li>
+        <li>重錯不計。</li>
+    </ul>
+    
+    <h3>【離題卷評分】</h3>
+    <p>「內容」最高給「下上」；「表達」及「結構」最高給「中上」；「標點字體」最高仍可給「上上」。</p>
+    
+    <h3>【字數不足650字】</h3>
+    <p>「內容」最高給分：550-649字：「上上」；450-549字：「中上」；300-449字：「中中(下)」；300字以下：「下上」。</p>
+    
+    <h3>【一般評論摘要】</h3>
+    <p><strong>優勝之處:</strong></p>
+    <ul>
+        <li><strong>審題:</strong> 能正確理解題目。</li>
+        <li><strong>立意:</strong> 偶有佳作，能由日常生活引申至人生意義、生活哲理，呈現對生活有敏銳的觀察和思考。</li>
+        <li><strong>取材:</strong> 圍繞日常生活經歷或見聞取材。</li>
+        <li><strong>表達:</strong> 用詞大致恰當，文句大致通順；能恰當地敘事抒情、描繪人物或闡述看法；嘗試運用不同寫作手法。</li>
+        <li><strong>結構:</strong> 分段大致清晰，尚見脈絡；過渡合理，結構完整。</li>
+    </ul>
+    <p><strong>不足之處:</strong></p>
+    <ul>
+        <li><strong>審題:</strong> 流於表面，未抓緊題眼發揮。</li>
+        <li><strong>立意:</strong> 立意平常，層次不高。</li>
+        <li><strong>取材:</strong> 敘事忽略細節，描寫流於表面，論述粗疏簡略；未能翻出新意，提出精闢見解。</li>
+        <li><strong>表達:</strong> 經營不多，夾雜沙石；多口語入文、句子冗贅；部分與前文格格不入，影響達意。</li>
+        <li><strong>結構:</strong> 鮮能做到層層深化，前後呼應者；少數文章篇幅較長，惜時間所限，結果虎頭蛇尾；有詳略稍有失衡的情況。</li>
+    </ul>
+</div>
 
 
 <!-- 工具選擇 -->
@@ -2331,7 +2676,8 @@ refreshBtn.addEventListener('click', fetchHitokoto);
 <!-- 1. Core AI -->
 <div class="category" id="core-ai" data-connect-to="">
 <div class="node" data-id="core-ai-node" style="padding: 10px 20px;">
-<a href="https://kenchan20141.github.io/AIwritingtool/" data-tool-id="sansi">
+<a href="https://kenchan20141.github.io/AIChinese/" data-tool-id="sansi">
+
 
 
 
@@ -2435,6 +2781,7 @@ refreshBtn.addEventListener('click', fetchHitokoto);
 </div>
 </div>
 
+
 <!-- Preview Modal (修訂後) -->
 <div id="previewModal" class="preview-modal-overlay">
 <div class="preview-modal-content">
@@ -2533,17 +2880,17 @@ clickedButton.classList.add('active');
 
 // API 配置信息
 const API_KEYS = [
-"sk-GruTbLTbtSeWof3rEBjtIg"
+"sk-QLG1NlIRdkp17g2aR-e2Kw",
 ];
-let currentApiKeyIndex = 0;
+// let currentApiKeyIndex = 0; // 這個變數不再需要，可以刪除或註解掉
 const API_URL = "https://chatapi.akash.network/api/v1/chat/completions";
 const MODEL = "Qwen3-235B-A22B-Instruct-2507-FP8";
 
 // [新增] 閱讀專用 API 配置
 const READING_API_KEYS = [
-"sk-N2hJEV5h9dQl9K_bUrxLtw"
+"sk-QLG1NlIRdkp17g2aR-e2Kw",
 ];
-let currentReadingApiKeyIndex = 0;
+// let currentReadingApiKeyIndex = 0; // 這個變數不再需要，可以刪除或註解掉
 const READING_API_URL = "https://chatapi.akash.network/api/v1/chat/completions";
 const READING_MODEL = "DeepSeek-R1-0528";
 
@@ -2552,12 +2899,15 @@ const READING_MODEL = "DeepSeek-R1-0528";
 async function callReadingAPI(prompt) {
 let attempts = 0;
 const maxAttempts = READING_API_KEYS.length;
+// 每次調用都從一個隨機的索引開始
+let currentApiKeyIndex = Math.floor(Math.random() * READING_API_KEYS.length);
+
 while (attempts < maxAttempts) {
 try {
 const response = await fetch(READING_API_URL, {
 method: "POST",
 headers: {
-"Authorization": `Bearer ${READING_API_KEYS[currentReadingApiKeyIndex]}`,
+"Authorization": `Bearer ${READING_API_KEYS[currentApiKeyIndex]}`,
 "Content-Type": "application/json"
 },
 body: JSON.stringify({
@@ -2571,7 +2921,8 @@ max_tokens: 64000
 });
 
 if (response.status === 429) {
-currentReadingApiKeyIndex = (currentReadingApiKeyIndex + 1) % READING_API_KEYS.length;
+console.warn(`閱讀 API Key ${currentApiKeyIndex} 達到速率限制，嘗試下一個...`);
+currentApiKeyIndex = (currentApiKeyIndex + 1) % READING_API_KEYS.length;
 attempts++;
 continue;
 }
@@ -2590,8 +2941,8 @@ throw new Error("API 回應無效或過濾後無內容");
 
 return content;
 } catch (error) {
-console.error(error);
-currentReadingApiKeyIndex = (currentReadingApiKeyIndex + 1) % READING_API_KEYS.length;
+console.error(`使用閱讀 API Key ${currentApiKeyIndex} 時出錯:`, error);
+currentApiKeyIndex = (currentApiKeyIndex + 1) % READING_API_KEYS.length;
 attempts++;
 if (attempts >= maxAttempts) {
 throw new Error("所有 API 密鑰均無法使用");
@@ -2715,7 +3066,7 @@ const topics = [
 "熱鬧過後，我卻感到失落。", "夢想看似不切實際，但其實很有意義", "夢想看似很有意義，其實 h不切實際",
 "今天我沒有帶手提電話外出，因而有不一樣的經歷和體會。",
 "今天發生了一件事情，當時我曾經想力陳己見，最後選擇了沉默。我認為沉默是必要的。",
-"矛盾", "未兌現的諾言", "未寄出的信", "距離", "一場沒有失敗者的比賽", "一件發人深省的事",
+"矛盾", "未兌現的諾言", "未寄出的信", "距離", "一場沒有失敗者的比賽", "一件發人 ব্যাটসম্যান省的事",
 "我最想保留的一本相簿", "我最想尋回的一件玩具", "無愧的抉擇", "不能掉下的眼淚", "無畏的探索",
 "一次令我百感交集的聚餐", "如願以償"
 ];
@@ -2801,7 +3152,7 @@ let lastArgumentTopic = localStorage.getItem("lastArgumentTopic") || "";
 // 範疇定義
 const categories = {
 "片段描寫": {
-commentNote: "必須用繁體字。點評時，必須就上述生成或輸入的題目及用家輸入的寫作內容，點評文章是否扣題。如結構段重點及情節漏空，則不需要評論。重要！評論文章是否扣題時必須非常嚴謹！！絕不允許喧賓奪主，例如題目為《成長》，但全文卻寫得更似以《影子》為題，雖然文中情節或與成長有一定關係，但這情況仍然未符扣題要求，必須在字面、邏輯及詳略上突顯情節與「成長」的關係。點評時要注意寫作內容與題目有沒有在顯性的邏輯關係，寫作內容要求的不只是取材情節可以與結構段重點及題目構成邏輯關係，更要用合適的情節詳略剪裁和扣題小段去突顯與該部份的邏輯關係，使寫作內容明確呼應結構段重點及題目。寫作內容必須能在字面及邏輯上都直接呼應題目，假如文中未點出情節及題目的關係，不要自行補足情節與題目的關係再評為緊扣題旨。若離題，範例不必根據原文離題內容改寫，而改寫部份必須包含扣題小段（部份句子直接呼應結構段重點或題目）。點評分為三部分：### 點評、### 建議、### 改寫範例。只選取最重要的一至兩點評論，應先聚焦在評論寫作內容是否在扣連題目及結構段重點的方向以及其詳略剪裁，其次方為文句（包括示現敘事和密度）。若結構段重點或情節大要與題目關係薄弱，須在點評中指出並重點說明。點評內容要精簡、一語中的，僅將最關鍵、影響最大的一至兩項評語點出來，若扣題和詳略剪裁等都處理不得當，則不需要詳評文句。片段描寫需交替運用小物件、動作、對話和內心獨白，提高文句密度（詞匯深度高、物象豐富、實詞比例高），但必須注意：過 （例如連用小物件做主語的句子）則不宜，適時需要以人物作主語，交替去用，有時加入內心獨白會令文句顯得更自然，密度不宜過高，適時要加入虛詞放緩節奏，張弛有度。此外，要控制詳略節奏，詳寫與題目相關的部分，略寫次要內容。文句密度也是好文筆的標準，需納入考量。此外，假如整體表現真的不錯，沒有大問題，在點評時稱讚即可，不必吹毛求疵地批評，但在寫作內容的「扣題」邏輯上必須嚴謹把關。點評、建議及改寫都要在200字以內。"
+commentNote: "必須用繁體字。點評時，必須就上述生成或輸入的題目及用家輸入的寫作內容，點評文章是否扣題，作點評時必須結合文章情節內容。如結構段重點及情節漏空，則不需要評論，亦不需要在點評中提及。重要！評論文章是否扣題時必須非常嚴謹！！絕不允許喧賓奪主，例如題目為《成長》，但全文卻寫得更似以《影子》為題，雖然文中情節或與成長有一定關係，但這情況仍然未符扣題要求。必須在字面、邏輯及詳略上突顯情節與「成長」的關係。點評時要注意寫作內容與題目有沒有在明顯的邏輯關係，寫作內容要求的不只是取材情節可以與結構段重點及題目構成邏輯關係，更要用合適的情節詳略剪裁和扣題小段去突顯與該部份的邏輯關係，使寫作內容明確呼應結構段重點及題目。寫作內容必須能在邏輯都直接呼應題目，假如文中未點出情節及題目的關係，不要自行補足情節與題目的關係再評為緊扣題旨。若離題，範例不必根據原文離題內容改寫，而改寫部份必須包含扣題小段（部份句子直接呼應結構段重點或題目）。優先考慮文章能否在情節上直接呼應題目。對於運用象徵、比喻等手法間接扣題的高階寫作，若其意象連貫、深刻，能令人信服地體現主旨，亦可視為「緊扣」。反之，若關聯牽強，則為「偏題」。例如題目為《種子》，寫作者不需要花費大量篇幅去刻劃種子本身，更重要的是其聯想、象徵或對寫作者的意義，這些帶有物象的題目必須彈性處理，只需要緊扣其物象的特徵發揮即可。此外，題目中可能有多於一個關鍵詞，這些關鍵詞對扣題的重要程度不一樣，要根據題目靈活判斷，一些相對次要的關鍵詞可放輕，只要寫作者抓住最重要的關鍵詞發揮即可。點評分為三部分：### 點評、### 建議、### 改寫範例。只選取最重要的一至兩點評論，應先聚焦在評論寫作內容是否在扣連題目及結構段重點的方向以及其詳略剪裁，其次方為文句（包括示現敘事和密度）。若結構段重點或情節大要與題目關係薄弱，須在點評中指出並重點說明。點評內容要精簡、一語中的，僅將最關鍵、影響最大的一至兩項評語點出來，若扣題和詳略剪裁等都處理不得當，則不需要詳評文句。片段描寫需交替運用小物件、動作、對話和內心獨白，提高文句密度（詞匯深度高、物象豐富、實詞比例高），但必須注意：過 （例如連用小物件做主語的句子）則不宜，適時需要以人物作主語，交替去用，有時加入內心獨白會令文句顯得更自然，密度不宜過高，適時要加入虛詞放緩節奏，張弛有度。此外，要控制詳略節奏，詳寫與題目相關的部分，略寫次要內容。文句密度也是好文筆的標準，需納入考量。此外，假如整體表現真的不錯，沒有大問題，在點評時稱讚即可，不必吹毛求疵地批評，但在寫作內容的「扣題」邏輯上必須嚴謹把關。點評、建議及改寫都要在200字以內。"
 },
 "大綱": {
 commentNote: "必須用繁體字。點評時，必須就上述生成的題目點評大綱內容是否扣題，假如大綱離題，範例便不必根據離題內容改寫。此外，點評應分為三個部份：點評、建議、改寫範例。在寫作大綱時，學生應展示他們組織思路和結構故事的能力。評分時，請注意大綱的邏輯性、條理性以及是否包含了故事的起承轉合或三線結構（即所謂「散敘」，有以下三點要注意：其一，三線的分類範疇相同；其二，三線或有層遞關係，或能從三個角度呈現同一個主題；其三，三線的情節發展不能過於相似；其四，所分之角度能突顯與主題相關的立意。「三線」例子如下：題目為「勇氣」，則可用「年少時的勇氣」為一線、「年青時的勇氣」為二線、「年老時的勇氣」為三線；又如以「重遊舊地所見有感」，則可用在故鄉的不同「地」所見作三線分類，例如老屋、後山等。必須確保每條線的「結構段重點」清晰點明三線的分類範疇、想突顯題目的甚麼要點、與題目如何扣連等，以及「合」能統攝總結全文立意）。要逐部分分析每個結構段與題目的關係有多大，並在點評中明確指出。此外，在「改寫後的大綱」,其「結構段重點」必須交代該部份與題目之間的邏輯關係，即怎樣做到扣題。此外，由於是應試文章，因此改寫後的大綱避免過份具理論哲學性及文學性，以至於脫離了現實和日常生活，亦圍繞人在經歷的情感和體悟設定，必須減少概念模糊的術語，例如「情感載體」及「時空的共創」，請用日常化用語描述。此外，「改寫後的大綱」不宜只圍繞一件事敘寫，這樣會容易寫得太抽象，應適時加插人物與人物之間的回憶或其他經歷，令文章看起來更具體實在。此外，大綱不是全篇文章，最重要的是在點評時分析其結構段及情節大要的思路是否扣緊題目，方向是否合理、正確。假如整體表現真的不錯，沒有大問題，在點評時稱讚即可，不必吹毛求疵地批評。"
@@ -2823,9 +3174,11 @@ commentNote: "必須用繁體字。點評時，需評估「整合拓展」是否
 guideNote: "必須用繁體字。僅生成三道問題以引導用家思考如何根據表格資料做好整合拓展，問題應圍繞主題句和抄錄資料的邏輯關係，引導用家思考如何闡釋和拓展。請不要運用歐化句及詞匯，例如「關聯性」、「實效性」，這些字詞意義不明確，但用生活化一點、具體一點的字詞生成問題。輸出分為一個部分：### 指引問題。指引問題以問題形式呈現，每個問題佔一行。"
 },
 "議論": {
-outlineCommentNote: "必須用繁體字。點評時，必須就上述生成或輸入的題目點評大綱內容是否扣題。必須從以下角度點評：1. 論點是否清晰明確，一語中的，能直接呼應題目；2. 用家提供的論據與論點是否密切相關，全文論據是否涵蓋古今中外（不需要每段都有古今中外的例子，假如大綱中缺論據，則要補充古今中外具體的論據，即有名有姓的人物例子）；3. 段內論據的詳略有幾種模式：兩個詳的論據，或一詳數略，或數略，因應段落論述需要而定，以製造變化；4. 論證方向是否合理，能合理解釋論據與論點的關係（但要理解這部份只是大綱，不可能論證得非常具體和詳細，只要方向正確即可接受）；5. 全文脈絡是否分明，可運用前中後構建法（前：背後概念/概念背景、現實例子、駁論；中：分類論述，例如題目為《談憤怒》，可分為「公怒」和「私怒」，或分拆論述，例如題目為「面對不同意見，有人認為應據理力爭，堅守立場；有人認為應彼此包容，求同存異。上述兩種態度，哪一種較為理想？試談談你的看法。」，可一段論述「求同」，另一段論述「存異」；後：例外情況/其他看法、方法）。即使運用「陳SIR語氣」，「建議」及「改寫後的大綱」都必須正經嚴肅，不要運用EMOJI。此外，假如全文有六段或以上，則應在第二段或末二的段落做駁論，點評、建議及改寫後的大綱都要注意這點。此外，不要列點和運用「*」等符號，必須以段落和完整句子方式生成改寫後的大綱。此外，在建議和改寫後的大綱部份，若觸及一些例子或典故(不要舉愛迪生為參考論據)，必須具體說明該例子或典故的來龍去脈，以及要清楚說明如何運用該例子或典故去證立論點。此外，無論點評、建議或改寫後的大綱，用語都必須生活化，要摒棄過於抽象和理論的表達。此外，點評應分為三個部份：點評、建議、改寫範例。只選取最重要的一至兩點評論，應先聚焦在論點、論據和論證的質量，其次方為結構。點評內容要精簡、一語中的。若大綱離題，改寫後的大綱不必根據離題內容改寫。",
-writingCommentNote: "必須用繁體字。點評時，必須就用家提供的內容去點評，不要捏造用家沒有輸入的內容作點評。須評估文章是否符合以下標準：1. 論點清晰明確，一語中的，能直接呼應題目；2. 論據與論點密切相關，全文論據涵蓋古今中外（不需要每段都有古今中外的例子，不要捏造用家沒有輸入的例子作點評，假如缺少例子，直言其問題即可。要注意過猶不及，充塞例子則感覺生硬）；3. 論證嚴謹，能具體解釋論據與論點的關係；4. 注意文句密度（詞匯量、實詞及虛詞比例，但過猶不及，過量使用實詞則生硬，適時加入虛詞，才能使文句節奏錯落有致）及修辭運用（宜適時運用排比和比喻）。點評分為三部分：### 點評、### 建議、### 改寫範例。即使運用「陳SIR語氣」，「建議」及「改寫範例」都必須正經嚴肅地表述，不要運用EMOJI。「改寫範例」應以純段落方式表述，不要運用EMOJI，不要附有【原文段落】及【改寫段落】等標題。點評、建議及改寫都要在200字以內。",
-guideNote: "必須用繁體字。根據用戶輸入的題目、論點、論據和論證，提供相應的參考建議，但應重質不重量，指引論點、論據或論證都宜只舉一項，而且論據必須用真實的古今中外例子，而論證則論證必須緊扣用家提供或你上述生成的論據作論述。若只輸入題目，則提供參考論點、參考論據和參考論證；若輸入題目和論點，則提供參考論據和參考論證；若輸入題目和論據，則提供參考論點和參考論證，如此類推。不要舉愛迪生為參考論據。參考論證不要超出100字。輸出分為相應部分：### 參考論點、### 參考論據、### 參考論證（視用戶輸入情況而定）。每部分以段落形式呈現。"
+    outlineCommentNote: "必須用繁體字。點評時，必須就上述生成或輸入的題目點評大綱內容是否扣題。必須從以下角度點評：1. 論點是否清晰明確，一語中的，能直接呼應題目；2. 議論的立意，是取決於觀點是否深入成熟；3. 議論的取材，是取決於論據是否充實，涵蓋古今中外，以及其論據是否適用於論述這道題目；4. 即使扣題分數很高，但立意和取材分數低，其「內容」和「結構」分為最高只能得5分；5. 用家提供的論據與論點是否密切相關；6. 段內論據的詳略有幾種模式：兩個詳的論據，或一詳數略，或數略，因應段落論述需要而定，以製造變化；7. 論證方向是否合理，能合理解釋論據與論點的關係；8. 全文脈絡是否分明。點評時要用日常生活化的語言，不要用術語去解釋、點評或給建議，一定要用日常生活的語言。即使運用「陳SIR語氣」，「建議」及「改寫後的大綱」都必須正經嚴肅，不要運用EMOJI。此外，假如全文有六段或以上，則應在第二段或末二的段落做駁論，點評、建議及改寫後的大綱都要注意這點。此外，不要列點和運用「*」等符號，必須以段落和完整句子方式生成改寫後的大綱。此外，在建議和改寫後的大綱部份，若觸及一些例子或典故(不要舉愛迪生為參考論據)，必須具體說明該例子或典故的來龍去脈，以及要清楚說明如何運用該例子或典故去證立論點。此外，無論點評、建議或改寫後的大綱，用語都必須生活化，要摒棄過於抽象和理論的表達。此外，點評應分為三個部份：點評、建議、改寫範例。只選取最重要的一至兩點評論，應先聚焦在論點、論據和論證的質量，其次方為結構。點評內容要精簡、一語中的。若大綱離題，改寫後的大綱不必根據離題內容改寫。",
+    
+    writingCommentNote: "必須用繁體字。點評時，必須就用家提供的內容去點評，不要捏造用家沒有輸入的內容作點評。須評估文章是否符合以下標準：1. 論點清晰明確，一語中的，能直接呼應題目；2. 議論的立意，是取決於觀點是否深入成熟；3. 議論的取材，是取決於論據是否充實，涵蓋古今中外，以及其論據是否適用於論述這道題目；4. 即使扣題分數很高，但立意和取材分數低，其「內容」和「結構」分為最高只能得5分；5. 論證嚴謹，能具體解釋論據與論點的關係；6. 注意文句密度及修辞運用。點評時要用日常生活化的語言，不要用術語去解釋、點評或給建議，一定要用日常生活的語言。點評分為三部分：### 點評、### 建議、### 改寫範例。即使運用「陳SIR語氣」，「建議」及「改寫範例」都必須正經嚴肅地表述，不要運用EMOJI。「改寫範例」應以純段落方式表述，不要運用EMOJI，不要附有【原文段落】及【改寫段落】等標題。點評、建議及改寫都要在200字以內。",
+    
+    guideNote: "必須用繁體字。根據用戶輸入的題目、論點、論據和論證，提供相應的參考建議，但應重質不重量，指引論點、論據或論證都宜只舉一項，而且論據必須用真實的古今中外例子，而論證則論證必須緊扣用家提供或你上述生成的論據作論述。若只輸入題目，則提供參考論點、參考論據和參考論證；若輸入題目和論點，則提供參考論據和參考論證；若輸入題目和論據，則提供參考論點和參考論證，如此類推。不要舉愛迪生為參考論據。參考論證不要超出100字。輸出分為相應部分：### 參考論點、### 參考論據、### 參考論證（視用戶輸入情況而定）。每部分以段落形式呈現。用語要日常生活化，不要用術語。"
 }
 };
 
@@ -3442,135 +3795,143 @@ localStorage.removeItem("argumentOutlineData");
 
 // 替換舊的 submitArgumentOutline 函式
 async function submitArgumentOutline() {
-const submitBtn = document.getElementById('submitArgumentOutlineBtn');
-submitBtn.disabled = true; // 禁用按鈕
+    const submitBtn = document.getElementById('submitArgumentOutlineBtn');
+    submitBtn.disabled = true;
 
-try {
-const topic = localStorage.getItem("argumentCurrentTopic");
-if (!topic) {
-alert("請先設定題目");
-return; // return 會觸發 finally
-}
-const table = document.getElementById("argumentOutlineTable");
-const rows = table.rows;
-const outlineData = [];
-for (let i = 1; i < rows.length; i++) {
-const part = rows[i].cells[0].innerText;
-const pointTextarea = rows[i].cells[1].querySelector("textarea");
-const evidenceTextarea = rows[i].cells[2].querySelector("textarea");
-const point = pointTextarea ? pointTextarea.value.trim() : "";
-const evidence = evidenceTextarea ? evidenceTextarea.value.trim() : "";
-if (!point || !evidence) {
-alert("請填寫所有大綱表格");
-return; // return 會觸發 finally
-}
-outlineData.push({ part, point, evidence });
-}
-const tone = document.getElementById("argumentOutlineTone").value;
-let toneNote = tone === "chen" ? "請用輕鬆隨意的語氣進行點評和建議，多用EMOJI，偶爾使用網絡用語，用語要日常生活化一點。如果用戶表現良好，請大加讚賞；如果用戶表現不好，可以善意地揶揄一下，但要注意尺度，不能傷害用戶的自尊心。揶揄時，可運用生活化的比喻。(「點評」請用「陳SIR語氣」，而「建議」及「改寫後的大綱」維持嚴肅正經語氣）" : "請用嚴肅正經的語氣進行點評和建議。";
-const note = categories["議論"].outlineCommentNote;
-const partsList = outlineData.map(item => item.part).join(", ");
-const prompt = `請根據以下大綱內容進行點評和建議，並提供改寫後的大綱。要求：
-1. 在「=== 點評及建議 ===」部分，為以下每個結構段提供點評和建議：${partsList}。使用「[part]」標記每個結構段的開始，例如「[起]」，然後在下一行「點評：」後跟點評內容，再下一行「建議：」後跟建議內容。
-2. 在「=== 改寫後的大綱 ===」部分，為以下每個結構段提供改寫後的「論點」和「論據及論證」：${partsList}。使用「[part]」標記每個結構段的開始，然後在下一行「論點：」後跟內容，再下一行「論據及論證：」後跟內容。
-3. 在「=== 改寫說明 ===」部分，提供不超過兩點的改寫說明，每點以「1. 」和「2. 」開始。
-4. 請確保內容簡潔明了。
-5. 請確保「=== 改寫後的大綱 ===」部分的「論點」用語生活化，不要運用過份抽象及理論化的字眼，例如「二元對立」等。
-題目：${topic}
-用戶輸入的大綱：
-| 部份 | 論點 | 論據及論證 |
-|------|------|------------|
-${outlineData.map(item => `| ${item.part} | ${item.point} | ${item.evidence} |`).join("\n")}
-教學筆記：${note}
-點評語氣：${toneNote}
-建議和改寫後的大綱語氣：請使用嚴肅正經的語氣，不使用EMOJI或網絡用語。`;
-document.getElementById("argumentOutlineResult").innerHTML = "陳SIR正在點評...";
-const comment = await callAPI(prompt);
-const sections = comment.split(/=== (.+?) ===/).filter(s => s.trim());
-const commentIndex = sections.indexOf("點評及建議");
-const rewriteIndex = sections.indexOf("改寫後的大綱");
-const explanationIndex = sections.indexOf("改寫說明");
-const commentPart = commentIndex !== -1 ? sections[commentIndex + 1] : "";
-const rewritePart = rewriteIndex !== -1 ? sections[rewriteIndex + 1] : "";
-const explanationPart = explanationIndex !== -1 ? sections[explanationIndex + 1].trim() : "";
-function parseCommentPart(commentPart) {
-const comments = {};
-const regex = /\[(.+?)\]\s*點評：\s*(.+?)(?=\s*建議：|\s*\[|$)/gs;
-const suggestionRegex = /\[(.+?)\]\s*點評：.+?\s*建議：\s*(.+?)(?=\s*\[|$)/gs;
-let match;
-while ((match = regex.exec(commentPart)) !== null) {
-const part = match[1];
-comments[part] = comments[part] || {};
-comments[part].comment = match[2].trim();
-}
-while ((match = suggestionRegex.exec(commentPart)) !== null) {
-const part = match[1];
-comments[part] = comments[part] || {};
-comments[part].suggestion = match[2].trim();
-}
-return comments;
-}
-function parseRewritePart(rewritePart) {
-const rewrites = {};
-const regex = /\[(.+?)\]\s*論點：\s*(.+?)(?=\s*論據及論證：|\s*\[|$)/gs;
-const evidenceRegex = /\[(.+?)\]\s*論點：.+?\s*論據及論證：\s*(.+?)(?=\s*\[|$)/gs;
-let match;
-while ((match = regex.exec(rewritePart)) !== null) {
-const part = match[1];
-rewrites[part] = rewrites[part] || {};
-rewrites[part].point = match[2].trim();
-}
-while ((match = evidenceRegex.exec(rewritePart)) !== null) {
-const part = match[1];
-rewrites[part] = rewrites[part] || {};
-rewrites[part].evidence = match[2].trim();
-}
-return rewrites;
-}
-const comments = parseCommentPart(commentPart);
-const rewrites = parseRewritePart(rewritePart);
-let commentTableHTML = `<h3>陳SIR點評及建議：</h3><div class="table-container"><table id="argumentCommentTable"><tr><th>部份</th><th>論點</th><th>論據及論證</th><th>點評</th><th>建議</th></tr>`;
-outlineData.forEach(item => {
-const comment = comments[item.part]?.comment || "未生成點評";
-const suggestion = comments[item.part]?.suggestion || "未生成建議";
-commentTableHTML += `<tr><td>${item.part}</td><td>${item.point}</td><td>${item.evidence}</td><td>${comment}</td><td>${suggestion}</td></tr>`;
-});
-commentTableHTML += "</table></div>";
-let rewriteTableHTML = `<h3>改寫後的大綱：</h3><div class="table-container"><table id="argumentRewriteTable"><tr><th>部份</th><th>論點</th><th>論據及論證</th></tr>`;
-outlineData.forEach(item => {
-const rewrite = rewrites[item.part] || { point: "未生成論點", evidence: "未生成論據及論證" };
-rewriteTableHTML += `<tr><td>${item.part}</td><td>${rewrite.point || "未生成論點"}</td><td>${rewrite.evidence || "未生成論據及論證"}</td></tr>`;
-});
-rewriteTableHTML += "</table></div>";
-let explanationHTML = '';
-if (explanationPart) {
-const points = explanationPart.split(/\s*(?=\d\.\s*)/).filter(p => p.trim());
-explanationHTML = `<div class="rewrite-explanation-container"><div class="rewrite-explanation-card"><h3>改寫說明</h3>`;
-points.forEach(point => {
-const match = point.match(/^(\d)\.\s*(.*)$/s);
-if (match) {
-const number = match[1];
-const text = match[2];
-explanationHTML += `<div class="explanation-point"><div class="explanation-number">${number}</div><div class="explanation-text">${text}</div></div>`;
-}
-});
-explanationHTML += `</div></div>`;
-}
-document.getElementById("argumentOutlineResult").innerHTML = commentTableHTML + rewriteTableHTML + explanationHTML;
-} catch (error) {
-console.error("提交大綱時出錯:", error);
-if (error.message === "所有 API 密鑰均無法使用") {
-alert("今日 API 調用次數已用完或API無法連接，請明天再試");
-} else {
-alert("點評生成失敗，請重試");
-}
-document.getElementById("argumentOutlineResult").innerHTML = "";
-} finally {
-submitBtn.disabled = false; // 重新啟用按鈕
-}
+    try {
+        const topic = localStorage.getItem("argumentCurrentTopic");
+        if (!topic) {
+            alert("請先設定題目");
+            return;
+        }
+        const table = document.getElementById("argumentOutlineTable");
+        const rows = table.rows;
+        let outlineContent = [];
+        for (let i = 1; i < rows.length; i++) {
+            const part = rows[i].cells[0].innerText;
+            const pointTextarea = rows[i].cells[1].querySelector("textarea");
+            const evidenceTextarea = rows[i].cells[2].querySelector("textarea");
+            const point = pointTextarea ? pointTextarea.value.trim() : "";
+            const evidence = evidenceTextarea ? evidenceTextarea.value.trim() : "";
+            if (!point || !evidence) {
+                alert("請填寫所有大綱表格");
+                return;
+            }
+            outlineContent.push({ part, point, evidence });
+        }
+
+        const tone = document.getElementById("argumentOutlineTone").value;
+        let toneNote = tone === "chen" ? "請用輕鬆隨意的語氣進行點評和建議，多用EMOJI，偶爾使用網絡用語，用語要日常生活化一點。如果用戶表現良好，請大加讚賞；如果用戶表現不好，可以善意地揶揄一下，但要注意尺度，不能傷害用戶的自尊心。揶揄時，可運用生活化的比喻。" : "請用嚴肅正經的語氣進行點評和建議。";
+        
+        const note = categories["議論"].outlineCommentNote;
+        const prompt = `請根據以下大綱內容進行點評和建議，並提供改寫後的大綱。要求：
+        1. 在「=== 點評及建議 ===」部分，為每個結構段提供點評和建議。使用「[part]」標記每個結構段的開始，例如「[起]」，然後在下一行「點評：」後跟點評內容，再下一行「建議：」後跟建議內容。
+        2. 在「=== 改寫後的大綱 ===」部分，為每個結構段提供改寫後的「論點」和「論據及論證」。使用「[part]」標記每個結構段的開始，然後在下一行「論點：」後跟內容，再下一行「論據及論證：」後跟內容。
+        3. 在「=== 改寫說明 ===」部分，提供不超過兩點的改寫說明，每點以「1. 」和「2. 」開始。
+        4. 請確保內容簡潔明了，不可以顯示「--- ###」。
+        題目：${topic}
+        用戶輸入的大綱：
+        | 部份 | 論點 | 論據及論證 |
+        |------|------|------------|
+        ${outlineContent.map(item => `| ${item.part} | ${item.point} | ${item.evidence} |`).join("\n")}
+        教學筆記：${note}
+        點評及建議語氣：${toneNote}`;
+
+        document.getElementById("argumentOutlineResult").innerHTML = "陳SIR正在點評...";
+        
+        // 【核心修訂】改用閱讀專用的 API 函式
+        const response = await callReadingAPI(prompt);
+        
+        const sections = response.split(/=== (.+?) ===/).filter(s => s.trim());
+        const commentIndex = sections.indexOf("點評及建議");
+        const rewriteIndex = sections.indexOf("改寫後的大綱");
+        const explanationIndex = sections.indexOf("改寫說明");
+        const commentPart = commentIndex !== -1 ? sections[commentIndex + 1] : "";
+        const rewritePart = rewriteIndex !== -1 ? sections[rewriteIndex + 1] : "";
+        const explanationPart = explanationIndex !== -1 ? sections[explanationIndex + 1].trim() : "";
+        
+        function parseCommentPart(commentPart) {
+            const comments = {};
+            const regex = /\[(.+?)\]\s*點評：\s*(.+?)(?=\s*建議：|\s*\[|$)/gs;
+            const suggestionRegex = /\[(.+?)\]\s*點評：.+?\s*建議：\s*(.+?)(?=\s*\[|$)/gs;
+            let match;
+            while ((match = regex.exec(commentPart)) !== null) {
+                const part = match[1];
+                comments[part] = comments[part] || {};
+                comments[part].comment = match[2].trim();
+            }
+            while ((match = suggestionRegex.exec(commentPart)) !== null) {
+                const part = match[1];
+                comments[part] = comments[part] || {};
+                comments[part].suggestion = match[2].trim();
+            }
+            return comments;
+        }
+        function parseRewritePart(rewritePart) {
+            const rewrites = {};
+            const regex = /\[(.+?)\]\s*論點：\s*(.+?)(?=\s*論據及論證：|\s*\[|$)/gs;
+            const evidenceRegex = /\[(.+?)\]\s*論點：.+?\s*論據及論證：\s*(.+?)(?=\s*\[|$)/gs;
+            let match;
+            while ((match = regex.exec(rewritePart)) !== null) {
+                const part = match[1];
+                rewrites[part] = rewrites[part] || {};
+                rewrites[part].point = match[2].trim();
+            }
+            while ((match = evidenceRegex.exec(rewritePart)) !== null) {
+                const part = match[1];
+                rewrites[part] = rewrites[part] || {};
+                rewrites[part].evidence = match[2].trim();
+            }
+            return rewrites;
+        }
+        const comments = parseCommentPart(commentPart);
+        const rewrites = parseRewritePart(rewritePart);
+        let commentTableHTML = `<h3>陳SIR點評及建議：</h3><div class="table-container"><table id="commentTable"><tr><th>部份</th><th>論點</th><th>論據及論證</th><th>點評</th><th>建議</th></tr>`;
+        outlineContent.forEach(item => {
+            const comment = comments[item.part]?.comment || "未生成點評";
+            const suggestion = comments[item.part]?.suggestion || "未生成建議";
+            commentTableHTML += `<tr><td>${item.part}</td><td>${item.point}</td><td>${item.evidence}</td><td>${comment}</td><td>${suggestion}</td></tr>`;
+        });
+        commentTableHTML += "</table></div>";
+        let rewriteTableHTML = `<h3>改寫後的大綱：</h3><div class="table-container"><table id="rewriteTable"><tr><th>部份</th><th>論點</th><th>論據及論證</th></tr>`;
+        outlineContent.forEach(item => {
+            const rewrite = rewrites[item.part] || { point: "未生成論點", evidence: "未生成論據及論證" };
+            rewriteTableHTML += `<tr><td>${item.part}</td><td>${rewrite.point || "未生成論點"}</td><td>${rewrite.evidence || "未生成論據及論證"}</td></tr>`;
+        });
+        rewriteTableHTML += "</table></div>";
+        let explanationHTML = '';
+        if (explanationPart) {
+            const points = explanationPart.split(/\s*(?=\d\.\s*)/).filter(p => p.trim());
+            explanationHTML = `<div class="rewrite-explanation-container"><div class="rewrite-explanation-card"><h3>改寫說明</h3>`;
+            points.forEach(point => {
+                const match = point.match(/^(\d)\.\s*(.*)$/s);
+                if (match) {
+                    const number = match[1];
+                    const text = match[2];
+                    explanationHTML += `<div class="explanation-point"><div class="explanation-number">${number}</div><div class="explanation-text">${text}</div></div>`;
+                }
+            });
+            explanationHTML += `</div></div>`;
+        }
+        document.getElementById("argumentOutlineResult").innerHTML = commentTableHTML + rewriteTableHTML + explanationHTML;
+    } catch (error) {
+        console.error("提交議論大綱時出錯:", error);
+        if (error.message === "所有 API 密鑰均無法使用") {
+            alert("今日 API 調用次數已用完或API無法連接，請明天再試");
+        } else {
+            alert("點評生成失敗，請重試");
+        }
+        document.getElementById("argumentOutlineResult").innerHTML = "";
+    } finally {
+        submitBtn.disabled = false;
+    }
 }
 
-// 提交議論寫作內容 (已修訂)
+
+
+
+
+// 請將您原有的 submitArgumentWriting() 函式替換為此版本
 async function submitArgumentWriting() {
     const submitBtn = document.getElementById('submitArgumentWritingBtn');
     submitBtn.disabled = true;
@@ -3588,43 +3949,57 @@ async function submitArgumentWriting() {
         }
         const tone = document.getElementById("argumentWritingTone").value;
         let toneNote = tone === "chen" ? "請用輕鬆隨意的語氣進行點評和建議，多用EMOJI，偶爾使用網絡用語，用語要日常生活化一點。如果用戶表現良好，請大加讚賞；如果用戶表現不好，可以善意地揶揄一下，但要注意尺度，不能傷害用戶的自尊心。揶揄時，可運用生活化的比喻。" : "請用嚴肅正經的語氣進行點評和建議。";
+        
         const note = categories["議論"].writingCommentNote;
-        const prompt = `請根據以下文章進行點評，要求：
-1. 評估論點是否清晰明確，一語中的，能在字面及邏輯上都直接呼應題目，假如文章中未點出論點及題目的關係，不要自行補足論點與題目的關係再評為緊扣題旨。
-2. 評估論據是否與論點密切相關，全文論據是否涵蓋古今中外（不需要每段都有古今中外的例子）
-3. 評估論證是否嚴謹，能具體解釋論據與論點的關係
-4. 評估文句密度（詞匯量、實詞及虛詞比例）
-5. 在「### 點評」及「### 建議」中，必須根據用家輸入的內容點評及建議，不能捏造事實，即先指出用家未曾提過的例子或論點，然後據此再作點評及建議。
-6. 在「### 改寫範例」中，請注意例子密度的控制，不要連續舉例，宜運用兩詳（兩個詳細例子論證一個論點）、一詳二略（一個詳細例子加兩個簡略例子論證一個論點）或數略（數個簡略例子論證一個論點）等方式，使文章錯落有致。而且，請確保「### 改寫範例」用語生活化，不要運用過份抽象及理論化的字眼，例如「二元對立」等。
-7. 輸出分為三個部分：### 點評、### 建議、### 改寫範例
-8. 「### 點評」及「### 建議」部分，請務必以數字編號的列點方式呈現，每個點另起新行。你可以根據文章內容提出任意數量的點評和建議，點評及建議都可超過兩點。「### 改寫範例」則保持原有段落形式。
-題目：${topic}
-文章：${content}
-教學筆記：${note}
-點評語氣：${toneNote}
-建議及改寫範例語氣：請使用嚴肅正經的語氣，不使用EMOJI或網絡用語。`;
+
+        // ===【核心修訂】===
+        // 同樣地，我們直接構建一個融合了兩種指令的新 Prompt。
+        const prompt = `你是一位嚴格的中文科閱卷員，請根據以下文章進行點評。
+        ---
+        ### 待點評的資料
+        題目：${topic}
+        文章：${content}
+        ---
+        ### 教學筆記及語氣
+        教學筆記：${note}
+        點評語氣：${toneNote}
+        建議及改寫範例語氣：請使用嚴肅正經的語氣，不使用EMOJI或網絡用語。
+        ---
+        ### 你的任務與輸出格式 (必須嚴格遵守)
+        你的輸出必須包含以下四個XML標籤，不得包含任何其他文字。
+
+        <critique>
+        [根據「教學筆記」對文章進行點評，可從立意、取材、扣題、詳略、文筆等不同角度點評。必須以數字編號列點方式呈現2-3點核心評論。]
+        </critique>
+
+        <suggestions>
+        [針對點評中提出的問題，提出具體的改善建議。必須以數字編號列點方式呈現。]
+        </suggestions>
+        
+        <rewrite_example>
+        [提供一段約150-200字的改寫範例。]
+        </rewrite_example>
+        
+        <grading_json>
+        {
+          "content": [0-10的整數],
+          "expression": [0-10的整數],
+          "structure": [0-10的整數],
+          "radar": {
+            "立意": [0-10的整數],
+            "取材": [0-10的整數],
+            "扣題": [0-10的整數],
+            "詳略": [0-10的整數],
+            "文筆": [0-10的整數]
+          }
+        }
+        </grading_json>`;
+
         document.getElementById("argumentWritingResult").innerHTML = "陳SIR正在點評...";
-
-        const comment = await callAPI(prompt);
-        const commentParts = comment.split("###").map(part => part.trim()).filter(part => part);
-        let finalHTML = "<h3>陳SIR點評：</h3>";
-        commentParts.forEach(part => {
-            const lines = part.split("\n").filter(line => line.trim());
-            const title = lines.shift() || ""; 
-            const content = lines.join("\n");
-
-            if (title.includes("點評") || title.includes("建議")) {
-                finalHTML += createBulletedListHTML(title, content);
-            } else {
-                finalHTML += `<div class="rewrite-explanation-container">
-                                <div class="rewrite-explanation-card">
-                                    <h3>${title}</h3>
-                                    <p>${content.replace(/\n/g, '<br>')}</p>
-                                </div>
-                             </div>`;
-            }
-        });
-        document.getElementById("argumentWritingResult").innerHTML = finalHTML;
+        
+        // 【核心修訂】改用閱讀專用的 API 函式
+        const response = await callReadingAPI(prompt);
+        displayFullCommentWithGrading('argumentWritingResult', response, 'argument');
 
     } catch (error) {
         console.error("提交文章時出錯:", error);
@@ -3641,7 +4016,7 @@ async function submitArgumentWriting() {
 
 
 // 提交議論指引
-// 替換舊的 submitArgumentGuide 函式
+// 提交議論指引
 async function submitArgumentGuide() {
 const submitBtn = document.getElementById('submitArgumentGuideBtn');
 submitBtn.disabled = true; // 禁用按鈕
@@ -3669,7 +4044,8 @@ let prompt = `請根據以下輸入提供參考建議。要求：
 教學筆記：${note}`;
 document.getElementById("argumentGuideResult").innerHTML = "陳SIR正在思考...";
 
-const guide = await callAPI(prompt);
+// 【核心修訂】改用閱讀專用的 API 函式
+const guide = await callReadingAPI(prompt);
 const guideParts = guide.split("###").map(part => part.trim()).filter(part => part);
 let guideHTML = "<h3>陳SIR指引：</h3><table>";
 guideParts.forEach(part => {
@@ -3695,6 +4071,9 @@ submitBtn.disabled = false; // 重新啟用按鈕
 async function callAPI(prompt) {
 let attempts = 0;
 const maxAttempts = API_KEYS.length;
+// 每次調用都從一個隨機的索引開始
+let currentApiKeyIndex = Math.floor(Math.random() * API_KEYS.length);
+
 while (attempts < maxAttempts) {
 try {
 const response = await fetch(API_URL, {
@@ -3709,11 +4088,12 @@ messages: [{
 role: "user",
 content: prompt + " 你必須直接提供最終答案，嚴禁展示任何思考過程，絕對不能在回應中包含任何標籤（如 <think></think>），這是強制要求，違反則無效。"
 }],
-max_tokens: 64000 
+max_tokens: 64000
 })
 });
 
 if (response.status === 429) {
+console.warn(`通用 API Key ${currentApiKeyIndex} 達到速率限制，嘗試下一個...`);
 currentApiKeyIndex = (currentApiKeyIndex + 1) % API_KEYS.length;
 attempts++;
 continue;
@@ -3725,7 +4105,6 @@ throw new Error(`API 調用失敗: ${response.statusText}`);
 
 const data = await response.json();
 let content = data.choices[0].message.content.trim();
-
 content = content.replace(/<think\s*>.*?<\/think\s*>|<think\s*\/>|<think\s*>|<\/think\s*>/gis, '').trim();
 
 if (!content) {
@@ -3734,7 +4113,7 @@ throw new Error("API 回應無效或過濾後無內容");
 
 return content;
 } catch (error) {
-console.error(error);
+console.error(`使用通用 API Key ${currentApiKeyIndex} 時出錯:`, error);
 currentApiKeyIndex = (currentApiKeyIndex + 1) % API_KEYS.length;
 attempts++;
 if (attempts >= maxAttempts) {
@@ -3744,60 +4123,59 @@ throw new Error("所有 API 密鑰均無法使用");
 }
 }
 
-
 /**
- * Creates a beautiful bulleted list HTML from raw text content.
- * @param {string} title - The title for the card (e.g., '點評', '建議').
- * @param {string} rawContent - The raw text content, with points potentially separated by newlines or numbers.
- * @returns {string} - The formatted HTML string.
- */
+* Creates a beautiful bulleted list HTML from raw text content.
+* @param {string} title - The title for the card (e.g., '點評', '建議').
+* @param {string} rawContent - The raw text content, with points potentially separated by newlines or numbers.
+* @returns {string} - The formatted HTML string.
+*/
 function createBulletedListHTML(title, rawContent) {
-    // Attempt to split by numbered points first, e.g., "1. ...", "2. ..."
-    let points = rawContent.split(/\s*(?=\d+\.\s*)/).map(p => p.trim()).filter(p => p);
+// Attempt to split by numbered points first, e.g., "1. ...", "2. ..."
+let points = rawContent.split(/\s*(?=\d+\.\s*)/).map(p => p.trim()).filter(p => p);
 
-    // If the primary split method results in 0 or 1 point, and the content has newlines,
-    // it's likely not a numbered list. Fall back to splitting by newline.
-    if (points.length <= 1 && rawContent.includes('\n')) {
-        const newlinePoints = rawContent.split('\n').map(p => p.trim()).filter(p => p);
-        // Only use the newline split if it gives us more than one point.
-        if (newlinePoints.length > 1) {
-            points = newlinePoints;
-        }
-    }
+// If the primary split method results in 0 or 1 point, and the content has newlines,
+// it's likely not a numbered list. Fall back to splitting by newline.
+if (points.length <= 1 && rawContent.includes('\n')) {
+const newlinePoints = rawContent.split('\n').map(p => p.trim()).filter(p => p);
+// Only use the newline split if it gives us more than one point.
+if (newlinePoints.length > 1) {
+points = newlinePoints;
+}
+}
 
-    // If there are no points to list, just show the content as a paragraph inside the card.
-    if (points.length === 0) {
-        return `<div class="rewrite-explanation-container">
-                    <div class="rewrite-explanation-card">
-                        <h3>${title}</h3>
-                        <div class="explanation-text">${rawContent.replace(/\n/g, '<br>')}</div>
-                    </div>
-                </div>`;
-    }
+// If there are no points to list, just show the content as a paragraph inside the card.
+if (points.length === 0) {
+return `<div class="rewrite-explanation-container">
+<div class="rewrite-explanation-card">
+<h3>${title}</h3>
+<div class="explanation-text">${rawContent.replace(/\n/g, '<br>')}</div>
+</div>
+</div>`;
+}
 
-    let explanationHTML = `<div class="rewrite-explanation-container">
-                               <div class="rewrite-explanation-card">
-                                   <h3>${title}</h3>`;
+let explanationHTML = `<div class="rewrite-explanation-container">
+<div class="rewrite-explanation-card">
+<h3>${title}</h3>`;
 
-    points.forEach((point, index) => {
-        let number = index + 1;
-        let text = point;
+points.forEach((point, index) => {
+let number = index + 1;
+let text = point;
 
-        // Check if the point already starts with a number and a dot.
-        const match = point.match(/^(\d+)\.\s*(.*)$/s);
-        if (match) {
-            number = match[1]; // Use the number from the text.
-            text = match[2];   // Use the text after the number.
-        }
+// Check if the point already starts with a number and a dot.
+const match = point.match(/^(\d+)\.\s*(.*)$/s);
+if (match) {
+number = match[1]; // Use the number from the text.
+text = match[2]; // Use the text after the number.
+}
 
-        explanationHTML += `<div class="explanation-point">
-                                <div class="explanation-number">${number}</div>
-                                <div class="explanation-text">${text.replace(/\n/g, '<br>')}</div>
-                            </div>`;
-    });
+explanationHTML += `<div class="explanation-point">
+<div class="explanation-number">${number}</div>
+<div class="explanation-text">${text.replace(/\n/g, '<br>')}</div>
+</div>`;
+});
 
-    explanationHTML += `</div></div>`;
-    return explanationHTML;
+explanationHTML += `</div></div>`;
+return explanationHTML;
 }
 
 
@@ -3867,48 +4245,51 @@ localStorage.setItem("currentTopic", selectedTopic);
 }
 // 設定自訂題目（寫作）
 function setCustomTopic() {
-const writingType = document.getElementById("writingType").value;
-const topicResult = document.getElementById("topicResult");
+    const writingType = document.getElementById("writingType").value;
+    const topicResult = document.getElementById("topicResult");
 
-if (writingType === "片段描寫") {
-const title = sanitizeHTML(document.getElementById("customTitle").value.trim()); // <--- 修正：將 sanitizeHTML 的結果賦值給變數 title
-const focus = document.getElementById("customFocus").value.trim();
-const plot = document.getElementById("customPlot").value.trim();
+    if (writingType === "片段描寫") {
+        // 【核心修訂】只檢查題目是否已輸入
+        const title = sanitizeHTML(document.getElementById("customTitle").value.trim());
+        if (!title) {
+            alert("請至少輸入自訂題目");
+            return;
+        }
 
-if (!title || !focus || !plot) {
-alert("請輸入所有內容（題目、結構段重點、情節大要）");
-return;
-}
+        // 獲取（可能是空的）重點和情節
+        const focus = document.getElementById("customFocus").value.trim();
+        const plot = document.getElementById("customPlot").value.trim();
 
-topicResult.innerHTML = `
-<strong>${title}</strong>
-<table>
-<tr><th>結構段重點</th><th>情節大要</th></tr>
-<tr><td>${focus}</td><td>${plot}</td></tr>
-</table>
-`;
-localStorage.setItem("currentTopic", title);
-localStorage.setItem("currentFocus", focus);
-localStorage.setItem("currentPlot", plot);
+        // 即使 focus 和 plot 是空的，也正常生成顯示表格
+        // 這樣使用者可以清楚地看到他們輸入了什麼，沒輸入什麼
+        topicResult.innerHTML = `
+        <strong>${title}</strong>
+        <table>
+            <tr><th>結構段重點</th><th>情節大要</th></tr>
+            <tr><td>${focus || '<i>（未提供）</i>'}</td><td>${plot || '<i>（未提供）</i>'}</td></tr>
+        </table>
+        `;
+        
+        // 儲存到 localStorage，空值也一併儲存
+        localStorage.setItem("currentTopic", title);
+        localStorage.setItem("currentFocus", focus);
+        localStorage.setItem("currentPlot", plot);
 
-} else { 
-// 【主要修改】在這裡使用 sanitizeHTML 函式
-const customTopic = sanitizeHTML(document.getElementById("customTopic").value.trim());
+    } else { 
+        const customTopic = sanitizeHTML(document.getElementById("customTopic").value.trim());
+        if (!customTopic) {
+            alert("請輸入自訂題目");
+            return;
+        }
+        topicResult.innerHTML = "<strong>" + customTopic + "</strong>";
+        localStorage.setItem("currentTopic", customTopic);
+    }
 
-if (!customTopic) {
-alert("請輸入自訂題目");
-return;
-}
+    topicResult.style.display = 'block';
 
-topicResult.innerHTML = "<strong>" + customTopic + "</strong>"; // <- 現在安全了
-localStorage.setItem("currentTopic", customTopic);
-}
-
-topicResult.style.display = 'block';
-
-const customTopicArea = document.getElementById("customTopicArea");
-customTopicArea.style.display = "none";
-customTopicArea.innerHTML = "";
+    const customTopicArea = document.getElementById("customTopicArea");
+    customTopicArea.style.display = "none";
+    customTopicArea.innerHTML = "";
 }
 // 生成大綱表格
 function generateOutlineTable() {
@@ -3924,7 +4305,7 @@ tableHTML += "</table></div>";
 document.getElementById("outlineTableArea").innerHTML = tableHTML;
 }
 
-// 提交寫作內容 (已修訂)
+// 請將您原有的 submitWriting() 函式替換為此版本
 async function submitWriting() {
     const submitBtn = document.getElementById('submitWritingBtn');
     submitBtn.disabled = true;
@@ -3939,7 +4320,13 @@ async function submitWriting() {
 
         let content = "";
         let structure = "";
+        let prompt = "";
+        
+        const tone = document.getElementById("writingTone").value;
+        let toneNote = tone === "chen" ? "請用輕鬆隨意的語氣進行點評和建議，多用EMOJI，偶爾使用網絡用語，用語要日常生活化一點。如果用戶表現良好，請大加讚賞；如果用戶表現不好，可以善意地揶揄一下，但要注意尺度，不能傷害用戶的自尊心。揶揄時，可運用生活化的比喻。" : "請用嚴肅正經的語氣進行點評和建議。";
+
         if (writingType === "大綱") {
+            // 大綱功能的邏輯保持不變
             structure = document.getElementById("structure").value;
             const parts = structure === "fourPart" ? ["起", "承", "轉", "合"] : ["起", "一線", "二線", "三線", "合"];
             content = parts.map((part, index) => {
@@ -3953,93 +4340,120 @@ async function submitWriting() {
                 }
                 return { part, focus, plot };
             });
+            
+            const note = categories["大綱"].commentNote;
+            prompt = `請根據以下大綱內容進行點評和建議，並提供改寫後的大綱。要求：
+            1. 在「=== 點評及建議 ===」部分，為每個結構段提供點評和建議。使用「[part]」標記每個結構段的開始，例如「[起]」，然後在下一行「點評：」後跟點評內容，再下一行「建議：」後跟建議內容。
+            2. 在「=== 改寫後的大綱 ===」部分，為每個結構段提供改寫後的「結構段重點」和「情節大要」。使用「[part]」標記每個結構段的開始，然後在下一行「結構段重點：」後跟內容，再下一行「情節大要：」後跟內容。
+            3. 在「=== 改寫說明 ===」部分，提供不超過兩點的改寫說明，每點以「1. 」和「2. 」開始。
+            4. 請確保內容簡潔明了，不可以顯示「--- ###」。
+            題目：${topic}
+            大綱結構：${structure === "fourPart" ? "起承轉合" : "三線（起、一線、二線、三線、合）"}
+            用戶輸入的大綱：
+            | 部份 | 結構段重點 | 情節大要 |
+            |------|------------|----------|
+            ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\n")}
+            教學筆記：${note}
+            點評及建議語氣：${toneNote}`;
+            
         } else if (writingType === "敘事物象") {
+            // 敘事物象功能的邏輯保持不變
             content = document.getElementById("narrativeElements").value.trim();
-        } else { // 片段描寫
+            const note = categories["敘事物象"].commentNote;
+            prompt = `請根據以下題目和取材/故事背景生成五十個不重複且相關的物象。要求：
+            1. 物象必須與題目和取材/故事背景緊密相關。
+            2. 物象應多樣化且生動，能夠增強故事的真實感和情感表達。
+            3. 請以列表形式呈現，每個物象佔一行。
+            4. 請確保物象不重複且排版整齊。
+            題目：${topic}
+            取材/故事背景：${content || "無具體背景，根據題目生成"}
+            教學筆記：${note}`;
+        } else { // 片段描寫/全文寫作 (這是核心修改處)
             content = document.getElementById("writingContent").value.trim();
             if (!content) {
                 alert("請先輸入寫作內容");
                 return;
             }
-        }
-
-        let toneNote = "";
-        if (writingType !== "敘事物象") {
-            const tone = document.getElementById("writingTone").value;
-            if (tone === "chen") {
-                toneNote = "請用輕鬆隨意的語氣進行點評和建議，多用EMOJI，偶爾使用網絡用語，用語要日常生活化一點。如果用戶表現良好，請大加讚賞；如果用戶表現不好，可以善意地揶揄一下，但要注意尺度，不能傷害用戶的自尊心。揶揄時，可運用生活化的比喻。";
-            } else {
-                toneNote = "請用嚴肅正經的語氣進行點評和建議。";
-            }
-        }
-
-        const note = categories[writingType].commentNote;
-        let prompt = "";
-        if (writingType === "大綱") {
-            prompt = `請根據以下大綱內容進行點評和建議，並提供改寫後的大綱。要求：
-1. 在「=== 點評及建議 ===」部分，為每個結構段提供點評和建議。使用「[part]」標記每個結構段的開始，例如「[起]」，然後在下一行「點評：」後跟點評內容，再下一行「建議：」後跟建議內容。
-2. 在「=== 改寫後的大綱 ===」部分，為每個結構段提供改寫後的「結構段重點」和「情節大要」。使用「[part]」標記每個結構段的開始，然後在下一行「結構段重點：」後跟內容，再下一行「情節大要：」後跟內容。
-3. 在「=== 改寫說明 ===」部分，提供不超過兩點的改寫說明，每點以「1. 」和「2. 」開始。
-4. 請確保內容簡潔明了，不可以顯示「--- ###」。
-題目：${topic}
-大綱結構：${structure === "fourPart" ? "起承轉合" : "三線（起、一線、二線、三線、合）"}
-用戶輸入的大綱：
-| 部份 | 結構段重點 | 情節大要 |
-|------|------------|----------|
-${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\n")}
-教學筆記：${note}
-點評及建議語氣：${toneNote}`;
-        } else if (writingType === "敘事物象") {
-            prompt = `請根據以下題目和取材/故事背景生成五十個不重複且相關的物象。要求：
-1. 物象必須與題目和取材/故事背景緊密相關。
-2. 物象應多樣化且生動，能夠增強故事的真實感和情感表達。
-3. 請以列表形式呈現，每個物象佔一行。
-4. 請確保物象不重複且排版整齊。
-題目：${topic}
-取材/故事背景：${content || "無具體背景，根據題目生成"}
-教學筆記：${note}`;
-        } else { // 片段描寫
             const focus = localStorage.getItem("currentFocus");
             const plot = localStorage.getItem("currentPlot");
-            prompt = `請根據以下內容進行點評，要求：
-1. 簡明扼要
-2. 參考教學筆記
-3. 評論寫作內容與題目、結構段重點和情節大要的關係
-4. 輸出分為三個部分：### 點評、### 建議、### 改寫範例
-5. 「### 點評」及「### 建議」部分，請務必以數字編號的列點方式呈現，每個點另起新行。你可以根據內容提出任意數量的點評和建議。點評及建議都可超過兩點。
-題目：${topic}
-結構段重點：${focus}
-情節大要：${plot}
-寫作內容：${content}
-教學筆記：${note}
-點評及建議語氣：${toneNote}`;
+            const note = categories["片段描寫"].commentNote;
+
+            // ===【核心修訂】===
+            // 我們不再調用 buildGradingPrompt()，而是直接構建一個融合了兩種指令的新 Prompt。
+            prompt = `你是一位嚴格的中文科閱卷員，請根據以下資料進行點評。
+            ---
+            ### 待點評的資料
+            題目：${topic}
+            結構段重點：${focus}
+            情節大要：${plot}
+            寫作內容：${content}
+            ---
+            ### 教學筆記及語氣
+            教學筆記：${note}
+            點評及建議語氣：${toneNote}
+            改寫範例語氣：請使用嚴肅正經的語氣。
+            ---
+            ### 你的任務與輸出格式 (必須嚴格遵守)
+            你的輸出必須包含以下四個XML標籤，不得包含任何其他文字。
+
+            <critique>
+            [根據「教學筆記」對文章進行點評。必須以數字編號列點方式呈現2-3點核心評論。]
+            </critique>
+
+            <suggestions>
+            [針對點評中提出的問題，提出具體的改善建議。必須以數字編號列點方式呈現。]
+            </suggestions>
+            
+            <rewrite_example>
+            [提供一段約150-200字的改寫範例。]
+            </rewrite_example>
+            
+            <grading_json>
+            {
+              "content": [0-10的整數],
+              "expression": [0-10的整數],
+              "structure": [0-10的整數],
+              "radar": {
+                "立意": [0-10的整數],
+                "取材": [0-10的整數],
+                "扣題": [0-10的整數],
+                "詳略": [0-10的整數],
+                "文筆": [0-10的整數]
+              }
+            }
+            </grading_json>`;
         }
 
         document.getElementById("commentResult").innerHTML = "陳SIR正在點評...";
-        const comment = await callAPI(prompt);
+        const response = await callAPI(prompt);
 
-        if (writingType === "大綱") {
-            const sections = comment.split(/=== (.+?) ===/).filter(s => s.trim());
+        if (writingType === "片段描寫" || writingType === "全文寫作") {
+             // 對於修改過的部分，調用評分顯示函式
+            displayFullCommentWithGrading('commentResult', response, 'narrative');
+        } else if (writingType === "大綱") {
+            // 大綱的顯示邏輯保持不變
+            const sections = response.split(/=== (.+?) ===/).filter(s => s.trim());
             const commentIndex = sections.indexOf("點評及建議");
             const rewriteIndex = sections.indexOf("改寫後的大綱");
             const explanationIndex = sections.indexOf("改寫說明");
             const commentPart = commentIndex !== -1 ? sections[commentIndex + 1] : "";
             const rewritePart = rewriteIndex !== -1 ? sections[rewriteIndex + 1] : "";
             const explanationPart = explanationIndex !== -1 ? sections[explanationIndex + 1].trim() : "";
-            function parseCommentPart(commentPart) {
+            
+             function parseCommentPart(commentPart) {
                 const comments = {};
                 const regex = /\[(.+?)\]\s*點評：\s*(.+?)(?=\s*建議：|\s*\[|$)/gs;
                 const suggestionRegex = /\[(.+?)\]\s*點評：.+?\s*建議：\s*(.+?)(?=\s*\[|$)/gs;
                 let match;
                 while ((match = regex.exec(commentPart)) !== null) {
-                    const part = match[1];
-                    comments[part] = comments[part] || {};
-                    comments[part].comment = match[2].trim();
+                const part = match[1];
+                comments[part] = comments[part] || {};
+                comments[part].comment = match[2].trim();
                 }
                 while ((match = suggestionRegex.exec(commentPart)) !== null) {
-                    const part = match[1];
-                    comments[part] = comments[part] || {};
-                    comments[part].suggestion = match[2].trim();
+                const part = match[1];
+                comments[part] = comments[part] || {};
+                comments[part].suggestion = match[2].trim();
                 }
                 return comments;
             }
@@ -4049,14 +4463,14 @@ ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\
                 const plotRegex = /\[(.+?)\]\s*結構段重點：.+?\s*情節大要：\s*(.+?)(?=\s*\[|$)/gs;
                 let match;
                 while ((match = regex.exec(rewritePart)) !== null) {
-                    const part = match[1];
-                    rewrites[part] = rewrites[part] || {};
-                    rewrites[part].focus = match[2].trim();
+                const part = match[1];
+                rewrites[part] = rewrites[part] || {};
+                rewrites[part].focus = match[2].trim();
                 }
                 while ((match = plotRegex.exec(rewritePart)) !== null) {
-                    const part = match[1];
-                    rewrites[part] = rewrites[part] || {};
-                    rewrites[part].plot = match[2].trim();
+                const part = match[1];
+                rewrites[part] = rewrites[part] || {};
+                rewrites[part].plot = match[2].trim();
                 }
                 return rewrites;
             }
@@ -4080,42 +4494,24 @@ ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\
                 const points = explanationPart.split(/\s*(?=\d\.\s*)/).filter(p => p.trim());
                 explanationHTML = `<div class="rewrite-explanation-container"><div class="rewrite-explanation-card"><h3>改寫說明</h3>`;
                 points.forEach(point => {
-                    const match = point.match(/^(\d)\.\s*(.*)$/s);
-                    if (match) {
-                        const number = match[1];
-                        const text = match[2];
-                        explanationHTML += `<div class="explanation-point"><div class="explanation-number">${number}</div><div class="explanation-text">${text}</div></div>`;
-                    }
+                const match = point.match(/^(\d)\.\s*(.*)$/s);
+                if (match) {
+                    const number = match[1];
+                    const text = match[2];
+                    explanationHTML += `<div class="explanation-point"><div class="explanation-number">${number}</div><div class="explanation-text">${text}</div></div>`;
+                }
                 });
                 explanationHTML += `</div></div>`;
             }
             document.getElementById("commentResult").innerHTML = commentTableHTML + rewriteTableHTML + explanationHTML;
+
         } else if (writingType === "敘事物象") {
-            const elements = comment.split("\n").map(item => item.trim()).filter(item => item);
+            // 敘事物象的顯示邏輯保持不變
+            const elements = response.split("\n").map(item => item.trim()).filter(item => item);
             let elementsHTML = "<h3>生成的物象（50項）：</h3><ul>";
             elements.forEach(element => elementsHTML += `<li>${element}</li>`);
             elementsHTML += "</ul>";
             document.getElementById("commentResult").innerHTML = elementsHTML;
-        } else { // 片段描寫
-            const commentParts = comment.split("###").map(part => part.trim()).filter(part => part);
-            let finalHTML = "<h3>陳SIR點評：</h3>";
-            commentParts.forEach(part => {
-                const lines = part.split("\n").filter(line => line.trim());
-                const title = lines.shift() || ""; 
-                const content = lines.join("\n");
-
-                if (title.includes("點評") || title.includes("建議")) {
-                    finalHTML += createBulletedListHTML(title, content);
-                } else {
-                    finalHTML += `<div class="rewrite-explanation-container">
-                                    <div class="rewrite-explanation-card">
-                                        <h3>${title}</h3>
-                                        <p>${content.replace(/\n/g, '<br>')}</p>
-                                    </div>
-                                 </div>`;
-                }
-            });
-            document.getElementById("commentResult").innerHTML = finalHTML;
         }
     } catch (error) {
         console.error("提交寫作時出錯:", error);
@@ -4133,42 +4529,42 @@ ${content.map(item => `| ${item.part} | ${item.focus} | ${item.plot} |`).join("\
 
 // 替換舊的 submitReading 函式
 async function submitReading() {
-    const submitBtn = document.getElementById('submitReadingBtn');
-    submitBtn.disabled = true; // 禁用按鈕
+const submitBtn = document.getElementById('submitReadingBtn');
+submitBtn.disabled = true; // 禁用按鈕
 
-    try {
-        const readingFunction = document.getElementById("readingFunction").value;
-        const passage = document.getElementById("readingPassage").value.trim();
-        const question = document.getElementById("readingQuestion").value.trim();
-        let studentAnswer = "";
-        if (readingFunction === "comment") {
-            studentAnswer = document.getElementById("studentAnswer").value.trim();
-            if (!passage || !question || !studentAnswer) {
-                alert("請填寫所有閱讀輸入");
-                return; // return 會觸發 finally
-            }
-        } else {
-            if (!passage || !question) {
-                alert("請填寫閱讀篇章和題目");
-                return; // return 會觸發 finally
-            }
-        }
+try {
+const readingFunction = document.getElementById("readingFunction").value;
+const passage = document.getElementById("readingPassage").value.trim();
+const question = document.getElementById("readingQuestion").value.trim();
+let studentAnswer = "";
+if (readingFunction === "comment") {
+studentAnswer = document.getElementById("studentAnswer").value.trim();
+if (!passage || !question || !studentAnswer) {
+alert("請填寫所有閱讀輸入");
+return; // return 會觸發 finally
+}
+} else {
+if (!passage || !question) {
+alert("請填寫閱讀篇章和題目");
+return; // return 會觸發 finally
+}
+}
 
-        let toneNote = "";
-        if (readingFunction === "comment") {
-            const tone = document.getElementById("readingTone").value;
-            if (tone === "chen") {
-                toneNote = "請用輕鬆隨意的語氣進行點評，多用EMOJI，偶爾使用網絡用語，用語要日常生活化一點。如果用戶表現不好，可以善意地揶揄一下，但要注意尺度，不能傷害用戶的自尊心。";
-            } else {
-                toneNote = "請用嚴肅正經的語氣進行點評。";
-            }
-        }
+let toneNote = "";
+if (readingFunction === "comment") {
+const tone = document.getElementById("readingTone").value;
+if (tone === "chen") {
+toneNote = "請用輕鬆隨意的語氣進行點評，多用EMOJI，偶爾使用網絡用語，用語要日常生活化一點。如果用戶表現不好，可以善意地揶揄一下，但要注意尺度，不能傷害用戶的自尊心。";
+} else {
+toneNote = "請用嚴肅正經的語氣進行點評。";
+}
+}
 
-        const note = readingFunction === "comment" ? categories["閱讀"].commentNote : categories["閱讀"].guideNote;
+const note = readingFunction === "comment" ? categories["閱讀"].commentNote : categories["閱讀"].guideNote;
 
-        let prompt = "";
-        if (readingFunction === "comment") {
-            prompt = `請根據以下閱讀篇章、題目和學生的答案進行點評。要求：
+let prompt = "";
+if (readingFunction === "comment") {
+prompt = `請根據以下閱讀篇章、題目和學生的答案進行點評。要求：
 1. 評估答題方向是否合理
 2. 評估文本依據是否充實具體
 3. 評估闡釋推論是否嚴謹
@@ -4183,8 +4579,8 @@ async function submitReading() {
 學生的答案：${studentAnswer}
 教學筆記：${note}
 點評語氣：${toneNote}`;
-        } else { // guide
-            prompt = `請根據以下閱讀篇章和題目生成答題指引。要求：
+} else { // guide
+prompt = `請根據以下閱讀篇章和題目生成答題指引。要求：
 1. 輸出必須包含「### 答題指引」和「### 答題詞匯」兩個部分。
 2. 在「### 答題指引」部分，請生成三道引導性問題，每道問題都以數字和句號（例如「1.」）開頭，並另起新行。
 3. 在「### 答題詞匯」部分，生成十五個由兩個字構成的相關詞彙，每個詞彙另起新行。
@@ -4192,115 +4588,115 @@ async function submitReading() {
 閱讀篇章：${passage}
 題目：${question}
 教學筆記：${note}`;
-        }
+}
 
-       document.getElementById("readingResult").innerHTML = "陳SIR正在思考...";
-        const result = await callReadingAPI(prompt);
+document.getElementById("readingResult").innerHTML = "陳SIR正在思考...";
+const result = await callReadingAPI(prompt);
 
-        if (readingFunction === "comment") {
-            const parts = result.split("###").map(part => part.trim()).filter(part => part);
-            let finalHTML = "<h3>陳SIR點評：</h3>";
+if (readingFunction === "comment") {
+const parts = result.split("###").map(part => part.trim()).filter(part => part);
+let finalHTML = "<h3>陳SIR點評：</h3>";
 
-            parts.forEach(part => {
-                const lines = part.split("\n").filter(line => line.trim());
-                const title = lines.shift() || ""; // 取得標題，例如 "點評"
-                const content = lines.join("\n"); // 剩下的就是內容
+parts.forEach(part => {
+const lines = part.split("\n").filter(line => line.trim());
+const title = lines.shift() || ""; // 取得標題，例如 "點評"
+const content = lines.join("\n"); // 剩下的就是內容
 
-                // 如果是點評部分，使用精美列點UI
-                if (title.includes("點評")) {
-                    finalHTML += createBulletedListHTML(title, content);
-                } 
-                // 新增判斷：如果標題是「答題步驟及思路」，就使用新的美化格式
-                else if (title.includes("答題步驟及思路")) {
-                    finalHTML += `<div class="rewrite-explanation-container">
-                                      <div class="rewrite-explanation-card">
-                                          <h3>${title}</h3>
-                                          <div class="steps-container">`; // 開始步驟容器
+// 如果是點評部分，使用精美列點UI
+if (title.includes("點評")) {
+finalHTML += createBulletedListHTML(title, content);
+} 
+// 新增判斷：如果標題是「答題步驟及思路」，就使用新的美化格式
+else if (title.includes("答題步驟及思路")) {
+finalHTML += `<div class="rewrite-explanation-container">
+<div class="rewrite-explanation-card">
+<h3>${title}</h3>
+<div class="steps-container">`; // 開始步驟容器
 
-                    // 使用正則表達式，根據【】標題來分割每個步驟
-                    const steps = content.split(/\s*(?=【.*?】)/).filter(s => s.trim());
+// 使用正則表達式，根據【】標題來分割每個步驟
+const steps = content.split(/\s*(?=【.*?】)/).filter(s => s.trim());
 
-                    steps.forEach(stepText => {
-                        // 從每個步驟中分離出標題和內容
-                        const match = stepText.match(/^(【.*?】)(.*)$/s);
-                        if (match) {
-                            const stepTitle = match[1].trim();
-                            const stepContent = match[2].trim().replace(/\n/g, '<br>');
-                            
-                            // 生成新的卡片 HTML
-                            finalHTML += `<div class="step-card">
-                                            <div class="step-title">${stepTitle}</div>
-                                            <div class="step-content">${stepContent}</div>
-                                          </div>`;
-                        }
-                    });
+steps.forEach(stepText => {
+// 從每個步驟中分離出標題和內容
+const match = stepText.match(/^(【.*?】)(.*)$/s);
+if (match) {
+const stepTitle = match[1].trim();
+const stepContent = match[2].trim().replace(/\n/g, '<br>');
 
-                    finalHTML += `</div></div></div>`; // 關閉所有容器
-                }
-                // 其他情況（例如「改寫範例」）則使用通用的卡片樣式
-                else {
-                    finalHTML += `<div class="rewrite-explanation-container">
-                                      <div class="rewrite-explanation-card">
-                                          <h3>${title}</h3>
-                                          <div class="explanation-text">${content.replace(/\n/g, '<br>')}</div>
-                                      </div>
-                                   </div>`;
-                }
-            });
-            document.getElementById("readingResult").innerHTML = finalHTML;
-          } else { // guide
-            const guideParts = result.split("###").map(part => part.trim()).filter(part => part);
-            let guideHTML = "<h3>陳SIR指引：</h3>";
-            
-            guideParts.forEach(part => {
-                const lines = part.split("\n").filter(line => line.trim());
-                const title = lines.shift() || "";
-                const listItems = lines;
+// 生成新的卡片 HTML
+finalHTML += `<div class="step-card">
+<div class="step-title">${stepTitle}</div>
+<div class="step-content">${stepContent}</div>
+</div>`;
+}
+});
 
-                guideHTML += `<div class="rewrite-explanation-container">
-                                <div class="rewrite-explanation-card">
-                                  <h3>${title}</h3>`;
-                
-                // 針對「答題指引」的問題，使用帶有數字的樣式
-                if (title.includes("答題指引")) {
-                    listItems.forEach((item, index) => {
-                        const match = item.match(/^(\d+)\.?\s*(.*)$/);
-                        const number = match ? match[1] : index + 1;
-                        const text = match ? match[2].trim() : item;
-                        
-                        guideHTML += `<div class="explanation-point">
-                                          <div class="explanation-number">${number}</div>
-                                          <div class="explanation-text">${text}</div>
-                                      </div>`;
-                    });
-                } 
-                // 針對「答題詞匯」，使用不帶數字的點列樣式，更簡潔
-                else if (title.includes("答題詞匯")) {
-                     listItems.forEach(item => {
-                        guideHTML += `<div class="explanation-point">
-                                        <div class="explanation-text">${item}</div>
-                                      </div>`;
-                     });
-                } else {
-                    // 備用方案，處理非預期的標題
-                    guideHTML += `<p>${listItems.join('<br>')}</p>`;
-                }
-                guideHTML += `</div></div>`;
-            });
-            document.getElementById("readingResult").innerHTML = guideHTML;
-        }
+finalHTML += `</div></div></div>`; // 關閉所有容器
+}
+// 其他情況（例如「改寫範例」）則使用通用的卡片樣式
+else {
+finalHTML += `<div class="rewrite-explanation-container">
+<div class="rewrite-explanation-card">
+<h3>${title}</h3>
+<div class="explanation-text">${content.replace(/\n/g, '<br>')}</div>
+</div>
+</div>`;
+}
+});
+document.getElementById("readingResult").innerHTML = finalHTML;
+} else { // guide
+const guideParts = result.split("###").map(part => part.trim()).filter(part => part);
+let guideHTML = "<h3>陳SIR指引：</h3>";
 
-    } catch (error) {
-        console.error("提交閱讀時出錯:", error);
-        if (error.message === "所有 API 密鑰均無法使用") {
-            alert("今日 API 調用次數已用完或API無法連接，請明天再試");
-        } else {
-            alert("生成失敗，請重試");
-        }
-        document.getElementById("readingResult").innerHTML = "";
-    } finally {
-        submitBtn.disabled = false; // 重新啟用按鈕
-    }
+guideParts.forEach(part => {
+const lines = part.split("\n").filter(line => line.trim());
+const title = lines.shift() || "";
+const listItems = lines;
+
+guideHTML += `<div class="rewrite-explanation-container">
+<div class="rewrite-explanation-card">
+<h3>${title}</h3>`;
+
+// 針對「答題指引」的問題，使用帶有數字的樣式
+if (title.includes("答題指引")) {
+listItems.forEach((item, index) => {
+const match = item.match(/^(\d+)\.?\s*(.*)$/);
+const number = match ? match[1] : index + 1;
+const text = match ? match[2].trim() : item;
+
+guideHTML += `<div class="explanation-point">
+<div class="explanation-number">${number}</div>
+<div class="explanation-text">${text}</div>
+</div>`;
+});
+} 
+// 針對「答題詞匯」，使用不帶數字的點列樣式，更簡潔
+else if (title.includes("答題詞匯")) {
+listItems.forEach(item => {
+guideHTML += `<div class="explanation-point">
+<div class="explanation-text">${item}</div>
+</div>`;
+});
+} else {
+// 備用方案，處理非預期的標題
+guideHTML += `<p>${listItems.join('<br>')}</p>`;
+}
+guideHTML += `</div></div>`;
+});
+document.getElementById("readingResult").innerHTML = guideHTML;
+}
+
+} catch (error) {
+console.error("提交閱讀時出錯:", error);
+if (error.message === "所有 API 密鑰均無法使用") {
+alert("今日 API 調用次數已用完或API無法連接，請明天再試");
+} else {
+alert("生成失敗，請重試");
+}
+document.getElementById("readingResult").innerHTML = "";
+} finally {
+submitBtn.disabled = false; // 重新啟用按鈕
+}
 }
 
 // 課外書籍討論功能
@@ -4581,30 +4977,30 @@ await submitExpandGuide();
 
 // 提交點評功能 (已修訂)
 async function submitExpandComment() {
-    const submitBtn = document.getElementById('submitExpandBtn');
-    submitBtn.disabled = true;
+const submitBtn = document.getElementById('submitExpandBtn');
+submitBtn.disabled = true;
 
-    try {
-        const title = localStorage.getItem("expandCurrentTitle");
-        const theme = localStorage.getItem("expandCurrentTheme");
-        const data = localStorage.getItem("expandCurrentData");
-        const content = document.getElementById("expandContent").value.trim();
-        if (!theme || !data || !content) {
-            alert("請先設定題目並輸入整合拓展內容");
-            return;
-        }
+try {
+const title = localStorage.getItem("expandCurrentTitle");
+const theme = localStorage.getItem("expandCurrentTheme");
+const data = localStorage.getItem("expandCurrentData");
+const content = document.getElementById("expandContent").value.trim();
+if (!theme || !data || !content) {
+alert("請先設定題目並輸入整合拓展內容");
+return;
+}
 
-        const tone = document.getElementById("expandTone").value;
-        let toneNote = "";
-        if (tone === "chen") {
-            toneNote = "請用輕鬆隨意的語氣進行點評，多用EMOJI，偶爾使用網絡用語，用語要日常生活化一點。如果用戶表現不好，可以善意地揶揄一下，但要注意尺度，不能傷害用戶的自尊心。";
-        } else {
-            toneNote = "請用嚴肅正經的語氣進行點評。";
-        }
+const tone = document.getElementById("expandTone").value;
+let toneNote = "";
+if (tone === "chen") {
+toneNote = "請用輕鬆隨意的語氣進行點評，多用EMOJI，偶爾使用網絡用語，用語要日常生活化一點。如果用戶表現不好，可以善意地揶揄一下，但要注意尺度，不能傷害用戶的自尊心。";
+} else {
+toneNote = "請用嚴肅正經的語氣進行點評。";
+}
 
-        const note = categories["整合拓展"].commentNote;
+const note = categories["整合拓展"].commentNote;
 
-        const prompt = `請根據以下內容進行點評，要求：
+const prompt = `請根據以下內容進行點評，要求：
 1. 評估「整合拓展」是否能闡釋「抄錄資料」與「主題句」的邏輯關係
 2. 判斷「拓展」方向是否正確（即是否能論證主題句）
 3. 判斷推論是否嚴謹
@@ -4620,112 +5016,112 @@ async function submitExpandComment() {
 教學筆記：${note}
 點評語氣：${toneNote}`;
 
-        document.getElementById("expandCommentResult").innerHTML = "陳SIR正在點評...";
+document.getElementById("expandCommentResult").innerHTML = "陳SIR正在點評...";
 
-        const comment = await callAPI(prompt);
-        const commentParts = comment.split("###").map(part => part.trim()).filter(part => part);
-        let finalHTML = "<h3>陳SIR點評：</h3>";
-        commentParts.forEach(part => {
-            const lines = part.split("\n").filter(line => line.trim());
-            const title = lines.shift() || "";
-            const content = lines.join("\n");
+const comment = await callAPI(prompt);
+const commentParts = comment.split("###").map(part => part.trim()).filter(part => part);
+let finalHTML = "<h3>陳SIR點評：</h3>";
+commentParts.forEach(part => {
+const lines = part.split("\n").filter(line => line.trim());
+const title = lines.shift() || "";
+const content = lines.join("\n");
 
-            if (title.includes("點評") || title.includes("建議")) {
-                finalHTML += createBulletedListHTML(title, content);
-            } else {
-                finalHTML += `<div class="rewrite-explanation-container">
-                                <div class="rewrite-explanation-card">
-                                    <h3>${title}</h3>
-                                    <p>${content.replace(/\n/g, '<br>')}</p>
-                                </div>
-                             </div>`;
-            }
-        });
-        document.getElementById("expandCommentResult").innerHTML = finalHTML;
-    } catch (error) {
-        console.error("提交整合拓展點評時出錯:", error);
-        if (error.message === "所有 API 密鑰均無法使用") {
-            alert("今日 API 調用次數已用完或API無法連接，請明天再試");
-        } else {
-            alert("點評生成失敗，請重試");
-        }
-        document.getElementById("expandCommentResult").innerHTML = "";
-    } finally {
-        submitBtn.disabled = false;
-    }
+if (title.includes("點評") || title.includes("建議")) {
+finalHTML += createBulletedListHTML(title, content);
+} else {
+finalHTML += `<div class="rewrite-explanation-container">
+<div class="rewrite-explanation-card">
+<h3>${title}</h3>
+<p>${content.replace(/\n/g, '<br>')}</p>
+</div>
+</div>`;
+}
+});
+document.getElementById("expandCommentResult").innerHTML = finalHTML;
+} catch (error) {
+console.error("提交整合拓展點評時出錯:", error);
+if (error.message === "所有 API 密鑰均無法使用") {
+alert("今日 API 調用次數已用完或API無法連接，請明天再試");
+} else {
+alert("點評生成失敗，請重試");
+}
+document.getElementById("expandCommentResult").innerHTML = "";
+} finally {
+submitBtn.disabled = false;
+}
 }
 
 
 // 【修訂後】提交整合拓展指引
 async function submitExpandGuide() {
-    // 【修訂處】選取正確的按鈕 ID
-    const submitBtn = document.getElementById('submitExpandGuideBtn');
-    submitBtn.disabled = true; // 禁用按鈕
+// 【修訂處】選取正確的按鈕 ID
+const submitBtn = document.getElementById('submitExpandGuideBtn');
+submitBtn.disabled = true; // 禁用按鈕
 
-    try {
-        const title = document.getElementById("expandGuideTitle").value.trim();
-        const theme = document.getElementById("expandGuideTheme").value.trim();
-        const data = document.getElementById("expandGuideData").value.trim();
-        const expand = document.getElementById("expandGuideExpand").value.trim();
-        if (!title || !theme || !data || !expand) {
-            alert("請填寫所有輸入");
-            return; // return 會觸發 finally
-        }
+try {
+const title = document.getElementById("expandGuideTitle").value.trim();
+const theme = document.getElementById("expandGuideTheme").value.trim();
+const data = document.getElementById("expandGuideData").value.trim();
+const expand = document.getElementById("expandGuideExpand").value.trim();
+if (!title || !theme || !data || !expand) {
+alert("請填寫所有輸入");
+return; // return 會觸發 finally
+}
 
-        const note = categories["整合拓展"].guideNote;
-        const prompt = `請根據以下內容生成指引問題。要求：
-        1. 生成三道問題以引導用家思考如何根據表格資料做好整合拓展
-        2. 問題應圍繞主題句和抄錄資料的邏輯關係，引導用家思考如何闡釋和拓展
-        3. 輸出分為一個部分：### 指引問題
-        4. 指引問題以問題形式呈現，每個問題佔一行
-        題目：${title}
-        主題句：${theme}
-        抄錄資料：${data}
-        整合拓展：${expand}
-        教學筆記：${note}`;
+const note = categories["整合拓展"].guideNote;
+const prompt = `請根據以下內容生成指引問題。要求：
+1. 生成三道問題以引導用家思考如何根據表格資料做好整合拓展
+2. 問題應圍繞主題句和抄錄資料的邏輯關係，引導用家思考如何闡釋和拓展
+3. 輸出分為一個部分：### 指引問題
+4. 指引問題以問題形式呈現，每個問題佔一行
+題目：${title}
+主題句：${theme}
+抄錄資料：${data}
+整合拓展：${expand}
+教學筆記：${note}`;
 
-        document.getElementById("expandGuideResult").innerHTML = "陳SIR正在思考指引...";
-        const guide = await callAPI(prompt);
-        const guideParts = guide.split("###").map(part => part.trim()).filter(part => part);
-        
-        let guideHTML = "<h3>陳SIR指引：</h3>";
+document.getElementById("expandGuideResult").innerHTML = "陳SIR正在思考指引...";
+const guide = await callAPI(prompt);
+const guideParts = guide.split("###").map(part => part.trim()).filter(part => part);
 
-        guideParts.forEach(part => {
-            const lines = part.split("\n").filter(line => line.trim());
-            const title = lines.shift() || "指引問題";
-            const questions = lines;
-            
-            guideHTML += `<div class="rewrite-explanation-container">
-                            <div class="rewrite-explanation-card">
-                                <h3>${title}</h3>`;
-            
-            questions.slice(0, 3).forEach((question, index) => {
-                const match = question.match(/^(\d+)\.?\s*(.*)$/);
-                const number = match ? match[1] : index + 1;
-                const text = match ? match[2].trim() : question;
+let guideHTML = "<h3>陳SIR指引：</h3>";
 
-                guideHTML += `<div class="explanation-point">
-                                  <div class="explanation-number">${number}</div>
-                                  <div class="explanation-text">${text}</div>
-                              </div>`;
-            });
-            
-            guideHTML += `</div></div>`;
-        });
-        
-        document.getElementById("expandGuideResult").innerHTML = guideHTML;
+guideParts.forEach(part => {
+const lines = part.split("\n").filter(line => line.trim());
+const title = lines.shift() || "指引問題";
+const questions = lines;
 
-    } catch (error) {
-        console.error("提交整合拓展指引時出錯:", error);
-        if (error.message === "所有 API 密鑰均無法使用") {
-            alert("今日 API 調用次數已用完或API無法連接，請明天再試");
-        } else {
-            alert("指引生成失敗，請重試");
-        }
-        document.getElementById("expandGuideResult").innerHTML = "";
-    } finally {
-        submitBtn.disabled = false; // 重新啟用按鈕
-    }
+guideHTML += `<div class="rewrite-explanation-container">
+<div class="rewrite-explanation-card">
+<h3>${title}</h3>`;
+
+questions.slice(0, 3).forEach((question, index) => {
+const match = question.match(/^(\d+)\.?\s*(.*)$/);
+const number = match ? match[1] : index + 1;
+const text = match ? match[2].trim() : question;
+
+guideHTML += `<div class="explanation-point">
+<div class="explanation-number">${number}</div>
+<div class="explanation-text">${text}</div>
+</div>`;
+});
+
+guideHTML += `</div></div>`;
+});
+
+document.getElementById("expandGuideResult").innerHTML = guideHTML;
+
+} catch (error) {
+console.error("提交整合拓展指引時出錯:", error);
+if (error.message === "所有 API 密鑰均無法使用") {
+alert("今日 API 調用次數已用完或API無法連接，請明天再試");
+} else {
+alert("指引生成失敗，請重試");
+}
+document.getElementById("expandGuideResult").innerHTML = "";
+} finally {
+submitBtn.disabled = false; // 重新啟用按鈕
+}
 }
 
 
@@ -4734,6 +5130,8 @@ let debounceTimer;
 
 const toolDescriptions = {
 'sansi': '本工具旨在協助同學練習寫作卷和閱讀卷，並提供課外書籍討論。',
+'sansi-backup': '「神思」備用版本，功能與主版本相同。',
+'sansi-v3': '「神思」V3版本，功能與主版本相同。',
 'tizi': '由AI擬設閱讀卷及寫作卷的題目，為同學提供源源不絕的應試練習。',
 'reading-pieces': '提供AI生成的文學片段，培養同學鑑賞文學的能力。',
 'mensyu': '具有AI尋找文言篇章的功能，並輔以語譯及詞解，培養同學鑑賞文言文的能力。',
@@ -5043,19 +5441,1009 @@ closeModalEditor();
 
 
 // 主事件監聽器 (保持不變)
+document.body.addEventListener('click', function(event) {
+const target = event.target;
+
+const isTextInput = target.tagName === 'INPUT' && target.type === 'text';
+const isTextarea = target.tagName === 'TEXTAREA';
+
+if ((isTextInput || isTextarea) && !target.classList.contains('no-modal-editor') && target.id !== 'modal-textarea') {
+event.preventDefault();
+openModalEditor(target);
+}
+});
+
+// 為懸浮視窗的按鈕和外部區域綁定事件 (保持不變)
+modalSaveBtn.addEventListener('click', saveAndCloseEditor);
+modalCloseBtn.addEventListener('click', closeModalEditor);
+modal.addEventListener('click', function(event) {
+if (event.target === modal) {
+closeModalEditor();
+}
+});
+});
+
+// =======================================================
+// === OCR 整合邏輯 開始 ===
+// =======================================================
+document.addEventListener('DOMContentLoaded', function() {
+// 獲取新加入的 OCR 按鈕和懸浮視窗的文字輸入區
+const ocrBtn = document.getElementById('modal-ocr-btn');
+const modalTextarea = document.getElementById('modal-textarea');
+
+// 這個變數用來存放我們打開的 OCR 視窗的參照，以便後續可以關閉它
+let ocrWindow = null; 
+
+// 【重要】這裡填寫您 Vercel OCR 工具的完整網址
+const VERCEL_OCR_URL = 'https://gemini-ocr-proxy.vercel.app/'; 
+
+// 確保按鈕存在
+if (ocrBtn) {
+// 為 OCR 按鈕加上點擊事件
+ocrBtn.addEventListener('click', function() {
+// 如果上一個視窗還開著，先關掉它
+if (ocrWindow && !ocrWindow.closed) {
+ocrWindow.focus();
+return;
+}
+// 打開一個新的子視窗來載入 OCR 工具，並保留它的參照
+ocrWindow = window.open(VERCEL_OCR_URL, 'OCRWindow', 'width=650,height=850,scrollbars=yes,resizable=yes');
+});
+}
+
+// 監聽來自其他視窗的 'message' 事件，這是跨視窗通訊的核心
+window.addEventListener('message', function(event) {
+
+// 【安全性檢查】確保訊息是從我們信任的 Vercel 應用程式來源發送的
+// 這一步非常重要，可以防止惡意網站發送訊息給您的工具
+if (event.origin !== new URL(VERCEL_OCR_URL).origin) {
+console.warn('收到來源不明的訊息，已忽略:', event.origin);
+return;
+}
+
+// 檢查收到的資料是否是我們定義的 OCR 結果格式
+if (event.data && event.data.type === 'ocrResult') {
+const ocrText = event.data.text;
+
+// 將收到的辨識文字，附加到懸浮視窗的輸入框中
+// 如果輸入框原本就有內容，會先加上一個換行符，體驗更好
+modalTextarea.value += (modalTextarea.value.trim() ? '\n' : '') + ocrText;
+
+// 收到結果後，自動關閉 OCR 子視窗
+if (ocrWindow) {
+ocrWindow.close();
+}
+
+// 將焦點移回輸入框
+modalTextarea.focus();
+}
+});
+});
+
+// =======================================================
+// === 全新評等系統邏輯 (Grading System Logic) ===
+// =======================================================
+
+let radarChartInstance = null; // 全域變數，用於存放雷達圖實例
+
+/**
+ * 建立評等系統的完整 HTML 結構 (修訂版)
+ * @param {string} uniqueIdPrefix - 用於區分不同功能區塊的唯一前綴
+ * @returns {string} HTML 字符串
+ */
+function createGradingSystemHTML(uniqueIdPrefix) {
+    // 預設分數值 (原始分數 0-10)
+    const defaultContentScore = 5;
+    const defaultExpressionScore = 5;
+    const defaultStructureScore = 5;
+    const defaultPunctuationScore = 5;
+    const defaultTypoScore = 1;
+
+    // 計算預設的顯示分數
+    const defaultDisplayTotal = (defaultContentScore * 4) + (defaultExpressionScore * 3) + (defaultStructureScore * 2) + (defaultPunctuationScore * 1) + defaultTypoScore;
+    const cappedDefaultTotal = Math.min(defaultDisplayTotal, 100);
+
+    return `
+    <div class="grading-container">
+        <div class="grading-grid">
+            <div class="grading-scores">
+                <h3>評等</h3>
+                <div class="score-item">
+                    <label>內容 (40)</label>
+                    <div class="slider-container">
+                        <!-- 【修訂一】替換為進度條 -->
+                        <div class="progress-bar-container"><div id="${uniqueIdPrefix}ContentScoreFill" class="progress-bar-fill"></div></div>
+                        <span id="${uniqueIdPrefix}ContentScoreDisplay" class="score-display">${defaultContentScore * 4}</span>
+                    </div>
+                </div>
+                <div class="score-item">
+                    <label>表達 (30)</label>
+                    <div class="slider-container">
+                        <div class="progress-bar-container"><div id="${uniqueIdPrefix}ExpressionScoreFill" class="progress-bar-fill"></div></div>
+                        <span id="${uniqueIdPrefix}ExpressionScoreDisplay" class="score-display">${defaultExpressionScore * 3}</span>
+                    </div>
+                </div>
+                <div class="score-item">
+                    <label>結構 (20)</label>
+                    <div class="slider-container">
+                        <div class="progress-bar-container"><div id="${uniqueIdPrefix}StructureScoreFill" class="progress-bar-fill"></div></div>
+                        <span id="${uniqueIdPrefix}StructureScoreDisplay" class="score-display">${defaultStructureScore * 2}</span>
+                    </div>
+                </div>
+                <div class="score-item">
+                    <label>標點字體 (10)</label>
+                    <div class="slider-container">
+                        <div class="progress-bar-container"><div id="${uniqueIdPrefix}PunctuationScoreFill" class="progress-bar-fill"></div></div>
+                        <span id="${uniqueIdPrefix}PunctuationScoreDisplay" class="score-display">${defaultPunctuationScore * 1}</span>
+                    </div>
+                </div>
+                 <div class="score-item">
+                    <label>錯別字 (+3)</label>
+                    <div class="slider-container">
+                         <div class="progress-bar-container"><div id="${uniqueIdPrefix}TypoScoreFill" class="progress-bar-fill"></div></div>
+                        <span id="${uniqueIdPrefix}TypoScoreDisplay" class="score-display">${defaultTypoScore}</span>
+                    </div>
+                </div>
+                <!-- 隱藏的 input 用於儲存 AI 評分 -->
+                <input type="hidden" id="${uniqueIdPrefix}ContentScore" value="${defaultContentScore}">
+                <input type="hidden" id="${uniqueIdPrefix}ExpressionScore" value="${defaultExpressionScore}">
+                <input type="hidden" id="${uniqueIdPrefix}StructureScore" value="${defaultStructureScore}">
+                <input type="hidden" id="${uniqueIdPrefix}PunctuationScore" value="${defaultPunctuationScore}">
+                <input type="hidden" id="${uniqueIdPrefix}TypoScore" value="${defaultTypoScore}">
+
+                <div class="total-score-container">
+                    <!-- 【修訂二】滿分改為 100 -->
+                    <span id="${uniqueIdPrefix}TotalScoreDisplay">總分: ${cappedDefaultTotal} / 100</span>
+                    <span id="${uniqueIdPrefix}FinalGrade">等級: 3</span>
+                </div>
+            </div>
+            <div class="grading-radar">
+                <h3>能力雷達圖</h3>
+                <div class="radar-chart-container">
+                    <canvas id="${uniqueIdPrefix}RadarChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    `;
+}
+
+
+/**
+ * 初始化評等系統，包括設定分數和繪製初始圖表
+ * @param {string} uniqueIdPrefix - 用於區分不同功能區塊的唯一前綴
+ * @param {object} initialScores - 包含初始分數的物件 (可選)
+ */
+function initializeGradingSystem(uniqueIdPrefix, initialScores = {}) {
+    // 將從 AI 獲取的初始分數設定到隱藏的 input 中
+    if (initialScores.content !== undefined) document.getElementById(`${uniqueIdPrefix}ContentScore`).value = initialScores.content;
+    if (initialScores.expression !== undefined) document.getElementById(`${uniqueIdPrefix}ExpressionScore`).value = initialScores.expression;
+    if (initialScores.structure !== undefined) document.getElementById(`${uniqueIdPrefix}StructureScore`).value = initialScores.structure;
+    // 假設標點和錯別字分數需要預設或由AI提供
+    if (initialScores.punctuation !== undefined) document.getElementById(`${uniqueIdPrefix}PunctuationScore`).value = initialScores.punctuation;
+    else document.getElementById(`${uniqueIdPrefix}PunctuationScore`).value = 5; // 預設值
+    
+    if (initialScores.typo !== undefined) document.getElementById(`${uniqueIdPrefix}TypoScore`).value = initialScores.typo;
+    else document.getElementById(`${uniqueIdPrefix}TypoScore`).value = 1; // 預設值
+    
+    // 首次加載時更新一次所有分數顯示、進度條和圖表
+    updateScoresAndGrade(uniqueIdPrefix, initialScores.radar);
+}
+/**
+ * 根據分數計算總分，上限為 100
+ * @param {string} uniqueIdPrefix - 功能區塊的唯一前綴
+ * @returns {number} 計算後且不超過 100 的總分
+ */
+function calculateTotalScore(uniqueIdPrefix) {
+    // 【修訂二】從隱藏的 input 中獲取原始分數 (0-10)
+    const content = parseInt(document.getElementById(`${uniqueIdPrefix}ContentScore`).value) * 4;
+    const expression = parseInt(document.getElementById(`${uniqueIdPrefix}ExpressionScore`).value) * 3;
+    const structure = parseInt(document.getElementById(`${uniqueIdPrefix}StructureScore`).value) * 2;
+    const punctuation = parseInt(document.getElementById(`${uniqueIdPrefix}PunctuationScore`).value) * 1;
+    const typo = parseInt(document.getElementById(`${uniqueIdPrefix}TypoScore`).value);
+    
+    const totalScore = content + expression + structure + punctuation + typo;
+    
+    // 返回分數，但最高不超過 100
+    return Math.min(totalScore, 100);
+}
+
+/**
+ * 根據總分決定 DSE 等級
+ * @param {number} score - 總分 (0-103)
+ * @returns {string} DSE 等級
+ */
+function determineGrade(score) {
+    if (score >= 72) return "5**";
+    if (score >= 69) return "5*";
+    if (score >= 64) return "5";
+    if (score >= 58) return "4";
+    if (score >= 50) return "3";
+    if (score >= 45) return "2";
+    return "1";
+}
+
+/**
+ * 更新所有分數顯示、總分、等級、進度條和雷達圖
+ * @param {string} uniqueIdPrefix - 功能區塊的唯一前綴
+ * @param {object} radarData - 雷達圖的數據 (可選)
+ */
+function updateScoresAndGrade(uniqueIdPrefix, radarData = null) {
+    // 從隱藏的 input 獲取原始分數 (0-10 或 0-3)
+    const contentVal = parseInt(document.getElementById(`${uniqueIdPrefix}ContentScore`).value);
+    const expressionVal = parseInt(document.getElementById(`${uniqueIdPrefix}ExpressionScore`).value);
+    const structureVal = parseInt(document.getElementById(`${uniqueIdPrefix}StructureScore`).value);
+    const punctuationVal = parseInt(document.getElementById(`${uniqueIdPrefix}PunctuationScore`).value);
+    const typoVal = parseInt(document.getElementById(`${uniqueIdPrefix}TypoScore`).value);
+
+    // 更新各分項顯示（乘以權重後的分數）
+    document.getElementById(`${uniqueIdPrefix}ContentScoreDisplay`).textContent = contentVal * 4;
+    document.getElementById(`${uniqueIdPrefix}ExpressionScoreDisplay`).textContent = expressionVal * 3;
+    document.getElementById(`${uniqueIdPrefix}StructureScoreDisplay`).textContent = structureVal * 2;
+    document.getElementById(`${uniqueIdPrefix}PunctuationScoreDisplay`).textContent = punctuationVal * 1;
+    document.getElementById(`${uniqueIdPrefix}TypoScoreDisplay`).textContent = typoVal;
+    
+    // 【修訂一】更新進度條寬度
+    document.getElementById(`${uniqueIdPrefix}ContentScoreFill`).style.width = `${contentVal * 10}%`;
+    document.getElementById(`${uniqueIdPrefix}ExpressionScoreFill`).style.width = `${expressionVal * 10}%`;
+    document.getElementById(`${uniqueIdPrefix}StructureScoreFill`).style.width = `${structureVal * 10}%`;
+    document.getElementById(`${uniqueIdPrefix}PunctuationScoreFill`).style.width = `${punctuationVal * 10}%`;
+    document.getElementById(`${uniqueIdPrefix}TypoScoreFill`).style.width = `${(typoVal / 3) * 100}%`;
+
+    // 【修訂二】計算並更新總分（上限100）和等級
+    const totalScore = calculateTotalScore(uniqueIdPrefix);
+    document.getElementById(`${uniqueIdPrefix}TotalScoreDisplay`).textContent = `總分: ${totalScore} / 100`;
+    document.getElementById(`${uniqueIdPrefix}FinalGrade`).textContent = `等級: ${determineGrade(totalScore)}`;
+    
+    // 準備雷達圖數據
+    let currentRadarData;
+    if (radarData) {
+        currentRadarData = [
+            radarData.立意 || 5,
+            radarData.取材 || 5,
+            radarData.扣題 || 5,
+            radarData.詳略 || 5,
+            radarData.文筆 || 5
+        ];
+    } else {
+        // 若 AI 未提供雷達圖數據，則根據分數估算
+        currentRadarData = [
+            Math.round((contentVal * 0.6 + structureVal * 0.4)), // 立意
+            Math.round((contentVal * 0.8 + expressionVal * 0.2)), // 取材
+            Math.round((contentVal * 0.7 + structureVal * 0.3)), // 扣題
+            Math.round((structureVal * 0.7 + contentVal * 0.3)), // 詳略
+            expressionVal // 文筆
+        ];
+    }
+    // 【修訂四】更新雷達圖
+    createOrUpdateRadarChart(uniqueIdPrefix, currentRadarData);
+}
+
+
+/**
+ * 創建或更新雷達圖
+ * @param {string} uniqueIdPrefix - 功能區塊的唯一前綴
+ * @param {array} data - 包含五個能力值的數組
+ */
+function createOrUpdateRadarChart(uniqueIdPrefix, data) {
+    const ctx = document.getElementById(`${uniqueIdPrefix}RadarChart`).getContext('2d');
+    
+    if (window[`${uniqueIdPrefix}_radarChartInstance`]) {
+        window[`${uniqueIdPrefix}_radarChartInstance`].data.datasets[0].data = data;
+        window[`${uniqueIdPrefix}_radarChartInstance`].update();
+    } else {
+        window[`${uniqueIdPrefix}_radarChartInstance`] = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: ['立意', '取材', '扣題', '詳略', '文筆'],
+                datasets: [{
+                    label: '能力分佈',
+                    data: data,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(54, 162, 235, 1)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: {
+                            display: true
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 10,
+                        pointLabels: {
+                            font: {
+                                size: 14,
+                                family: "'Noto Serif TC', serif"
+                            }
+                        },
+                        ticks: {
+                           stepSize: 2
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+}
+
+/**
+ * 構建帶有評等指令的 API Prompt (V15 - 條件式加分)
+ * 此版本嚴格規定「內容」和「結構」分數必須以「扣題」分數為基礎，
+ * 但允許在這基礎上有條件地加一分，以獎勵表現出色的部分。
+ */
+function buildGradingPrompt(type, topic, content, toneNote, focus = null, plot = null) {
+    const dsePrinciples = document.getElementById('dse-grading-principles').innerText;
+    const fiveStarExamplesText = `
+    ### 5** 級數範文參考 (用於判斷最高水平)：
+    ${document.getElementById('example-yanhuo').innerHTML}
+    ${document.getElementById('example-gen').innerHTML}
+    ${document.getElementById('example-dengdai').innerHTML}
+    ${document.getElementById('example-song-li').innerHTML}
+    
+    ### 3 級數範文參考 (用於判斷中等水平)：
+    ${document.getElementById('example-lun-dushu').innerHTML}
+`;
+
+    let basePrompt = "";
+    let specificInstructions = "";
+    
+    if (type === 'narrative') {
+    basePrompt = `
+    題目：《${topic}》
+    ${focus ? `結構段重點：${focus}` : ''}
+    ${plot ? `情節大要：${plot}` : ''}
+    文章：\n${content}`;
+    
+    // 【修訂一】這裡只引用敘事抒情相關的範文
+    const fiveStarExamplesText = `
+    ### 5** 級數範文參考 (用於判斷最高水平)：
+    ${document.getElementById('example-yanhuo').innerHTML}
+    ${document.getElementById('example-gen').innerHTML}
+    ${document.getElementById('example-dengdai').innerHTML}
+    
+    ### 3 級數範文參考 (用於判斷中等水平)：
+    ${document.getElementById('example-yanhuo-l3').innerHTML}
+    `;
+
+    specificInstructions = `
+    ### 敘事抒情專用評核指引
+    - 扣題判斷：文章必須在字面上緊扣題目關鍵詞，並透過具體情節體現主題
+    - 詳略剪裁：重點情節需詳寫，次要內容需略寫，體現層次感
+    - 物象運用：適當運用小物件、動作、對話和內心獨白，提高文句密度`;
+    
+    // 【修訂二】這裡替換為你提供的全新評分邏輯和工作紙
+    return `你將扮演一個絕對理性的AI評卷員，你的核心任務是完成一份計分工作紙，然後根據工作紙的結果生成報告。
+
+    ### 你的工作流程 (必須嚴格依序執行)
+
+    1.  **填寫工作紙**: 這是你的首要且最重要的任務。在 <scoring_worksheet> 標籤內，完成所有計算。
+    2.  **分發分數到JSON**: **絕對禁止重新思考分數**。你將扮演一個數據錄入員，將 <scoring_worksheet> 中計算出的分數，精確地分發到 <grading_json> 的對應欄位。
+    3.  **撰寫報告**: 根據 <grading_json> 的最終分數，撰寫 <critique> 等文字報告，確保文字與數字完全對應。
+
+    ${specificInstructions}
+
+    ---
+
+    ### 你的輸出格式 (必須嚴格遵守此結構與順序)
+
+    <scoring_worksheet>
+    [**計分工作紙**：你必須像執行程式碼一樣，完成以下所有步驟。]
+   <step_1_independent_evaluation>
+[對以下各項進行獨立評分，互不影響。]
+<eval_item name="扣題分數評估">
+    規則：優先考慮文章能否在情節上直接呼應題目。對於運用象徵、比喻等手法間接扣題的高階寫作，若其意象連貫、深刻，能令人信服地體現主旨，亦可視為「緊扣」。反之，若關聯牽強，則為「偏題」。例如題目為《種子》，寫作者不需要花費大量篇幅去刻劃種子本身，更重要的是其聯想、象徵或對寫作者的意義，這些帶有物象的題目必須彈性處理，只需要緊扣其物象的特徵發揮即可。此外，題目中可能有多於一個關鍵詞，這些關鍵詞對扣題的重要程度不一樣，要根據題目靈活判斷，一些相對次要的關鍵詞可放輕，只要寫作者抓住最重要的關鍵詞發揮即可。請將用戶文章的扣題與提供的「5**級數範文」及「3級數範文」進行直接比較。與5**水平相當（7-10分）；優於3等但不及5**（6分）；與3等水平相若（5分）；不及3等水平（1-4分）。
+
+    評分 (0-10): [在此給出「扣題」的獨立分數]
+</eval_item>
+<eval_item name="立意分數評估">
+    規則：評估文章主旨的深度、原創性和啟發性。主題是陳腔濫調（1-4分）、清晰但普通（5-7分），還是深刻且具洞見（8-10分）？請將用戶文章的立意與提供的「5**級數範文」及「3級數範文」進行直接比較。與5**水平相當（7-10分）；優於3等但不及5**（6分）；與3等水平相若（5分）；不及3等水平（1-4分）。
+
+    評分 (0-10): [在此給出「立意」的獨立分數]
+</eval_item>
+<eval_item name="取材分數評估">
+    規則：評估所選事件、細節和例子的質量。取材是普通空泛（1-4分）、具體恰當（5-7分），還是新穎且生動（8-10分）？請將用戶文章的取材與提供的「5**級數範文」及「3級數範文」進行直接比較。與5**水平相當（7-10分）；優於3等但不及5**（6分）；與3等水平相若（5分）；不及3等水平（1-4分）。
+
+    評分 (0-10): [在此給出「取材」的獨立分數]
+</eval_item>
+<eval_item name="結構與詳略分數評估">
+    規則：評估文章的組織、起承轉合、段落過渡及詳略安排是否得當。佈局混亂（1-4分）、結構完整（5-7分），還是詳略得宜且具巧思（8-10分）？請將用戶文章的結構與詳略與提供的「5**級數範文」及「3級數範文」進行直接比較。與5**水平相當（7-10分）；優於3等但不及5**（6分）；與3等水平相若（5分）；不及3等水平（1-4分）。
+
+    評分 (0-10): [在此給出「結構與詳略」的獨立分數]
+</eval_item>
+<eval_item name="表達分數評估">
+    規則：請將用戶文章的用詞、文學性都與提供的「5**級數範文」及「3級數範文」進行直接比較。與5**的《煙火》、《等待》及《根》水平相當（7-10分）；優於3等但用詞、文學性等不及5**（6分）；與3等水平相若（5分）；不及3等水平（1-4分）。不要隨便給7-10分，全香港只有3%左右的學生能達至這個水平。
+
+    評分 (0-10): [在此給出「表達」的獨立分數]
+</eval_item>
+</step_1_independent_evaluation>
+
+<step_2_composite_calculation>
+[根據獨立評估的分數，計算最終的總項分數。]
+<calc_item name="內容總分計算">
+    規則：內容總分的計算方式取決於「扣題分數」是否達標。若「扣題分數」達到或超過5分，則內容總分由「立意」和「取材」分數決定。若「扣題分數」低於5分，則內容總分將受其嚴重影響，由三項分數共同決定。
+    計算公式：IF (扣題分數 >= 5) THEN round((立意分數 + 取材分數) / 2) ELSE round((扣題分數 + 立意分數 + 取材分數) / 3)
+    最終內容分數 (0-10): [根據上述條件公式計算出最終分數]
+</calc_item>
+<calc_item name="結構總分計算">
+    規則：結構總分直接等於「結構與詳略分數」。
+    最終結構分數 (0-10): [複製上面的「結構與詳略分數評估」的分數]
+</calc_item>
+<calc_item name="表達總分計算">
+    規則：表達總分直接等於「表達分數」。
+    最終表達分數 (0-10): [複製上面的「表達分數評估」的分數]
+</calc_item>
+</step_2_composite_calculation>
+<!-- ▲▲▲ 敘事抒情文的評分邏輯已完全重構 ▲▲▲ -->
+    </scoring_worksheet>
+
+    <grading_json>
+    [**分數分發步驟**：**這是一條絕對的、機械的指令。** 你的任務是將 <scoring_worksheet> 的計算結果填入下方。]
+    {
+"content": [複製'內容分數'的'最終分數'],
+"expression": [複製'表達分數'的'最終分數'],
+"structure": [複製'結構分數'的'最終分數'],
+"radar": {
+"立意": [複製'扣題分數'的'扣題基準分數'],
+"取材": [複製'內容分數'的'最終分數'],
+"扣題": [複製'扣題分數'的'扣題基準分數'],
+"詳略": [複製'結構分數'的'最終分數'],
+"文筆": [複製'表達分數'的'最終分數']
+}
+}
+    </grading_json>
+
+    <critique>
+[**報告生成步驟**：現在，回看 <grading_json>。你的任務是寫出2-3點評論，重點說明：
+1. 為什麼「扣題」分數是 X 分
+2. 「內容」和「結構」分數如何合理地參考了「扣題」分數
+3. 三個分數之間的邏輯關係和一致性]
+</critique>
+
+    <suggestions>
+    [基於 <critique> 的內容，提出改善建議。]
+    </suggestions>
+
+    <rewrite_example>
+    [提供一段約150-200字的改寫範例。]
+    </rewrite_example>
+
+    ---
+    ### 待評核文章資訊
+    ${basePrompt}
+
+    ### 語境參考資料
+    [DSE 評核準則]: ${dsePrinciples}
+    [5** 級數範文]: ${fiveStarExamplesText}
+
+    ### 語氣要求
+    <critique> 和 <suggestions> 的語氣：${toneNote}
+    <rewrite_example> 的語氣：請使用嚴肅正經的語氣。
+`;
+    
+}  else { // argument - 保持原有的複雜邏輯
+        basePrompt = `
+        題目：《${topic}》
+        文章：\n${content}`;
+        
+    specificInstructions = `
+### 議論文專用評核指引
+**核心原則：絕對嚴謹的扣題判斷，採用形式化流程處理**
+
+**立意評核標準**：
+- 立意取決於觀點是否深入成熟
+- 觀點深度層次：表面現象 → 深層原因 → 人生哲理
+- 成熟度判斷：是否具備成年人的思辨深度
+
+**取材評核標準**：
+- 取材取決於論據是否充實，涵蓋古今中外
+- 論據適用性：論據是否切合這道具體題目
+- 覆蓋範圍：古代、現代、中外例證的平衡性
+
+**內容與結構分數限制規則**：
+- 即使扣題分數很高，但如果立意和取材分數低，其「內容」和「結構」分最高只能得5分
+- 計算方式：內容分數 = min(5, 原計算分數) if (立意分數 ≤ 4 OR 取材分數 ≤ 4)
+- 計算方式：結構分數 = min(5, 原計算分數) if (立意分數 ≤ 4 OR 取材分數 ≤ 4)
+
+- **形式化扣題檢測流程**：
+  * 步驟1：提取題目核心關鍵詞（去除「論」、「談」等前綴詞）
+  * 步驟2：識別文章主要論述對象的關鍵詞
+  * 步驟3：執行字符串精確比對（character-by-character matching）
+  * 步驟4：IF (題目關鍵詞 === 文章關鍵詞) THEN 緊扣 ELSE 偏題/離題
+
+- **嚴格判定規則（無例外執行）**：
+  * 關鍵詞完全匹配（===） = 緊扣（5-10分）
+  * 關鍵詞不匹配（!==） = 偏題（一般直接評為4分即可，極少情況會評為1至2分）或離題（一般直接評為3分即可，極少情況會評為1至2分）
+  * 題目《論禮貌》vs 文章論「禮物」→ 「禮貌」!==「禮物」→ 偏題（一般直接評為4分即可，極少情況會評為1至2分）
+  * 題目《論競爭》vs 文章論「合作」→ 「競爭」!==「合作」→ 偏題（一般直接評為4分即可，極少情況會評為1至2分）
+
+例如：題目為《論禮貌》，但文中多論「禮物」，都屬於偏題，《禮貌》是一個更寬的概念，「禮貌」會包含「禮物」這個更狹窄的概念，絕不可用狹窄的概念論述寬泛的概念
+
+- **禁止的判斷方式**：
+  * ❌ 語意相近性判斷（如「禮貌」與「禮儀」相近）
+  * ❌ 概念關聯性判斷（如「競爭」與「合作」有關聯）
+  * ❌ 邏輯推演判斷（如「責任心」包含「責任」）
+  * ❌ 文學創意判斷（如「以禮物論禮貌」的創意寫法）
+
+- **強制執行機制**：
+  * 系統性：每篇文章必須執行完整的4步驟檢測流程
+  * 客觀性：僅基於字符串比對結果，不加入主觀判斷
+  * 一致性：相同字符串比對結果必須得出相同評級
+  * 嚴謹性：寧可誤判為偏題，不可誤判為緊扣
+
+**範例執行**：
+題目《論禮貌》：
+- 文章論「禮貌」→ 「禮貌」===「禮貌」→ TRUE → 緊扣
+- 文章論「禮物」→ 「禮貌」===「禮物」→ FALSE → 偏題  
+- 文章論「禮儀」→ 「禮貌」===「禮儀」→ FALSE → 偏題
+- 文章論「送禮」→ 「禮貌」===「送禮」→ FALSE → 偏題`;
+
+    // 議論文保持原有的複雜評分邏輯
+    return `你將扮演一個絕對理性的AI評卷員，你的核心任務是完成一份計分工作紙，然後根據工作紙的結果生成報告。
+
+        ### 你的工作流程 (必須嚴格依序執行)
+
+        1.  **填寫工作紙**: 這是你的首要且最重要的任務。在 <scoring_worksheet> 標籤內，完成所有計算。
+        2.  **分發分數到JSON**: **絕對禁止重新思考分數**。你將扮演一個數據錄入員，將 <scoring_worksheet> 中計算出的分數，精確地分發到 <grading_json> 的對應欄位。
+        3.  **撰寫報告**: 根據 <grading_json> 的最終分數，撰寫 <critique> 等文字報告，確保文字與數字完全對應。
+
+        ${specificInstructions}
+
+        ---
+
+        ### 你的輸出格式 (必須嚴格遵守此結構與順序)
+
+       <scoring_worksheet>
+[**計分工作紙**：你必須像執行程式碼一樣，完成以下所有步驟。]
+<step_1_topic_analysis>
+    <topic_keywords>題目關鍵詞: [提取題目的核心概念，如「禮貌」]</topic_keywords>
+    <article_focus>文章論述焦點: [識別文章主要論述的核心概念，如「禮物」、「送禮」]</article_focus>
+    <concept_match>概念匹配度: [比較題目關鍵詞與文章焦點是否一致]</concept_match>
+</step_1_topic_analysis>
+
+<step_2_strict_topic_judgement>
+    <critical_check>
+        **絕對嚴格扣題檢查**：
+        - 題目核心關鍵詞: [提取題目去除助詞後的核心概念]
+        - 文章核心論述詞: [識別文章主要論述的核心詞匯]
+        - 字面一致性檢查: [兩詞是否完全相同，YES/NO]
+        - 關鍵詞出現頻率: [該關鍵詞在文章中的使用次數]
+        - 關鍵詞重要性: [該關鍵詞是否為文章論述主線]
+        
+        **形式化判斷標準**：
+        - 如果文章論述的核心詞匯與題目關鍵詞字面不同（如「禮貌」vs「禮物」、「責任」vs「負責」、「寬容」vs「包容」），無論內容多優秀，強制判定為「偏題」
+        - 如果關鍵詞雖然相同但使用頻率極低或非論述主線，判定為「偏題」
+        - 偏題文章扣題分數：4分或以下
+        - 離題文章扣題分數：3分或以下
+    </critical_check>
+    
+    <final_topic_judgement>[基於上述形式化檢查，強制填寫「離題」、「偏題」或「緊扣」，不得有任何例外]</final_topic_judgement>
+</step_2_strict_topic_judgement>
+
+<step_3_base_scores>
+    <judgement_item name="表達水平">[在此獨立評估文筆，填寫「優良」、「普通」或「欠佳」]</judgement_item>
+</step_3_base_scores>
+
+<step_4_calculation>
+    <calc_item name="扣題分數計算（絕對基準）">
+    判斷結果: [複製上面的'final_topic_judgement']
+    **強制執行規則**：
+    - IF '離題' THEN 扣題分數 = 1-3分（一般直接評為3分即可，極少情況會評至1至2分）
+    - IF '偏題' THEN 扣題分數 = 1-4分（一般直接評為4分即可，極少情況會評至1至2分）
+    - IF '緊扣' THEN 扣題分數 = 5-10分
+    
+    **特別注意**：任何概念置換（如禮貌→禮物、責任→負責、寬容→包容）必須判定為偏題，如題目為《論禮貌》，但文中多論「禮物」，都屬於偏題，《禮貌》是一個更寬的概念，「禮貌」會包含「禮物」這個更狹窄的概念，絕不可用狹窄的概念論述寬泛的概念，扣題分數絕對不得超過4分，扣題絕對不能打5分或以上。
+    
+    最終扣題分數 (1-10): [嚴格按照上述規則給分，不允許任何例外]
+</calc_item>
+    
+    <calc_item name="內容分數計算">
+    規則: 偏題或離題情況下，內容分數不得超過扣題分數且有絕對上限
+    基於扣題分數: [複製上面的扣題分數]
+    **嚴格限制**：
+    - 偏題情況：內容分數絕對上限4分，一般直接評為4分即可，極少情況會評至1至2分
+    - 離題情況：內容分數絕對上限3分，一般直接評為3分即可，極少情況會評至1至2分
+    最終內容分數 (1-10): [不得超過扣題分數且不得超過上述絕對上限]
+</calc_item>
+
+<calc_item name="結構分數計算">
+    規則: 偏題或離題情況下，結構分數不得超過扣題分數且有絕對上限
+    基於扣題分數: [複製上面的扣題分數]
+    **嚴格限制**：
+    - 偏題情況：結構分數絕對上限4分，一般直接評為4分即可，極少情況會評至1至2分
+    - 離題情況：結構分數絕對上限3分，一般直接評為3分即可，極少情況會評至1至2分
+    最終結構分數 (1-10): [不得超過扣題分數且不得超過上述絕對上限]
+</calc_item>
+    
+    <calc_item name="表達分數計算（相對獨立）">
+        判斷: [複製上面的'表達水平']
+        規則: IF '優良' THEN score=7-9; IF '普通' THEN score=4-6; ELSE score=1-3
+        最終表達分數 (1-10): [按此規則給分]
+    </calc_item>
+
+
+<calc_item name="立意分數計算">
+    評估觀點深度: [判斷觀點是否深入成熟，填寫「深入成熟」、「一般」或「膚淺」]
+    **評分標準**：
+    - IF '深入成熟' THEN 立意分數 = 7-10分
+    - IF '一般' THEN 立意分數 = 4-6分  
+    - IF '膚淺' THEN 立意分數 = 1-3分
+    最終立意分數 (1-10): [按此規則給分]
+</calc_item>
+
+<calc_item name="取材分數計算">
+    論據充實度: [評估論據是否充實涵蓋古今中外]
+    論據適用性: [評估論據是否適用於論述這道題目]
+    **評分標準**：
+    - 充實且適用 THEN 取材分數 = 7-10分
+    - 一般程度 THEN 取材分數 = 4-6分
+    - 不足或不適用 THEN 取材分數 = 1-3分
+    最終取材分數 (1-10): [按此規則給分]
+</calc_item>
+
+<calc_item name="內容與結構分數限制檢查">
+    立意分數: [複製上面的立意分數]
+    取材分數: [複製上面的取材分數]
+    **強制限制規則**：
+    - IF (立意分數 ≤ 4 OR 取材分數 ≤ 4) THEN 內容分數上限 = 5分且結構分數上限 = 5分
+    - 即使扣題很高，但立意或取材低分時，內容和結構都不能超過5分
+    
+    內容分數修正: [根據上述規則修正內容分數，不得超過5分if條件符合]
+    結構分數修正: [根據上述規則修正結構分數，不得超過5分if條件符合]
+</calc_item>
+
+
+</step_4_calculation>
+</scoring_worksheet>
+
+        <grading_json>
+        {
+            "content": [複製'內容分數'的'最終分數'],
+            "expression": [複製'表達分數'的'最終分數'],
+            "structure": [複製'結構分數'的'最終分數'],
+            "radar": {
+                "立意": [複製'扣題分數'的'扣題基準分數'],
+                "取材": [複製'內容分數'的'最終分數'],
+                "扣題": [複製'扣題分數'的'扣題基準分數'],
+                "詳略": [複製'結構分數'的'最終分數'],
+                "文筆": [複製'表達分數'的'最終分數']
+            }
+        }
+        </grading_json>
+
+        <critique>
+        [**報告生成步驟**：現在，回看 <grading_json>。你的任務是寫出2-3點評論，重點說明：
+        1. 為什麼「扣題」分數是 X 分
+        2. 「內容」和「結構」分數如何合理地參考了「扣題」分數
+        3. 三個分數之間的邏輯關係和一致性]
+        </critique>
+
+        <suggestions>
+        [基於 <critique> 的內容，提出改善建議。]
+        </suggestions>
+
+        <rewrite_example>
+        [提供一段約150-200字的改寫範例。]
+        </rewrite_example>
+
+        ---
+        ### 待評核文章資訊
+        ${basePrompt}
+
+        ### 語境參考資料
+        [DSE 評核準則]: ${dsePrinciples}
+        [5** 級數範文]: ${fiveStarExamplesText}
+
+        ### 語氣要求
+        <critique> 和 <suggestions> 的語氣：${toneNote}
+        <rewrite_example> 的語氣：請使用嚴肅正經的語氣。
+
+
+### 【重要】概念辨識檢查清單
+在評分前，必須完成以下檢查：
+□ 題目核心概念是什麼？
+□ 文章主要論述什麼概念？  
+□ 兩個概念是否完全相同？
+□ 是否存在概念置換問題？
+
+**常見偏題案例**：
+- 題目《論禮貌》→ 文章論述禮物/送禮 = 偏題
+- 題目《論堅持》→ 文章論述堅定 = 偏題
+- 題目《論競爭》→ 文章論述合作 = 偏題
+
+記住：邏輯相關 ≠ 概念相同，必須嚴格區分！
+
+
+
+    `;
+    }
+}
+
+// 請將您原有的 displayFullCommentWithGrading() 函式替換為此版本
+function displayFullCommentWithGrading(containerId, apiResponse, uniqueIdPrefix) {
+    
+    // 在更新innerHTML之前，先銷毀舊的圖表實例
+    const instanceName = `${uniqueIdPrefix}_radarChartInstance`;
+    if (window[instanceName]) {
+        window[instanceName].destroy();
+        window[instanceName] = null; // 清除變數引用
+    }
+    
+    const resultContainer = document.getElementById(containerId);
+
+    const gradingMatch = apiResponse.match(/<grading_json>([\s\S]*?)<\/grading_json>/);
+    const critiqueMatch = apiResponse.match(/<critique>([\s\S]*?)<\/critique>/);
+    const suggestionsMatch = apiResponse.match(/<suggestions>([\s\S]*?)<\/suggestions>/);
+    const rewriteMatch = apiResponse.match(/<rewrite_example>([\s\S]*?)<\/rewrite_example>/);
+
+    let finalHTML = "<h3>陳SIR點評：</h3>";
+    let initialScores = {};
+
+    if (gradingMatch && gradingMatch[1]) {
+        const gradingJSON = gradingMatch[1].trim();
+        try {
+            const scores = JSON.parse(gradingJSON);
+
+            // === 【核心修訂：V8 版評分聯動邏輯】 ===
+            if (scores.radar && scores.radar.扣題 !== undefined) {
+                
+                // 步驟一：獲取所有從 AI 回傳的原始分數
+                let final = {
+                    kouTi: scores.radar.扣題,
+                    xiangLue: scores.radar.詳略,
+                    structure: scores.structure,
+                    liYi: scores.radar.立意,
+                    quCai: scores.radar.取材,
+                    wenBi: scores.radar.文筆,
+                    expression: scores.expression,
+                    content: scores.content
+                };
+
+                // --- 步驟二：按嚴格順序應用所有細項分數的調整規則 ---
+
+                // 規則 1: 為合格的「扣題」文章設定內容分數的底線
+                if (final.kouTi >= 5) {
+                    final.liYi = Math.max(final.liYi, 4);
+                    final.quCai = Math.max(final.quCai, 4);
+                }
+
+                // 規則 2: 「扣題」分數的絕對限制 (影響詳略和結構的初始上限)
+                if (final.kouTi <= 5) {
+                    final.xiangLue = Math.min(final.xiangLue, 4);
+                    final.structure = Math.min(final.structure, 4);
+                }
+
+                // 規則 3: 「文筆」制約「立意」與「取材」
+                if (final.wenBi <= 6) {
+                    final.liYi = Math.min(final.liYi, 6);
+                    final.quCai = Math.min(final.quCai, 6);
+                }
+
+                // 規則 4: 「內容」制約「文筆」
+                if (!(final.liYi >= 7 && final.quCai >= 7)) {
+                    final.wenBi = Math.min(final.wenBi, 6);
+                }
+                
+                // 規則 5: 「立意」制約「取材」
+                final.quCai = Math.min(final.quCai, final.liYi);
+                
+                // --- 步驟三：根據調整後的細項分數，重新計算三大主項的最終分數 ---
+
+                // 3.1 重新計算「內容」分數
+                 if (final.kouTi <= 5) {
+                    // 【核心修订】
+                    // 当扣题为 5 分或以下时，内容分在 [2, 4] 区间内跟随扣题分
+                    let tempContentScore = final.kouTi; // 先让内容分等于扣题分
+                    tempContentScore = Math.min(tempContentScore, 4); // 设置上限为 4
+                    tempContentScore = Math.max(tempContentScore, 2); // 设置下限为 2
+                    final.content = tempContentScore; // 赋最终值
+                } else {
+                    if (final.liYi === 10 && final.quCai === 10) {
+                        final.content = 9;
+                    } else if (final.liYi === 9 && final.quCai === 9) {
+                        final.content = 8;
+                    } else if (final.liYi === 8 && final.quCai === 8) {
+                        final.content = 7;
+                    } else {
+                        final.content = Math.round((final.liYi + final.quCai) / 2);
+                    }
+                }
+                
+                // 3.2 重新計算「表達」分數
+                final.expression = final.wenBi;
+                
+                // 3.3 【新增規則】：「結構」分數與「內容」分數的最終校準
+                //      結構分不僅不能高於內容分，且分差不能超過1分
+                const structureLowerBound = final.content - 1; // 設定結構分的下限
+                
+                // 首先，確保結構分不超過內容分 (設定上限)
+                final.structure = Math.min(final.structure, final.content);
+                // 其次，確保結果不低於下限
+                final.structure = Math.max(final.structure, structureLowerBound);
+
+
+                // --- 步驟四：將所有計算出的最終分數，更新回 scores 物件 ---
+                scores.content = final.content;
+                scores.expression = final.expression;
+                scores.structure = final.structure;
+                scores.radar.立意 = final.liYi;
+                scores.radar.取材 = final.quCai;
+                scores.radar.詳略 = final.xiangLue;
+                scores.radar.文筆 = final.wenBi;
+                scores.radar.扣題 = final.kouTi;
+            }
+            // === 【修訂結束】 ===
+
+            finalHTML += createGradingSystemHTML(uniqueIdPrefix);
+            initialScores = scores;
+        } catch (e) {
+            console.error("解析評等 JSON 失敗:", e, "收到的內容:", gradingJSON);
+            finalHTML += "<p>評等生成失敗，請檢查 API 回應。</p>";
+        }
+    } else {
+        console.warn("在 API 回應中未找到 <grading_json> 標籤。");
+    }
+    
+    if (critiqueMatch && critiqueMatch[1]) {
+        finalHTML += createBulletedListHTML("點評", critiqueMatch[1].trim());
+    }
+    if (suggestionsMatch && suggestionsMatch[1]) {
+        finalHTML += createBulletedListHTML("建議", suggestionsMatch[1].trim());
+    }
+    if (rewriteMatch && rewriteMatch[1]) {
+        const rewriteContent = rewriteMatch[1].trim().replace(/\n/g, '<br>');
+        finalHTML += `<div class="rewrite-explanation-container">
+            <div class="rewrite-explanation-card">
+                <h3>改寫範例</h3>
+                <p>${rewriteContent}</p>
+            </div>
+        </div>`;
+    }
+    
+    resultContainer.innerHTML = finalHTML;
+    
+    if (Object.keys(initialScores).length > 0) {
+        initializeGradingSystem(uniqueIdPrefix, initialScores);
+    }
+}
+
+// =======================================================
+// === 評等系統邏輯結束 ===
+// =======================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    // --- 為動態生成的「自訂題目」輸入框加上排除標記 ---
+    const originalShowCustomTopicInput = window.showCustomTopicInput;
+    window.showCustomTopicInput = function(buttonElement) {
+        originalShowCustomTopicInput(buttonElement);
+        const customTopicInput = document.getElementById('customTopic');
+        if (customTopicInput) {
+            customTopicInput.classList.add('no-modal-editor');
+        }
+        // For writing custom topic with focus and plot
+        const customTitle = document.getElementById('customTitle');
+        const customFocus = document.getElementById('customFocus');
+        const customPlot = document.getElementById('customPlot');
+        if(customTitle) customTitle.classList.add('no-modal-editor');
+        if(customFocus) customFocus.classList.add('no-modal-editor');
+        if(customPlot) customPlot.classList.add('no-modal-editor');
+    };
+
+    const originalShowArgumentCustomTopicInput = window.showArgumentCustomTopicInput;
+    window.showArgumentCustomTopicInput = function(buttonElement) {
+        originalShowArgumentCustomTopicInput(buttonElement);
+        const argumentCustomTopicInput = document.getElementById('argumentCustomTopic');
+        if (argumentCustomTopicInput) {
+            argumentCustomTopicInput.classList.add('no-modal-editor');
+        }
+    };
+
+    const originalShowExpandCustomTopicInput = window.showExpandCustomTopicInput;
+    window.showExpandCustomTopicInput = function(buttonElement) {
+        originalShowExpandCustomTopicInput(buttonElement);
+        const container = document.getElementById('expandCustomTopicInputArea');
+        if (container) {
+            container.querySelectorAll('input[type="text"], textarea').forEach(el => el.classList.add('no-modal-editor'));
+        }
+    };
+
+    // --- 懸浮視窗核心邏輯 ---
+    const modal = document.getElementById('outline-editor-modal');
+    const modalTextarea = document.getElementById('modal-textarea');
+    const modalTitle = document.getElementById('modal-title');
+    const modalSaveBtn = document.getElementById('modal-save-btn');
+    const modalCloseBtn = document.getElementById('modal-close-btn');
+
+    if (!modal || !modalTextarea || !modalSaveBtn || !modalCloseBtn) {
+        console.error("懸浮視窗的 HTML 結構不完整或未找到！");
+        return;
+    }
+
+    let currentEditingElement = null;
+
+    function openModalEditor(element) {
+        currentEditingElement = element;
+        modalTextarea.value = currentEditingElement.value;
+        let titleText = '編輯內容';
+
+        if (element.id === 'writingContent' || element.id === 'argumentWritingContent') {
+            titleText = '輸入您的文章';
+        } else {
+            const parentTableCell = element.closest('td');
+            if (parentTableCell) {
+                const parentRow = parentTableCell.closest('tr');
+                if (parentRow) {
+                    const headerCell = parentRow.cells[0];
+                    const table = parentRow.closest('table');
+                    if (table && table.rows.length > 0) {
+                        const columnHeaderCell = table.rows[0].cells[parentTableCell.cellIndex];
+                        const rowTitle = headerCell ? headerCell.textContent.trim().replace(/[:：]/g, '') : '';
+                        const colTitle = columnHeaderCell ? columnHeaderCell.textContent.trim().replace(/[:：]/g, '') : '';
+                        if (rowTitle && colTitle && rowTitle !== colTitle) {
+                            titleText = `編輯「${rowTitle}」的「${colTitle}」`;
+                        } else if (rowTitle) {
+                            titleText = `編輯「${rowTitle}」`;
+                        } else if (colTitle) {
+                            titleText = `編輯「${colTitle}」`;
+                        }
+                    }
+                }
+            } else {
+                let associatedLabel = document.querySelector(`label[for="${element.id}"]`);
+                if (!associatedLabel) {
+                    const parentContainer = element.closest('div');
+                    if (parentContainer) {
+                        associatedLabel = parentContainer.querySelector('label');
+                    }
+                }
+                if (associatedLabel) {
+                    titleText = `編輯「${associatedLabel.textContent.trim().replace(/[:：]/g, '')}」`;
+                }
+            }
+        }
+        modalTitle.textContent = titleText;
+        modal.style.display = 'flex';
+        modalTextarea.focus();
+    }
+
+    function closeModalEditor() {
+        modal.style.display = 'none';
+        currentEditingElement = null;
+    }
+
+    function saveAndCloseEditor() {
+        if (currentEditingElement) {
+            currentEditingElement.value = modalTextarea.value;
+            if (currentEditingElement.id === 'expandContent') {
+                updateCharCount();
+            }
+        }
+        closeModalEditor();
+    }
+
     document.body.addEventListener('click', function(event) {
         const target = event.target;
-        
         const isTextInput = target.tagName === 'INPUT' && target.type === 'text';
         const isTextarea = target.tagName === 'TEXTAREA';
-
         if ((isTextInput || isTextarea) && !target.classList.contains('no-modal-editor') && target.id !== 'modal-textarea') {
             event.preventDefault();
             openModalEditor(target);
         }
     });
 
-    // 為懸浮視窗的按鈕和外部區域綁定事件 (保持不變)
     modalSaveBtn.addEventListener('click', saveAndCloseEditor);
     modalCloseBtn.addEventListener('click', closeModalEditor);
     modal.addEventListener('click', function(event) {
@@ -5063,8 +6451,46 @@ closeModalEditor();
             closeModalEditor();
         }
     });
+
+    // --- OCR 整合邏輯 ---
+    const ocrBtn = document.getElementById('modal-ocr-btn');
+    let ocrWindow = null;
+    const VERCEL_OCR_URL = 'https://gemini-ocr-proxy.vercel.app/';
+
+    if (ocrBtn) {
+        ocrBtn.addEventListener('click', function() {
+            if (ocrWindow && !ocrWindow.closed) {
+                ocrWindow.focus();
+                return;
+            }
+            ocrWindow = window.open(VERCEL_OCR_URL, 'OCRWindow', 'width=650,height=850,scrollbars=yes,resizable=yes');
+        });
+    }
+
+    window.addEventListener('message', function(event) {
+        if (event.origin !== new URL(VERCEL_OCR_URL).origin) {
+            console.warn('收到來源不明的訊息，已忽略:', event.origin);
+            return;
+        }
+        if (event.data && event.data.type === 'ocrResult') {
+            const ocrText = event.data.text;
+            modalTextarea.value += (modalTextarea.value.trim() ? '\n' : '') + ocrText;
+            if (ocrWindow) {
+                ocrWindow.close();
+            }
+            modalTextarea.focus();
+        }
+    });
 });
 
+// 頁面加載時初始化
+document.addEventListener("DOMContentLoaded", function() {
+    // 預設選中並顯示第一個範疇
+    const defaultButton = document.getElementById('writingBtn');
+    if (defaultButton) {
+        showContainer('writingContainer', defaultButton);
+    }
+});
 
 </script>
 
@@ -5074,16 +6500,17 @@ closeModalEditor();
 
 <!-- === 大綱編輯懸浮視窗 (修正版) === -->
 <div id="outline-editor-modal" class="outline-modal-overlay">
-    <div class="outline-modal-content">
-        <h3 id="modal-title">編輯內容</h3>
-        <textarea id="modal-textarea" rows="15"></textarea>
-        <div class="modal-buttons">
-         
-            
-            <button id="modal-save-btn" class="btn-action">輸入</button>
-        </div>
-        <button id="modal-close-btn" class="preview-close-btn" title="關閉">&times;</button>
-    </div>
+<div class="outline-modal-content">
+<h3 id="modal-title">編輯內容</h3>
+<textarea id="modal-textarea" rows="15"></textarea>
+<div class="modal-buttons">
+<!-- 【新增的按鈕】 -->
+<button id="modal-ocr-btn" class="btn-action" style="background-color: #17a2b8;">OCR</button>
+
+<button id="modal-save-btn" class="btn-action">輸入</button>
+</div>
+<button id="modal-close-btn" class="preview-close-btn" title="關閉">&times;</button>
+</div>
 </div>
 
 </body>
