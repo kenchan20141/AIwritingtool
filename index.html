@@ -2338,7 +2338,7 @@ refreshBtn.addEventListener('click', fetchHitokoto);
 <i class="fas fa-trash-alt"></i>
 </button>
 </div>
-<textarea id="writingContent" rows="10" placeholder="請在此輸入您的寫作內容（「片段描寫」使用）..." style="display: none;"></textarea>
+<textarea id="writingContent" rows="10" placeholder="請在此輸入您的文章..." style="display: none;"></textarea>
 <label for="writingTone" id="writingToneLabel" class="tone-selector-label" style="display: none;">選擇點評語氣：</label>
 <select id="writingTone" style="display: none;">
 <option value="serious">嚴肅正經</option>
@@ -5620,7 +5620,7 @@ function determineGrade(score) {
     if (score >= 72) return "5**";
     if (score >= 69) return "5*";
     if (score >= 64) return "5";
-    if (score >= 58) return "4";
+    if (score >= 57) return "4";
     if (score >= 50) return "3";
     if (score >= 45) return "2";
     return "1";
