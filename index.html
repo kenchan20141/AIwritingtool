@@ -4224,14 +4224,14 @@ localStorage.setItem("lastTopic", lastTopic);
 if (writingType === "片段描寫") {
 topicResult.innerHTML = "陳SIR正在出題...";
 try {
-const prompt = `請根據以下題目生成結構段重點和情節大要。要求：
-1. 結構段重點解釋片段與題目的邏輯關係、如何扣連，突顯描寫重點，不超過50字。
-2. 情節大要提供圍繞結構段重點的情節概要，不超過100字，應簡潔、準確，避免過多細節，文筆不宜過於華麗，只需概述應寫的情節，留給學生發揮空間。
-3. 輸出格式為：結構段重點：...\n情節大要：...\n
-4. 內容簡潔明瞭，避免冗長，它只是文章的其中一個結構段，因此不要過份完整。
+const prompt = `請根據以下題目生成扣題方向和全文情節大要。要求：
+1. 扣題方向解釋片段與題目的邏輯關係、如何扣連，突顯描寫重點，不超過50字。
+2. 情節大要提供圍繞結扣題方向的全文情節概要，不超過100字，應簡潔、準確，避免過多細節，文筆不宜過於華麗，只需概述應寫的情節，留給學生發揮空間。
+3. 輸出格式為：扣題方向：...\n情節大要：...\n
+4. 內容簡潔明瞭，避免冗長。
 題目：${selectedTopic}`;
 const response = await callAPI(prompt); 
-const focusMatch = response.match(/結構段重點：\s*(.+?)(?=\n情節大要：|$)/s);
+const focusMatch = response.match(/扣題方向：\s*(.+?)(?=\n情節大要：|$)/s);
 const plotMatch = response.match(/情節大要：\s*(.+)/s);
 if (!focusMatch || !plotMatch) throw new Error("API 回應格式不正確");
 const focus = focusMatch[1].trim();
@@ -4240,7 +4240,7 @@ if (!focus || !plot) throw new Error("生成內容不完整");
 topicResult.innerHTML = `
 <strong>${selectedTopic}</strong>
 <table>
-<tr><th>結構段重點</th><th>情節大要</th></tr>
+<tr><th>扣題方向</th><th>情節大要</th></tr>
 <tr><td>${focus}</td><td>${plot}</td></tr>
 </table>
 `;
