@@ -832,7 +832,7 @@ grid-area: foundations;
 display: flex;
 flex-direction: row;
 justify-content: center;
-gap: 350px;
+gap: 500px;
 align-items: flex-start;
 }
 #writing { grid-area: writing; }
@@ -2701,9 +2701,15 @@ refreshBtn.addEventListener('click', fetchHitokoto);
 </div>
 <div class="foundation-item" data-id="foundation-explore">
 <div class="category-title"><svg class="icon"><use xlink:href="#icon-explore"></use></svg>課外探索</div>
+<div class="sub-group-title">課外篇章</div>
 <div class="node level-2"><a href="https://kenchan20141.github.io/reading/" data-tool-id="reading-pieces">文學・片段</a></div>
 <div class="node level-2"><a href="https://kenchan20141.github.io/mensyu/" data-tool-id="mensyu">文樞</a></div>
+<div class="sub-group-title">主題探討</div>
+<div class="node level-2"><a href="https://kenchan20141.github.io/study/" data-tool-id="study">文學專題探究</a></div>
+
+<div class="sub-group-title">生活詩意</div>
 <div class="node level-2"><a href="https://kenchan20141.github.io/wabisabi/" data-tool-id="wabisabi">一瞬之詩</a></div>
+<div class="sub-group-title">書籍推薦</div>
 <div class="node level-2"><a href="https://621d05f47d591.site123.me/%E6%9B%B8%E9%96%A3%E8%97%8F%E6%9B%B8%E6%A6%82%E8%A6%BD" data-tool-id="book-overview">書籍概覽</a></div>
 </div>
 </div>
@@ -5153,6 +5159,7 @@ const toolDescriptions = {
 'sansi-v3': '「神思」V3版本，功能與主版本相同。',
 'tizi': '由AI擬設閱讀卷及寫作卷的題目，為同學提供源源不絕的應試練習。',
 'reading-pieces': '提供AI生成的文學片段，培養同學鑑賞文學的能力。',
+'study': '具有根據探究問題生成圖解與文字分析的功能，培養同學深入研討專題的能力。',
 'mensyu': '具有AI尋找文言篇章的功能，並輔以語譯及詞解，培養同學鑑賞文言文的能力。',
 'wabisabi': '根據同學上傳的圖片，創作具有意境的句子。',
 'book-overview': '提供大量書籍的內容概覽，助你快速了解書籍大意，選擇感興趣的讀物。',
